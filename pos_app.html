@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arham Hunger Box — Counter POS</title>
+  <style>
+    :root {
+      --bg: #0b1120;
+      --panel: #111827;
+      --panel-2: #1e293b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --brand: #10b981;
+      --brand-hover: #059669;
+      --accent: #f59e0b;
+      --danger: #ef4444;
+      --info: #38bdf8;
+      --line: #273549;
+    }
+
+    body.light-theme {
+      --bg: #f1f5f9;
+      --panel: #ffffff;
+      --panel-2: #f8fafc;
+      --text: #0f172a;
+      --muted: #475569;
+      --brand: #059669;
+      --brand-hover: #047857;
+      --accent: #d97706;
+      --danger: #dc2626;
+      --info: #0284c7;
+      --line: #cbd5e1;
+    }
+
+    * { box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.14), transparent 55%), var(--bg);
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--brand);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      margin-bottom: 10px;
+    }
+
+    .login-box h2 { margin: 0 0 4px; font-size: 22px; }
+    .login-box .sub { margin: 0 0 18px; font-size: 12px; color: var(--muted); }
+
+    #dashboardShell { display: none; }
+
+    .topbar {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .brand-title { display: flex; align-items: center; gap: 12px; }
+    .logo-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .logo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-title h1 { margin: 0; font-size: 18px; }
+    .brand-title p { margin: 2px 0 0; font-size: 11px; color: var(--muted); }
+
+    .top-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+
+    .role-chip {
+      padding: 6px 11px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .wrap {
+      max-width: 1440px;
+      margin: auto;
+      padding: 16px;
+    }
+
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .summary-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .metric-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--brand);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .metric-card.amber { border-left-color: var(--accent); }
+    .metric-card.sky { border-left-color: var(--info); }
+    .metric-card span { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
+    .metric-card strong { display: block; margin-top: 4px; font-size: 18px; }
+
+    .dash-grid {
+      display: grid;
+      grid-template-columns: 1.9fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    @media (max-width: 1020px) {
+      .dash-grid { grid-template-columns: 1fr; }
+    }
+
+    .box {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 16px;
+    }
+
+    .box-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .box-head h2 { margin: 0; font-size: 15px; color: var(--info); }
+
+    .order-tag {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--brand);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .bill-meta-banner {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 9px 12px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .bill-meta-banner strong { color: var(--text); }
+
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .cat-btn {
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--panel-2);
+      color: var(--muted);
+      border: 1px solid var(--line);
+      cursor: pointer;
+    }
+
+    .cat-btn.active {
+      background: var(--brand);
+      color: #06140d;
+      border-color: var(--brand);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+      gap: 10px;
+    }
+
+    .pos-card {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 11px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .code-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--info);
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 6px;
+      padding: 2px 7px;
+      margin-bottom: 5px;
+    }
+
+    .pos-card .title { font-weight: 700; font-size: 14px; }
+    .pos-card .subcat { font-size: 11px; color: var(--muted); }
+    .pos-card .amt { font-weight: 800; color: var(--brand); font-size: 14px; }
+    .pos-card .stk { font-size: 12px; color: var(--accent); }
+    .pos-card .stk.low { color: var(--danger); font-weight: 700; }
+
+    .variant-picker {
+      background: var(--panel);
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .variant-picker-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .variant-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 8px;
+    }
+
+    label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+
+    input, select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 9px;
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--text);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    button {
+      border: none;
+      border-radius: 9px;
+      padding: 9px 13px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-brand { background: var(--brand); color: #05160e; }
+    .btn-brand:hover { background: var(--brand-hover); color: #fff; }
+    .btn-amber { background: var(--accent); color: #140d02; }
+    .btn-sky { background: var(--info); color: #06131d; }
+    .btn-red { background: var(--danger); color: #fff; }
+    .btn-outline {
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    table { width: 100%; border-collapse: collapse; margin-bottom: 12px; font-size: 13px; }
+    th, td { padding: 7px 6px; border-bottom: 1px solid var(--line); text-align: left; }
+    th { color: var(--muted); font-size: 12px; }
+
+    .totals-box {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+
+    .totals-box div { display: flex; justify-content: space-between; margin: 5px 0; }
+    .totals-box .grand {
+      border-top: 1px solid var(--line);
+      padding-top: 8px;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--brand);
+    }
+
+    .btn-group { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .invoice-sheet {
+      background: #ffffff;
+      color: #0f172a;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      font-size: 12.5px;
+    }
+
+    .invoice-banner {
+      text-align: center;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+
+    .invoice-brand-title {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      color: #0f172a;
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    .invoice-sub {
+      font-size: 11px;
+      color: #334155;
+      margin-top: 3px;
+      line-height: 1.35;
+    }
+
+    .invoice-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 7px 10px;
+      margin-bottom: 10px;
+      font-size: 11.5px;
+    }
+
+    .invoice-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+
+    .invoice-table th {
+      background: #f1f5f9;
+      color: #0f172a;
+      border-top: 1.5px solid #0f172a;
+      border-bottom: 1.5px solid #0f172a;
+      padding: 5px 6px;
+      text-align: left;
+    }
+
+    .invoice-table td {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 4.5px 6px;
+      color: #0f172a;
+    }
+
+    .invoice-table .num { text-align: right; }
+
+    .invoice-summary {
+      width: 100%;
+      max-width: 290px;
+      margin-left: auto;
+      font-size: 12px;
+    }
+
+    .invoice-summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 0;
+    }
+
+    .invoice-summary-row.grand-row {
+      border-top: 2px solid #0f172a;
+      margin-top: 4px;
+      padding-top: 6px;
+      font-size: 14.5px;
+      font-weight: 900;
+    }
+
+    .invoice-footer {
+      text-align: center;
+      margin-top: 10px;
+      padding-top: 7px;
+      border-top: 1px dashed #94a3b8;
+      font-size: 11px;
+      color: #475569;
+    }
+
+    .period-output {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 12px;
+    }
+
+    .period-output pre {
+      margin: 0 0 10px;
+      white-space: pre-wrap;
+      font-family: "Consolas", "Segoe UI", monospace;
+      color: var(--text);
+    }
+
+    .err-text { color: var(--danger); font-size: 12px; min-height: 18px; margin-bottom: 8px; }
+    .ok-text { color: var(--brand); font-size: 12px; min-height: 18px; margin-top: 4px; }
+
+    @page {
+      size: A4 portrait;
+      margin: 6mm;
+    }
+
+    @media print {
+      html, body {
+        width: 100%;
+        height: auto;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      body * {
+        visibility: hidden;
+      }
+      body.print-period-mode #periodPrintArea,
+      body.print-period-mode #periodPrintArea * {
+        visibility: visible;
+      }
+      body.print-period-mode #periodPrintArea {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100% !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 10px !important;
+        margin: 0 !important;
+        border: none !important;
+      }
+      body:not(.print-period-mode) #printableReceipt,
+      body:not(.print-period-mode) #printableReceipt * {
+        visibility: visible;
+      }
+      body:not(.print-period-mode) #printableReceipt {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100% !important;
+        max-width: 100% !important;
+        border: none !important;
+        border-radius: 0 !important;
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      .no-print { display: none !important; }
+      .invoice-sheet {
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 0 4px !important;
+        margin: 0 !important;
+        width: 100% !important;
+        font-size: 11px !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      .invoice-banner {
+        padding-bottom: 5px !important;
+        margin-bottom: 6px !important;
+      }
+      .invoice-brand-title {
+        font-size: 24px !important;
+      }
+      .invoice-sub {
+        font-size: 10px !important;
+        line-height: 1.25 !important;
+      }
+      .invoice-meta-grid {
+        padding: 5px 8px !important;
+        margin-bottom: 6px !important;
+        font-size: 10.5px !important;
+        gap: 2px 10px !important;
+      }
+      .invoice-table {
+        margin-bottom: 6px !important;
+        font-size: 10.5px !important;
+      }
+      .invoice-table th, .invoice-table td {
+        padding: 3px 5px !important;
+      }
+      .invoice-summary {
+        max-width: 250px !important;
+        font-size: 11px !important;
+      }
+      .invoice-summary-row {
+        padding: 2px 0 !important;
+      }
+      .invoice-summary-row.grand-row {
+        font-size: 13px !important;
+        padding-top: 4px !important;
+        margin-top: 3px !important;
+      }
+      .invoice-footer {
+        margin-top: 6px !important;
+        padding-top: 5px !important;
+        font-size: 10px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loginScreen">
+    <div class="login-box">
+      <span class="tag">ARHAM HUNGER BOX • POS</span>
+      <h2>Counter Sign In</h2>
+      <p class="sub">Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera • Phone: 0301-5977178</p>
+
+      <label for="roleSelect">Select Role</label>
+      <select id="roleSelect">
+        <option value="ADMIN">Admin</option>
+        <option value="CASHIER">Cashier</option>
+      </select>
+
+      <label for="passInput">Role Password</label>
+      <input id="passInput" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter') loginUser()" />
+
+      <div id="loginErr" class="err-text"></div>
+      <button class="btn-brand" style="width:100%;" onclick="loginUser()">Open Dashboard</button>
+      <p class="sub" style="margin-top:12px; margin-bottom:0;">
+        Default — Admin: <b>admin123</b> | Cashier: <b>cashier123</b>
+      </p>
+    </div>
+  </div>
+
+  <div id="dashboardShell">
+    <header class="topbar">
+      <div class="brand-title">
+        <div class="logo-wrap">
+          <img src="ahb_logo.png" alt="AHB Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;color:#ea580c;font-size:13px;&quot;>AHB</span>';" />
+        </div>
+        <div>
+          <h1>Arham Hunger Box Dashboard</h1>
+          <p>Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera | Contact: 0301-5977178</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span id="roleBadge" class="role-chip">Role: ADMIN</span>
+        <button class="btn-outline" onclick="switchTheme()">Switch Theme</button>
+        <button class="btn-outline" onclick="logoutUser()">Logout</button>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <div class="summary-strip">
+        <div class="metric-card">
+          <span>Today's Orders</span>
+          <strong id="mOrders">0</strong>
+        </div>
+        <div class="metric-card amber">
+          <span>Today's Discounts</span>
+          <strong id="mDisc">PKR 0.00</strong>
+        </div>
+        <div class="metric-card">
+          <span>Today's Net Sales</span>
+          <strong id="mNet">PKR 0.00</strong>
+        </div>
+        <div class="metric-card sky">
+          <span>Menu Items</span>
+          <strong id="mItems">0</strong>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div>
+          <div class="box">
+            <div class="box-head">
+              <h2>Menu & Stock</h2>
+              <input id="searchItem" placeholder="Search code (001) or name..." style="width:225px; margin:0;" oninput="renderMenu()" />
+            </div>
+
+            <div id="categoryBar" class="filter-bar"></div>
+
+            <div id="variantSelectorBox" class="variant-picker" style="display:none;">
+              <div class="variant-picker-head">
+                <span id="variantPickerTitle">Select Option</span>
+                <button class="btn-outline" style="padding:3px 9px; font-size:11px;" onclick="closeVariantPicker()">Close</button>
+              </div>
+              <div id="variantOptionsGrid" class="variant-options"></div>
+            </div>
+
+            <div id="menuCards" class="menu-grid"></div>
+          </div>
+
+          <div class="box">
+            <div class="box-head">
+              <h2>Weekly & Monthly Sales Bill (Manager Settlement)</h2>
+            </div>
+            <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
+              Generate a complete settlement bill for the last 7 days (Weekly) or current month (Monthly) with total orders, discounts, tax, and net sales.
+            </p>
+            <div class="btn-group">
+              <button class="btn-amber" onclick="generatePeriodSettlement('WEEKLY')">Weekly Sales Bill (7 Days)</button>
+              <button class="btn-brand" onclick="generatePeriodSettlement('MONTHLY')">Monthly Sales Bill (Month)</button>
+            </div>
+
+            <div id="periodPrintArea" class="period-output">
+              <pre id="periodSettlementBox">Select Weekly or Monthly Sales Bill to view settlement statement.</pre>
+              <div class="btn-group no-print">
+                <button class="btn-sky" onclick="printPeriodStatement()">Print Statement</button>
+                <button class="btn-outline" onclick="savePeriodTxt()">Save Statement .TXT</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="box" id="adminPanel">
+            <div class="box-head">
+              <h2>Add / Restock Item (Admin)</h2>
+            </div>
+            <div class="row-2">
+              <div>
+                <label for="mName">Item Name</label>
+                <input id="mName" placeholder="e.g. Zinger Burger" />
+              </div>
+              <div>
+                <label for="mCat">Category</label>
+                <input id="mCat" placeholder="e.g. Special Pizzas, Burgers" />
+              </div>
+            </div>
+            <div class="row-2">
+              <div>
+                <label for="mPrice">Price (PKR)</label>
+                <input id="mPrice" type="number" min="1" placeholder="400" />
+              </div>
+              <div>
+                <label for="mStock">Stock Qty</label>
+                <input id="mStock" type="number" min="0" placeholder="25" />
+              </div>
+            </div>
+            <button class="btn-amber" onclick="upsertMenuItem()">Save Item</button>
+
+            <hr style="border:none; border-top:1px solid var(--line); margin:16px 0;" />
+
+            <div class="box-head">
+              <h2>Role Passwords (Admin)</h2>
+            </div>
+            <div class="row-2">
+              <div>
+                <label for="updAdmin">New Admin Password</label>
+                <input id="updAdmin" type="password" placeholder="Optional" />
+              </div>
+              <div>
+                <label for="updCashier">New Cashier Password</label>
+                <input id="updCashier" type="password" placeholder="Optional" />
+              </div>
+            </div>
+            <button class="btn-outline" onclick="savePasswords()">Update Passwords</button>
+            <div id="passMsg" class="ok-text"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="box">
+            <div class="box-head">
+              <h2>Active Bill</h2>
+              <span id="currentOrderBadge" class="order-tag">Order #1001</span>
+            </div>
+
+            <div class="bill-meta-banner">
+              <strong>Arham Hunger Box</strong><br />
+              Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera<br />
+              Phone: <strong>0301-5977178</strong> • Free Delivery Upto 3km
+            </div>
+
+            <div class="row-2">
+              <div>
+                <label for="orderType">Order / Delivery Option</label>
+                <select id="orderType">
+                  <option value="Delivery (Free Upto 3km)">Delivery (Free Upto 3km)</option>
+                  <option value="Dine-In">Dine-In</option>
+                  <option value="Takeaway">Takeaway</option>
+                </select>
+              </div>
+              <div>
+                <label for="cMobile">Customer Mobile</label>
+                <input id="cMobile" type="tel" placeholder="03XXXXXXXXX" />
+              </div>
+            </div>
+
+            <label for="cName">Customer Name</label>
+            <input id="cName" placeholder="Walk-in Customer" />
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Code / Item</th>
+                  <th>Qty</th>
+                  <th>Total</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="billRows"></tbody>
+            </table>
+
+            <div class="row-2">
+              <div>
+                <label for="dPct">Discount (%)</label>
+                <input id="dPct" type="number" min="0" max="100" value="0" onchange="renderBill()" />
+              </div>
+              <div>
+                <label for="tPct">Tax (%)</label>
+                <input id="tPct" type="number" min="0" max="50" value="0" onchange="renderBill()" />
+              </div>
+            </div>
+
+            <div class="totals-box">
+              <div><span>Subtotal</span><span id="bSub">PKR 0.00</span></div>
+              <div><span>Discount</span><span id="bDisc">PKR 0.00</span></div>
+              <div><span>Tax</span><span id="bTax">PKR 0.00</span></div>
+              <div class="grand"><span>Grand Total</span><span id="bGrand">PKR 0.00</span></div>
+            </div>
+
+            <div class="btn-group">
+              <button class="btn-brand" onclick="generateBill()">Generate Bill</button>
+              <button class="btn-red" onclick="emptyBill()">Clear</button>
+            </div>
+          </div>
+
+          <div class="box" id="printableReceipt">
+            <div class="box-head no-print">
+              <h2>Printable Bill (Single Page)</h2>
+            </div>
+
+            <div id="invoiceContainer" class="invoice-sheet">
+              <div class="invoice-banner">
+                <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
+                <div class="invoice-sub">
+                  Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera<br />
+                  Phone: <strong>0301-5977178</strong> &nbsp;|&nbsp; <strong>Free Delivery Upto 3km</strong>
+                </div>
+              </div>
+              <p style="text-align:center; color:#64748b; margin:16px 0;">No bill generated yet.</p>
+            </div>
+
+            <div class="btn-group no-print">
+              <button class="btn-sky" onclick="printSingleBill()">Print Bill</button>
+              <button class="btn-outline" onclick="saveReceiptTxt()">Save .TXT</button>
+              <button class="btn-amber" onclick="mailReceipt()">Email</button>
+            </div>
+          </div>
+
+          <div class="box">
+            <div class="box-head">
+              <h2>Sales Export & Reset</h2>
+            </div>
+            <div class="btn-group">
+              <button class="btn-outline" onclick="downloadSalesCsv()">Export CSV</button>
+              <button class="btn-red" id="wipeBtn" onclick="wipeSalesData()">Reset Data</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const RESTAURANT_INFO = {
+      name: "ARHAM HUNGER BOX",
+      addressLine1: "Al Madina Market, Basement Floor,",
+      addressLine2: "Kheshgi Payan Chowk, District Nowshera",
+      phone: "0301-5977178",
+      deliveryNote: "Free Delivery Upto 3km"
+    };
+
+    const DB = {
+      MENU: "ahb_period_menu_v1",
+      SALES: "ahb_period_sales_v1",
+      ORDER_SEQ: "ahb_period_order_seq_v1",
+      PASS: "ahb_period_pass_v1",
+      THEME: "ahb_period_theme_v1"
+    };
+
+    const pizza800 = [
+      { label: "S", price: 800 },
+      { label: "M", price: 1400 },
+      { label: "L", price: 2000 },
+      { label: "XL", price: 2500 },
+      { label: "Party", price: 4500 }
+    ];
+
+    const pizza700 = [
+      { label: "S", price: 700 },
+      { label: "M", price: 1200 },
+      { label: "L", price: 1800 },
+      { label: "XL", price: 2200 },
+      { label: "Party", price: 4000 }
+    ];
+
+    const iceCreamSizes = [
+      { label: "Small Cup", price: 120 },
+      { label: "Medium Cup", price: 180 },
+      { label: "Large Cup", price: 240 }
+    ];
+
+    const iceCream140Sizes = [
+      { label: "Small Cup", price: 140 },
+      { label: "Medium Cup", price: 200 },
+      { label: "Large Cup", price: 260 }
+    ];
+
+    const juiceSizes = [
+      { label: "Regular", price: 200 },
+      { label: "Large", price: 250 }
+    ];
+
+    const rawStarterMenu = [
+      { name: "Hunger Box Special Pizza", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
+      { name: "Supreme Pizza", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
+      { name: "Libnane Pizza", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
+      { name: "Vegetarian Pizza", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
+      { name: "Cheese Lover", category: "Special Pizzas", price: 700, stock: 40, variants: pizza700 },
+      { name: "Customer Choice", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
+      { name: "Four Season", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
+      { name: "Crown Crust", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
+      { name: "Chicken Tandore", category: "Special Pizzas", price: 700, stock: 40, variants: pizza700 },
+      { name: "Grilled Chicken", category: "Special Pizzas", price: 700, stock: 40, variants: pizza700 },
+      { name: "Chicken Fajita", category: "Special Pizzas", price: 700, stock: 40, variants: pizza700 },
+      { name: "Kabab Crust", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
+      { name: "Stuffed Crust", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
+
+      { name: "Hunger Box Special Burger", category: "Burgers", price: 700, stock: 30 },
+      { name: "Zinger Burger", category: "Burgers", price: 400, stock: 40 },
+      { name: "Grilled Burger", category: "Burgers", price: 450, stock: 30 },
+      { name: "Grilled Chicken Burger", category: "Burgers", price: 600, stock: 30 },
+      { name: "Grilled Beef Burger", category: "Burgers", price: 700, stock: 25 },
+      { name: "Tower Burger", category: "Burgers", price: 700, stock: 25 },
+      { name: "Zinger Cheese burger", category: "Burgers", price: 450, stock: 35 },
+
+      { name: "Chicken Shawarma", category: "Shawarma & Rolls", price: 200, stock: 50 },
+      { name: "Chicken Cheese Shawarma", category: "Shawarma & Rolls", price: 250, stock: 40 },
+      { name: "Chicken Zinger Shawarma", category: "Shawarma & Rolls", price: 350, stock: 35 },
+      { name: "Chicken burger", category: "Shawarma & Rolls", price: 200, stock: 40 },
+      { name: "Chicken Parata Roll", category: "Shawarma & Rolls", price: 280, stock: 40 },
+      { name: "Chicken Cheese Parata Roll", category: "Shawarma & Rolls", price: 330, stock: 35 },
+      { name: "Zinger Parata Roll", category: "Shawarma & Rolls", price: 400, stock: 30 },
+      { name: "Zingr Cheese Parata Roll", category: "Shawarma & Rolls", price: 450, stock: 30 },
+
+      { name: "Hunger Box Special Pasta", category: "Chinese & Italian", price: 900, stock: 25 },
+      { name: "Chicken Chilly Dry", category: "Chinese & Italian", price: 700, stock: 25 },
+      { name: "Chicken Fried Rice", category: "Chinese & Italian", price: 600, stock: 25 },
+      { name: "Chicken Shashlik", category: "Chinese & Italian", price: 700, stock: 25 },
+      { name: "Chicken Chow Mein", category: "Chinese & Italian", price: 700, stock: 25 },
+      { name: "Special Pasta", category: "Chinese & Italian", price: 800, stock: 25 },
+      { name: "Grilled Chicken Pasta", category: "Chinese & Italian", price: 700, stock: 25 },
+      { name: "Chicken Alfaredo Pasta", category: "Chinese & Italian", price: 650, stock: 25 },
+
+      { name: "Fried Chicken Piece", category: "Fried Items", price: 350, stock: 50 },
+      { name: "Nuggets 10 Piece", category: "Fried Items", price: 600, stock: 35 },
+      { name: "Hot Wings 10 Piece", category: "Fried Items", price: 700, stock: 35 },
+      { name: "Buffalo Wings", category: "Fried Items", price: 750, stock: 30 },
+      { name: "Full Broast", category: "Fried Items", price: 1600, stock: 20 },
+
+      { name: "Pizza Deal 1 (1 Small Pizza, 2 Zinger Burger, 1 Regular Fries, 1 Ltr Drink)", category: "Pizza Deals", price: 1800, stock: 25 },
+      { name: "Pizza Deal 2 (2 Medium Pizza, 4 Zinger Burger, 1 large Fries, 1.5 Ltr Drink)", category: "Pizza Deals", price: 4200, stock: 20 },
+      { name: "Pizza Deal 3 (2 Large Pizza, 5 Zinger Burger, 1 large Fries, 2.5 Ltr Drink)", category: "Pizza Deals", price: 5800, stock: 15 },
+      { name: "Pizza Deal 4 (2 Extra large Pizza, 2.5 Ltr Drink)", category: "Pizza Deals", price: 4400, stock: 15 },
+      { name: "Pizza Deal 5 Party Deal (1 Party Pizza, 6 Zinger Burger, 10 Hot Wings, 1 Large Fries, 2.5 Ltr Drink)", category: "Pizza Deals", price: 7200, stock: 12 },
+
+      { name: "Burger Deal 1 (1 zinger burger, 1 Regular Fries, 1 Regular Drink)", category: "Burger Deals", price: 580, stock: 35 },
+      { name: "Burger Deal 2 (2 zinger burger, 1 Regular Fries, 1 Regular Drink)", category: "Burger Deals", price: 980, stock: 30 },
+      { name: "Burger Deal 3 (3 zinger burger, 1 lareg Fries, 1 Drink 1Ltr)", category: "Burger Deals", price: 1500, stock: 25 },
+      { name: "Burger Deal 4 (4 zinger burger, 1 lareg Fries, 1 Drink 1Ltr)", category: "Burger Deals", price: 1900, stock: 20 },
+      { name: "Burger Deal 5 (5 zinger burger, 10 Nuggets, 1 lareg Fries, 1 Drink 1.5Ltr)", category: "Burger Deals", price: 2850, stock: 15 },
+
+      { name: "vanilla", category: "Ice Cream", price: 120, stock: 50, variants: iceCreamSizes },
+      { name: "Pineapple", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
+      { name: "Pesta", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
+      { name: "Chocolate", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
+      { name: "Tooty Fruity", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
+      { name: "Strawberry", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
+      { name: "Mango", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
+      { name: "Blueberry", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
+      { name: "Qulpa", category: "Ice Cream", price: 160, stock: 40, variants: [{ label: "Small Cup", price: 160 }, { label: "Medium Cup", price: 240 }, { label: "Large Cup", price: 320 }] },
+      { name: "Kaju", category: "Ice Cream", price: 150, stock: 40, variants: [{ label: "Small Cup", price: 150 }, { label: "Medium Cup", price: 220 }, { label: "Large Cup", price: 300 }] },
+
+      { name: "Mango Juice", category: "Juice", price: 200, stock: 40, variants: juiceSizes },
+      { name: "Strawberry Juice", category: "Juice", price: 200, stock: 40, variants: juiceSizes },
+      { name: "Banana Juice", category: "Juice", price: 200, stock: 40, variants: juiceSizes },
+      { name: "Ice Cream Shake", category: "Juice", price: 200, stock: 40, variants: juiceSizes },
+
+      { name: "Large Fries", category: "Fries", price: 300, stock: 50 },
+      { name: "Reguler fries", category: "Fries", price: 200, stock: 60 },
+      { name: "Loaded Fries", category: "Fries", price: 500, stock: 40 },
+
+      { name: "Soup With Egg", category: "Soup", price: 250, stock: 35 },
+      { name: "Chicken Soup", category: "Soup", price: 200, stock: 35 },
+
+      { name: "Black Coffee", category: "Coffee", price: 250, stock: 40 },
+      { name: "Cappuccino", category: "Coffee", price: 350, stock: 40 }
+    ];
+
+    function formatCode(num) {
+      return String(num).padStart(3, "0");
+    }
+
+    const starterMenu = rawStarterMenu.map((item, idx) => ({
+      ...item,
+      id: idx + 1,
+      code: formatCode(idx + 1)
+    }));
+
+    let auth = JSON.parse(localStorage.getItem(DB.PASS)) || {
+      ADMIN: "admin123",
+      CASHIER: "cashier123"
+    };
+    let items = JSON.parse(localStorage.getItem(DB.MENU)) || starterMenu;
+    let orders = JSON.parse(localStorage.getItem(DB.SALES)) || [];
+    let orderCounter = Number(localStorage.getItem(DB.ORDER_SEQ)) || 1001;
+
+    let role = null;
+    let activeCat = "All";
+    let bill = [];
+    let latestReceiptText = "";
+    let latestOrderNo = null;
+    let latestPeriodText = "";
+    let latestPeriodType = "summary";
+
+    if (localStorage.getItem(DB.THEME) === "light") {
+      document.body.classList.add("light-theme");
+    }
+
+    function updateOrderBadge() {
+      const badge = document.getElementById("currentOrderBadge");
+      if (badge) badge.textContent = "Order #" + orderCounter;
+    }
+
+    function syncStore() {
+      localStorage.setItem(DB.MENU, JSON.stringify(items));
+      localStorage.setItem(DB.SALES, JSON.stringify(orders));
+      localStorage.setItem(DB.ORDER_SEQ, String(orderCounter));
+      localStorage.setItem(DB.PASS, JSON.stringify(auth));
+      updateOrderBadge();
+    }
+
+    function switchTheme() {
+      document.body.classList.toggle("light-theme");
+      localStorage.setItem(DB.THEME, document.body.classList.contains("light-theme") ? "light" : "dark");
+    }
+
+    function loginUser() {
+      const r = document.getElementById("roleSelect").value;
+      const p = document.getElementById("passInput").value;
+      const err = document.getElementById("loginErr");
+
+      if (p !== auth[r]) {
+        err.textContent = "Wrong password for " + r + ".";
+        return;
+      }
+
+      err.textContent = "";
+      document.getElementById("passInput").value = "";
+      role = r;
+
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("dashboardShell").style.display = "block";
+      document.getElementById("roleBadge").textContent = "Role: " + role;
+
+      const isAdmin = role === "ADMIN";
+      document.getElementById("adminPanel").style.display = isAdmin ? "block" : "none";
+      document.getElementById("wipeBtn").style.display = isAdmin ? "inline-block" : "none";
+
+      updateOrderBadge();
+      renderCategories();
+      renderMenu();
+      renderBill();
+      renderMetrics();
+    }
+
+    function logoutUser() {
+      role = null;
+      bill = [];
+      closeVariantPicker();
+      document.getElementById("dashboardShell").style.display = "none";
+      document.getElementById("loginScreen").style.display = "flex";
+    }
+
+    function savePasswords() {
+      if (role !== "ADMIN") return;
+      const a = document.getElementById("updAdmin").value.trim();
+      const c = document.getElementById("updCashier").value.trim();
+      const msg = document.getElementById("passMsg");
+
+      if (!a && !c) {
+        msg.style.color = "var(--danger)";
+        msg.textContent = "Enter at least one new password.";
+        return;
+      }
+      if (a) auth.ADMIN = a;
+      if (c) auth.CASHIER = c;
+      syncStore();
+
+      document.getElementById("updAdmin").value = "";
+      document.getElementById("updCashier").value = "";
+      msg.style.color = "var(--brand)";
+      msg.textContent = "Passwords saved.";
+    }
+
+    function renderCategories() {
+      const cats = ["All", ...new Set(items.map(i => i.category))];
+      const bar = document.getElementById("categoryBar");
+      bar.innerHTML = "";
+      cats.forEach(cat => {
+        const btn = document.createElement("button");
+        btn.className = "cat-btn" + (cat === activeCat ? " active" : "");
+        btn.textContent = cat;
+        btn.onclick = () => {
+          activeCat = cat;
+          renderCategories();
+          renderMenu();
+        };
+        bar.appendChild(btn);
+      });
+    }
+
+    function renderMenu() {
+      const q = (document.getElementById("searchItem").value || "").toLowerCase().trim();
+      const grid = document.getElementById("menuCards");
+      grid.innerHTML = "";
+
+      const filtered = items.filter(it => {
+        const matchCat = activeCat === "All" || it.category === activeCat;
+        const matchText =
+          !q ||
+          it.name.toLowerCase().includes(q) ||
+          it.category.toLowerCase().includes(q) ||
+          String(it.code || "").toLowerCase().includes(q);
+        return matchCat && matchText;
+      });
+
+      filtered.forEach(it => {
+        const card = document.createElement("div");
+        card.className = "pos-card";
+        const hasVar = Array.isArray(it.variants) && it.variants.length > 0;
+        const priceLabel = hasVar
+          ? `From PKR ${Number(it.variants[0].price).toFixed(2)}`
+          : `PKR ${Number(it.price).toFixed(2)}`;
+        const btnAction = hasVar ? `openVariantPicker(${it.id})` : `addBillItem(${it.id})`;
+        const btnText = it.stock <= 0 ? "Out of Stock" : (hasVar ? "Select Size/Option" : "+ Add");
+
+        card.innerHTML = `
+          <div>
+            <span class="code-badge">Code: ${it.code || formatCode(it.id)}</span>
+            <div class="title">${it.name}</div>
+            <div class="subcat">${it.category}</div>
+          </div>
+          <div>
+            <div class="amt">${priceLabel}</div>
+            <div class="stk ${it.stock <= 5 ? "low" : ""}">Stock: ${it.stock}</div>
+          </div>
+          <button class="btn-brand" ${it.stock <= 0 ? "disabled" : ""} onclick="${btnAction}">
+            ${btnText}
+          </button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function openVariantPicker(itemId) {
+      const item = items.find(i => i.id === itemId);
+      if (!item || item.stock <= 0 || !item.variants) return;
+
+      document.getElementById("variantPickerTitle").textContent = `[${item.code || formatCode(item.id)}] ${item.name} — Select Size / Option`;
+      const grid = document.getElementById("variantOptionsGrid");
+      grid.innerHTML = "";
+
+      item.variants.forEach(v => {
+        const btn = document.createElement("button");
+        btn.className = "btn-amber";
+        btn.style.textAlign = "left";
+        btn.innerHTML = `${v.label}<br><small style="font-weight:800;">PKR ${v.price}</small>`;
+        btn.onclick = () => addVariantToBill(itemId, v);
+        grid.appendChild(btn);
+      });
+
+      document.getElementById("variantSelectorBox").style.display = "block";
+    }
+
+    function closeVariantPicker() {
+      document.getElementById("variantSelectorBox").style.display = "none";
+    }
+
+    function addVariantToBill(itemId, variant) {
+      const item = items.find(i => i.id === itemId);
+      if (!item || item.stock <= 0) return;
+
+      const usedParentQty = bill
+        .filter(b => b.parentId === itemId)
+        .reduce((sum, b) => sum + b.qty, 0);
+
+      if (usedParentQty + 1 > item.stock) {
+        alert("Not enough stock for " + item.name);
+        return;
+      }
+
+      const itemCode = item.code || formatCode(item.id);
+      const lineKey = `${itemId}_${variant.label}`;
+      const existing = bill.find(b => b.lineKey === lineKey);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        bill.push({
+          lineKey,
+          parentId: itemId,
+          code: itemCode,
+          name: `${item.name} (${variant.label})`,
+          price: variant.price,
+          qty: 1
+        });
+      }
+      renderBill();
+    }
+
+    function upsertMenuItem() {
+      if (role !== "ADMIN") return;
+      const name = document.getElementById("mName").value.trim();
+      const category = document.getElementById("mCat").value.trim() || "General";
+      const price = Number(document.getElementById("mPrice").value);
+      const stock = parseInt(document.getElementById("mStock").value, 10);
+
+      if (!name || price <= 0 || isNaN(stock) || stock < 0) {
+        alert("Enter valid item name, price, and stock.");
+        return;
+      }
+
+      const found = items.find(i => i.name.toLowerCase() === name.toLowerCase());
+      if (found) {
+        found.category = category;
+        found.price = price;
+        found.stock += stock;
+        if (!found.code) found.code = formatCode(found.id);
+      } else {
+        const nextId = items.length ? Math.max(...items.map(i => i.id)) + 1 : 1;
+        items.push({ id: nextId, code: formatCode(nextId), name, category, price, stock });
+      }
+
+      document.getElementById("mName").value = "";
+      document.getElementById("mCat").value = "";
+      document.getElementById("mPrice").value = "";
+      document.getElementById("mStock").value = "";
+
+      syncStore();
+      renderCategories();
+      renderMenu();
+      renderMetrics();
+    }
+
+    function addBillItem(id) {
+      const it = items.find(i => i.id === id);
+      if (!it || it.stock <= 0) return;
+      const lineKey = `item_${id}`;
+      const row = bill.find(b => b.lineKey === lineKey);
+      const qty = row ? row.qty : 0;
+      if (qty + 1 > it.stock) {
+        alert("Not enough stock.");
+        return;
+      }
+      if (row) row.qty += 1;
+      else bill.push({
+        lineKey,
+        parentId: it.id,
+        code: it.code || formatCode(it.id),
+        name: it.name,
+        price: it.price,
+        qty: 1
+      });
+      renderBill();
+    }
+
+    function dropBillItem(lineKey) {
+      bill = bill.filter(b => b.lineKey !== lineKey);
+      renderBill();
+    }
+
+    function emptyBill() {
+      bill = [];
+      renderBill();
+    }
+
+    function calcBill() {
+      const subtotal = bill.reduce((s, b) => s + b.price * b.qty, 0);
+      const dPct = Math.min(100, Math.max(0, Number(document.getElementById("dPct").value) || 0));
+      const tPct = Math.min(50, Math.max(0, Number(document.getElementById("tPct").value) || 0));
+      const discount = subtotal * (dPct / 100);
+      const taxable = subtotal - discount;
+      const tax = taxable * (tPct / 100);
+      const total = taxable + tax;
+      return { subtotal, discount, tax, total };
+    }
+
+    function renderBill() {
+      const body = document.getElementById("billRows");
+      body.innerHTML = "";
+      bill.forEach(b => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><b>[${b.code}]</b> ${b.name}</td>
+          <td>${b.qty}</td>
+          <td>PKR ${(b.price * b.qty).toFixed(2)}</td>
+          <td><button class="btn-red" style="padding:3px 7px;" onclick="dropBillItem('${b.lineKey}')">X</button></td>
+        `;
+        body.appendChild(tr);
+      });
+
+      const c = calcBill();
+      document.getElementById("bSub").textContent = "PKR " + c.subtotal.toFixed(2);
+      document.getElementById("bDisc").textContent = "PKR " + c.discount.toFixed(2);
+      document.getElementById("bTax").textContent = "PKR " + c.tax.toFixed(2);
+      document.getElementById("bGrand").textContent = "PKR " + c.total.toFixed(2);
+    }
+
+    function generateBill() {
+      if (bill.length === 0) {
+        alert("Bill is empty.");
+        return;
+      }
+
+      const orderType = document.getElementById("orderType").value;
+      const cust = document.getElementById("cName").value.trim() || "Walk-in Customer";
+      const mobile = document.getElementById("cMobile").value.trim() || "N/A";
+      const c = calcBill();
+      const now = new Date();
+      const dateIso = now.toISOString().slice(0, 10);
+      const timeStr = now.toLocaleString();
+      const currentOrderNo = orderCounter;
+      orderCounter += 1;
+
+      const billedLines = bill.map(b => ({
+        code: b.code,
+        name: b.name,
+        qty: b.qty,
+        unitPrice: b.price,
+        lineTotal: b.price * b.qty
+      }));
+
+      bill.forEach(b => {
+        const target = items.find(i => i.id === b.parentId);
+        if (target) target.stock = Math.max(0, target.stock - b.qty);
+      });
+
+      orders.push({
+        orderNumber: currentOrderNo,
+        date: dateIso,
+        timestamp: timeStr,
+        orderType,
+        role,
+        customer: cust,
+        mobile,
+        subtotal: c.subtotal,
+        discount: c.discount,
+        tax: c.tax,
+        total: c.total
+      });
+
+      const rowsHtml = billedLines.map((item, idx) => `
+        <tr>
+          <td>${idx + 1}</td>
+          <td><b>${item.code}</b></td>
+          <td>${item.name}</td>
+          <td class="num">${item.qty}</td>
+          <td class="num">PKR ${item.unitPrice.toFixed(2)}</td>
+          <td class="num">PKR ${item.lineTotal.toFixed(2)}</td>
+        </tr>
+      `).join("");
+
+      document.getElementById("invoiceContainer").innerHTML = `
+        <div class="invoice-banner">
+          <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
+          <div class="invoice-sub">
+            ${RESTAURANT_INFO.addressLine1} ${RESTAURANT_INFO.addressLine2}<br />
+            Phone: <strong>${RESTAURANT_INFO.phone}</strong> &nbsp;|&nbsp; <strong>${RESTAURANT_INFO.deliveryNote}</strong>
+          </div>
+        </div>
+
+        <div class="invoice-meta-grid">
+          <div><strong>Order #:</strong> ${currentOrderNo}</div>
+          <div><strong>Date & Time:</strong> ${timeStr}</div>
+          <div><strong>Customer Name:</strong> ${cust}</div>
+          <div><strong>Mobile:</strong> ${mobile}</div>
+          <div><strong>Service Option:</strong> ${orderType}</div>
+          <div><strong>Counter Role:</strong> ${role}</div>
+        </div>
+
+        <table class="invoice-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Code</th>
+              <th>Item Description</th>
+              <th class="num">Qty</th>
+              <th class="num">Rate</th>
+              <th class="num">Amount</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+
+        <div class="invoice-summary">
+          <div class="invoice-summary-row"><span>Subtotal</span><span>PKR ${c.subtotal.toFixed(2)}</span></div>
+          <div class="invoice-summary-row"><span>Discount</span><span>PKR ${c.discount.toFixed(2)}</span></div>
+          <div class="invoice-summary-row"><span>Tax</span><span>PKR ${c.tax.toFixed(2)}</span></div>
+          <div class="invoice-summary-row grand-row"><span>Grand Total</span><span>PKR ${c.total.toFixed(2)}</span></div>
+        </div>
+
+        <div class="invoice-footer">
+          Thank you for choosing <strong>${RESTAURANT_INFO.name}</strong> • ${RESTAURANT_INFO.deliveryNote} • Contact: ${RESTAURANT_INFO.phone}
+        </div>
+      `;
+
+      latestReceiptText = [
+        RESTAURANT_INFO.name,
+        `${RESTAURANT_INFO.addressLine1} ${RESTAURANT_INFO.addressLine2}`,
+        `Phone: ${RESTAURANT_INFO.phone} | ${RESTAURANT_INFO.deliveryNote}`,
+        `Order #: ${currentOrderNo} | Date: ${timeStr}`,
+        `Customer: ${cust} | Mobile: ${mobile} | Option: ${orderType}`,
+        "--------------------------------------------------",
+        ...billedLines.map(i => `[${i.code}] ${i.name} | Qty: ${i.qty} | Rate: PKR ${i.unitPrice.toFixed(2)} | Total: PKR ${i.lineTotal.toFixed(2)}`),
+        "--------------------------------------------------",
+        `Subtotal: PKR ${c.subtotal.toFixed(2)}`,
+        `Discount: PKR ${c.discount.toFixed(2)}`,
+        `Tax: PKR ${c.tax.toFixed(2)}`,
+        `GRAND TOTAL: PKR ${c.total.toFixed(2)}`
+      ].join("\n");
+
+      latestOrderNo = currentOrderNo;
+
+      bill = [];
+      document.getElementById("cName").value = "";
+      document.getElementById("cMobile").value = "";
+      document.getElementById("dPct").value = "0";
+
+      syncStore();
+      renderMenu();
+      renderBill();
+      renderMetrics();
+    }
+
+    function generatePeriodSettlement(periodMode) {
+      const now = new Date();
+      let filteredOrders = [];
+      let titleLabel = "";
+      let rangeLabel = "";
+
+      if (periodMode === "WEEKLY") {
+        const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        const cutoffIso = sevenDaysAgo.toISOString().slice(0, 10);
+        const todayIso = now.toISOString().slice(0, 10);
+        filteredOrders = orders.filter(o => o.date >= cutoffIso && o.date <= todayIso);
+        titleLabel = "WEEKLY SALES SETTLEMENT BILL (LAST 7 DAYS)";
+        rangeLabel = `${cutoffIso} to ${todayIso}`;
+      } else {
+        const monthPrefix = now.toISOString().slice(0, 7);
+        filteredOrders = orders.filter(o => String(o.date || "").startsWith(monthPrefix));
+        titleLabel = "MONTHLY SALES SETTLEMENT BILL";
+        rangeLabel = `Month: ${monthPrefix}`;
+      }
+
+      const totalOrdersCount = filteredOrders.length;
+      const grossSubtotal = filteredOrders.reduce((s, o) => s + Number(o.subtotal || 0), 0);
+      const totalDiscount = filteredOrders.reduce((s, o) => s + Number(o.discount || 0), 0);
+      const totalTax = filteredOrders.reduce((s, o) => s + Number(o.tax || 0), 0);
+      const netSales = filteredOrders.reduce((s, o) => s + Number(o.total || 0), 0);
+
+      const orderLines = filteredOrders.length
+        ? filteredOrders.map(o => `Order #${o.orderNumber} | ${o.date} | ${o.customer} | ${o.orderType || ""} | PKR ${Number(o.total).toFixed(2)}`)
+        : ["No orders recorded in this period yet."];
+
+      const statementLines = [
+        "==========================================================",
+        `              ${RESTAURANT_INFO.name}`,
+        ` ${RESTAURANT_INFO.addressLine1} ${RESTAURANT_INFO.addressLine2}`,
+        ` Phone: ${RESTAURANT_INFO.phone} | ${RESTAURANT_INFO.deliveryNote}`,
+        "==========================================================",
+        ` ${titleLabel}`,
+        ` Period:      ${rangeLabel}`,
+        ` Generated:   ${now.toLocaleString()}`,
+        ` Prepared By: ${role || "ADMIN"}`,
+        "----------------------------------------------------------",
+        ...orderLines,
+        "----------------------------------------------------------",
+        ` Total Orders Count:    ${totalOrdersCount}`,
+        ` Gross Subtotal:        PKR ${grossSubtotal.toFixed(2)}`,
+        ` Total Discounts:       PKR ${totalDiscount.toFixed(2)}`,
+        ` Total Tax:             PKR ${totalTax.toFixed(2)}`,
+        "==========================================================",
+        ` NET PERIOD SALES:      PKR ${netSales.toFixed(2)}`,
+        "=========================================================="
+      ];
+
+      latestPeriodText = statementLines.join("\n");
+      latestPeriodType = periodMode.toLowerCase() + "_sales_bill";
+      document.getElementById("periodSettlementBox").textContent = latestPeriodText;
+    }
+
+    function printSingleBill() {
+      document.body.classList.remove("print-period-mode");
+      window.print();
+    }
+
+    function printPeriodStatement() {
+      if (!latestPeriodText) {
+        alert("Generate Weekly or Monthly Sales Bill first.");
+        return;
+      }
+      document.body.classList.add("print-period-mode");
+      window.print();
+      setTimeout(() => document.body.classList.remove("print-period-mode"), 400);
+    }
+
+    function savePeriodTxt() {
+      if (!latestPeriodText) {
+        alert("Generate Weekly or Monthly Sales Bill first.");
+        return;
+      }
+      const blob = new Blob([latestPeriodText], { type: "text/plain;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `arham_hunger_box_${latestPeriodType}.txt`;
+      a.click();
+    }
+
+    function saveReceiptTxt() {
+      if (!latestReceiptText) { alert("Generate a bill first."); return; }
+      const blob = new Blob([latestReceiptText], { type: "text/plain;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `order_${latestOrderNo || "bill"}.txt`;
+      a.click();
+    }
+
+    function mailReceipt() {
+      if (!latestReceiptText) { alert("Generate a bill first."); return; }
+      const to = prompt("Enter email address to send receipt:");
+      if (!to) return;
+      window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent("Order #" + (latestOrderNo || "") + " - Arham Hunger Box")}&body=${encodeURIComponent(latestReceiptText)}`;
+    }
+
+    function renderMetrics() {
+      const today = new Date().toISOString().slice(0, 10);
+      const todayList = orders.filter(o => o.date === today);
+      const disc = todayList.reduce((s, o) => s + o.discount, 0);
+      const net = todayList.reduce((s, o) => s + o.total, 0);
+
+      document.getElementById("mOrders").textContent = String(todayList.length);
+      document.getElementById("mDisc").textContent = "PKR " + disc.toFixed(2);
+      document.getElementById("mNet").textContent = "PKR " + net.toFixed(2);
+      document.getElementById("mItems").textContent = String(items.length);
+    }
+
+    function downloadSalesCsv() {
+      const csv = "OrderNumber,Timestamp,Option,Role,Customer,Mobile,Subtotal,Discount,Tax,Total\n" +
+        orders.map(o => `${o.orderNumber},"${o.timestamp}","${o.orderType}","${o.role}","${o.customer}","${o.mobile}",${o.subtotal.toFixed(2)},${o.discount.toFixed(2)},${o.tax.toFixed(2)},${o.total.toFixed(2)}`).join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "arham_hunger_box_sales.csv";
+      a.click();
+    }
+
+    function wipeSalesData() {
+      if (role !== "ADMIN") return;
+      if (!confirm("Reset menu, stock, order sequence, and sales records?")) return;
+      localStorage.removeItem(DB.MENU);
+      localStorage.removeItem(DB.SALES);
+      localStorage.removeItem(DB.ORDER_SEQ);
+      items = [...starterMenu];
+      orders = [];
+      orderCounter = 1001;
+      bill = [];
+      latestReceiptText = "";
+      latestPeriodText = "";
+      document.getElementById("periodSettlementBox").textContent = "Select Weekly or Monthly Sales Bill to view settlement statement.";
+      document.getElementById("invoiceContainer").innerHTML = `
+        <div class="invoice-banner">
+          <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
+          <div class="invoice-sub">
+            Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera<br />
+            Phone: <strong>0301-5977178</strong> &nbsp;|&nbsp; <strong>Free Delivery Upto 3km</strong>
+          </div>
+        </div>
+        <p style="text-align:center; color:#64748b; margin:16px 0;">No bill generated yet.</p>
+      `;
+      syncStore();
+      renderCategories();
+      renderMenu();
+      renderBill();
+      renderMetrics();
+    }
+  </script>
+</body>
+</html>
