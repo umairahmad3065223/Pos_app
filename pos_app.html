@@ -16,6 +16,7 @@
       --accent: #f59e0b;
       --danger: #ef4444;
       --info: #38bdf8;
+      --purple: #a855f7;
       --line: #273549;
     }
 
@@ -30,6 +31,7 @@
       --accent: #d97706;
       --danger: #dc2626;
       --info: #0284c7;
+      --purple: #7e22ce;
       --line: #cbd5e1;
     }
 
@@ -93,6 +95,17 @@
 
     .login-box h2 { margin: 0 0 4px; font-size: 22px; }
     .login-box .sub { margin: 0 0 16px; font-size: 12px; color: var(--muted); }
+
+    .dev-credit-box {
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--line);
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.3px;
+    }
 
     .login-links {
       display: flex;
@@ -169,6 +182,7 @@
     .compact-nav {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 6px;
       background: var(--panel-2);
       padding: 4px;
@@ -180,7 +194,7 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 5px 10px;
+      padding: 6px 11px;
       border-radius: 7px;
       background: transparent;
       color: var(--muted);
@@ -237,10 +251,17 @@
     }
 
     .wrap {
-      max-width: 1440px;
+      max-width: 1460px;
       width: 100%;
       margin: auto;
       padding: 16px;
+    }
+
+    .summary-strip-5 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
     }
 
     .summary-strip {
@@ -250,8 +271,12 @@
       margin-bottom: 16px;
     }
 
-    @media (max-width: 900px) {
-      .summary-strip { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 1050px) {
+      .summary-strip-5 { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 750px) {
+      .summary-strip, .summary-strip-5 { grid-template-columns: repeat(2, 1fr); }
     }
 
     .metric-card {
@@ -264,13 +289,14 @@
 
     .metric-card.amber { border-left-color: var(--accent); }
     .metric-card.sky { border-left-color: var(--info); }
+    .metric-card.purple { border-left-color: var(--purple); }
     .metric-card.red { border-left-color: var(--danger); }
     .metric-card span { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
-    .metric-card strong { display: block; margin-top: 4px; font-size: 18px; }
+    .metric-card strong { display: block; margin-top: 4px; font-size: 17px; }
 
     .dash-grid {
       display: grid;
-      grid-template-columns: 1.9fr 1fr;
+      grid-template-columns: 1.85fr 1.05fr;
       gap: 16px;
       align-items: start;
     }
@@ -343,6 +369,18 @@
       border: 1px solid rgba(239, 68, 68, 0.4);
     }
 
+    .pill-card {
+      background: rgba(56, 189, 248, 0.16);
+      color: var(--info);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+
+    .pill-online {
+      background: rgba(168, 85, 247, 0.16);
+      color: var(--purple);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+    }
+
     .bill-meta-banner {
       background: var(--panel-2);
       border: 1px solid var(--line);
@@ -412,8 +450,6 @@
     .pos-card .title { font-weight: 700; font-size: 14px; }
     .pos-card .subcat { font-size: 11px; color: var(--muted); }
     .pos-card .amt { font-weight: 800; color: var(--brand); font-size: 14px; }
-    .pos-card .stk { font-size: 12px; color: var(--accent); }
-    .pos-card .stk.low { color: var(--danger); font-weight: 700; }
 
     .variant-picker {
       background: var(--panel);
@@ -560,103 +596,113 @@
       color: #e2e8f0;
     }
 
-    .invoice-sheet {
-      background: #ffffff;
-      color: #0f172a;
-      border: 1px solid #cbd5e1;
-      border-radius: 12px;
-      padding: 16px;
+    /* 58MM / 3-INCH THERMAL RECEIPT PREVIEW & PRINT DESIGN */
+    .thermal-preview-wrap {
+      display: flex;
+      justify-content: center;
+      background: #e2e8f0;
+      padding: 12px;
+      border-radius: 10px;
       margin-bottom: 12px;
-      font-size: 12.5px;
+    }
+
+    .invoice-sheet {
+      width: 58mm;
+      max-width: 100%;
+      background: #ffffff;
+      color: #000000;
+      border: 1px dashed #94a3b8;
+      padding: 6px 5px;
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 11px;
+      line-height: 1.3;
     }
 
     .invoice-banner {
       text-align: center;
-      border-bottom: 2px solid #0f172a;
-      padding-bottom: 8px;
-      margin-bottom: 10px;
+      border-bottom: 1px dashed #000000;
+      padding-bottom: 5px;
+      margin-bottom: 5px;
     }
 
     .invoice-brand-title {
-      font-size: 24px;
+      font-size: 14px;
       font-weight: 900;
-      letter-spacing: 0.6px;
-      color: #0f172a;
+      letter-spacing: 0.3px;
+      color: #000000;
       margin: 0;
       text-transform: uppercase;
     }
 
     .invoice-sub {
-      font-size: 11px;
-      color: #334155;
-      margin-top: 3px;
-      line-height: 1.35;
+      font-size: 9.5px;
+      color: #000000;
+      margin-top: 2px;
+      line-height: 1.25;
     }
 
     .invoice-meta-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4px 12px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      padding: 7px 10px;
-      margin-bottom: 10px;
-      font-size: 11.5px;
+      border-bottom: 1px dashed #000000;
+      padding-bottom: 5px;
+      margin-bottom: 5px;
+      font-size: 10px;
+      line-height: 1.35;
     }
 
     .invoice-table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 10px;
-      font-size: 12px;
+      margin-bottom: 5px;
+      font-size: 10px;
     }
 
     .invoice-table th {
-      background: #f1f5f9;
-      color: #0f172a;
-      border-top: 1.5px solid #0f172a;
-      border-bottom: 1.5px solid #0f172a;
-      padding: 5px 6px;
+      color: #000000;
+      border-top: 1px dashed #000000;
+      border-bottom: 1px dashed #000000;
+      padding: 3px 1px;
       text-align: left;
+      font-size: 9.5px;
     }
 
     .invoice-table td {
-      border-bottom: 1px solid #e2e8f0;
-      padding: 4.5px 6px;
-      color: #0f172a;
+      border-bottom: 1px dotted #cbd5e1;
+      padding: 3px 1px;
+      color: #000000;
+      vertical-align: top;
     }
 
-    .invoice-table .num { text-align: right; }
+    .invoice-table .num { text-align: right; white-space: nowrap; }
 
     .invoice-summary {
       width: 100%;
-      max-width: 290px;
-      margin-left: auto;
-      font-size: 12px;
+      border-top: 1px dashed #000000;
+      padding-top: 4px;
+      font-size: 10.5px;
     }
 
     .invoice-summary-row {
       display: flex;
       justify-content: space-between;
-      padding: 3px 0;
+      padding: 1.5px 0;
     }
 
     .invoice-summary-row.grand-row {
-      border-top: 2px solid #0f172a;
-      margin-top: 4px;
-      padding-top: 6px;
-      font-size: 14.5px;
+      border-top: 1px solid #000000;
+      border-bottom: 1px solid #000000;
+      margin-top: 3px;
+      padding: 3px 0;
+      font-size: 12px;
       font-weight: 900;
     }
 
     .invoice-footer {
       text-align: center;
-      margin-top: 10px;
-      padding-top: 7px;
-      border-top: 1px dashed #94a3b8;
-      font-size: 11px;
-      color: #475569;
+      margin-top: 6px;
+      padding-top: 4px;
+      border-top: 1px dashed #000000;
+      font-size: 9.5px;
+      color: #000000;
     }
 
     .period-output {
@@ -678,15 +724,15 @@
     .err-text { color: var(--danger); font-size: 12px; min-height: 18px; margin-bottom: 8px; }
     .ok-text { color: var(--brand); font-size: 12px; min-height: 18px; margin-top: 6px; }
 
+    /* THERMAL PRINTER 58MM / 3-INCH PRINT RULES */
     @page {
-      size: A4 portrait;
-      margin: 6mm;
+      size: 58mm auto;
+      margin: 0;
     }
 
     @media print {
       html, body {
-        width: 100%;
-        height: auto;
+        width: 58mm !important;
         margin: 0 !important;
         padding: 0 !important;
         background: #ffffff !important;
@@ -703,12 +749,13 @@
         position: fixed;
         left: 0;
         top: 0;
-        width: 100% !important;
+        width: 58mm !important;
         background: #ffffff !important;
         color: #000000 !important;
-        padding: 10px !important;
+        padding: 2mm !important;
         margin: 0 !important;
         border: none !important;
+        font-size: 9px !important;
       }
       body.print-card-mode #loyaltyCardPrintArea,
       body.print-card-mode #loyaltyCardPrintArea * {
@@ -716,13 +763,13 @@
       }
       body.print-card-mode #loyaltyCardPrintArea {
         position: fixed;
-        left: 20px;
-        top: 20px;
-        width: 360px !important;
-        border: 2px solid #000 !important;
+        left: 0;
+        top: 0;
+        width: 58mm !important;
+        border: 1px solid #000 !important;
         background: #ffffff !important;
         color: #000000 !important;
-        padding: 14px !important;
+        padding: 3mm !important;
       }
       body.print-card-mode #loyaltyCardPrintArea * {
         color: #000000 !important;
@@ -735,38 +782,32 @@
         position: fixed;
         left: 0;
         top: 0;
-        width: 100% !important;
-        max-width: 100% !important;
+        width: 58mm !important;
+        max-width: 58mm !important;
         border: none !important;
         border-radius: 0 !important;
         background: #ffffff !important;
         padding: 0 !important;
         margin: 0 !important;
         box-shadow: none !important;
-        page-break-inside: avoid;
-        break-inside: avoid;
+      }
+      .thermal-preview-wrap {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: #ffffff !important;
+        display: block !important;
       }
       .no-print { display: none !important; }
       .invoice-sheet {
         border: none !important;
         border-radius: 0 !important;
-        padding: 0 4px !important;
+        padding: 1.5mm 2mm !important;
         margin: 0 !important;
-        width: 100% !important;
-        font-size: 11px !important;
-        page-break-inside: avoid;
-        break-inside: avoid;
+        width: 58mm !important;
+        max-width: 58mm !important;
+        font-size: 10px !important;
+        color: #000000 !important;
       }
-      .invoice-banner { padding-bottom: 5px !important; margin-bottom: 6px !important; }
-      .invoice-brand-title { font-size: 24px !important; }
-      .invoice-sub { font-size: 10px !important; line-height: 1.25 !important; }
-      .invoice-meta-grid { padding: 5px 8px !important; margin-bottom: 6px !important; font-size: 10.5px !important; gap: 2px 10px !important; }
-      .invoice-table { margin-bottom: 6px !important; font-size: 10.5px !important; }
-      .invoice-table th, .invoice-table td { padding: 3px 5px !important; }
-      .invoice-summary { max-width: 250px !important; font-size: 11px !important; }
-      .invoice-summary-row { padding: 2px 0 !important; }
-      .invoice-summary-row.grand-row { font-size: 13px !important; padding-top: 4px !important; margin-top: 3px !important; }
-      .invoice-footer { margin-top: 6px !important; padding-top: 5px !important; font-size: 10px !important; }
     }
   </style>
 </head>
@@ -801,6 +842,10 @@
 
       <div id="loginErr" class="err-text"></div>
       <button class="btn-brand" style="width:100%;" onclick="loginUser()">Open Dashboard</button>
+
+      <div class="dev-credit-box">
+        Software Developed by Umair Ahmed
+      </div>
 
       <!-- FORGOT PASSWORD PANEL -->
       <div id="forgotBox" class="forgot-panel">
@@ -843,11 +888,15 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           <span>POS</span>
         </button>
+        <button id="navExpensesBtn" class="mini-nav-btn" onclick="switchSection('EXPENSES')" title="Restaurant Expenses & Purchases">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span>Expenses</span>
+        </button>
         <button id="navStaffBtn" class="mini-nav-btn" onclick="switchSection('STAFF')" title="Staff Management">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>Staff</span>
         </button>
-        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Cloud Sync, Stock, Reports & Loyalty Cards">
+        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Cloud Sync, Menu, Reports & Loyalty Cards">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Settings</span>
         </button>
@@ -864,22 +913,27 @@
     <div class="wrap">
       <!-- SECTION 1: POS BILLING -->
       <div id="sectionPOS">
-        <div class="summary-strip">
+        <!-- LIVE PAYMENT BREAKDOWN METRICS -->
+        <div class="summary-strip-5">
           <div class="metric-card">
             <span>Today's Orders</span>
             <strong id="mOrders">0</strong>
           </div>
-          <div class="metric-card amber">
-            <span>Today's Discounts</span>
-            <strong id="mDisc">PKR 0.00</strong>
-          </div>
           <div class="metric-card">
-            <span>Today's Net Sales</span>
-            <strong id="mNet">PKR 0.00</strong>
+            <span>Cash Received (Today)</span>
+            <strong id="mCash">PKR 0.00</strong>
           </div>
           <div class="metric-card sky">
-            <span>Menu Items</span>
-            <strong id="mItems">0</strong>
+            <span>Card Payment (Today)</span>
+            <strong id="mCard">PKR 0.00</strong>
+          </div>
+          <div class="metric-card purple">
+            <span>Online Payment (Today)</span>
+            <strong id="mOnline">PKR 0.00</strong>
+          </div>
+          <div class="metric-card amber">
+            <span>Total Sales (Today)</span>
+            <strong id="mNet">PKR 0.00</strong>
           </div>
         </div>
 
@@ -887,7 +941,7 @@
           <div>
             <div class="box">
               <div class="box-head">
-                <h2>Menu & Stock</h2>
+                <h2>Menu Items</h2>
                 <input id="searchItem" placeholder="Search code (001) or name..." style="width:225px; margin:0;" oninput="renderMenu()" />
               </div>
 
@@ -902,6 +956,27 @@
               </div>
 
               <div id="menuCards" class="menu-grid"></div>
+            </div>
+
+            <!-- TODAY'S PAYMENT LOG (WHO PAID BY CASH, CARD, OR ONLINE) -->
+            <div class="box">
+              <div class="box-head">
+                <h2>Today's Payment Log (Cash / Card / Online)</h2>
+              </div>
+              <div class="table-scroll" style="max-height:260px; overflow-y:auto;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Order #</th>
+                      <th>Customer</th>
+                      <th>Table / Option</th>
+                      <th>Payment Method</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody id="todayPaymentRows"></tbody>
+                </table>
+              </div>
             </div>
           </div>
 
@@ -931,19 +1006,49 @@
                 <div>
                   <label for="orderType">Order / Delivery Option</label>
                   <select id="orderType">
-                    <option value="Delivery (Free Upto 3km)">Delivery (Free Upto 3km)</option>
                     <option value="Dine-In">Dine-In</option>
+                    <option value="Delivery (Free Upto 3km)">Delivery (Free Upto 3km)</option>
                     <option value="Takeaway">Takeaway</option>
                   </select>
+                </div>
+                <div>
+                  <label for="tableNumber">Table Number</label>
+                  <select id="tableNumber">
+                    <option value="No Table">No Table (Delivery/Takeaway)</option>
+                    <option value="Table 1">Table 1</option>
+                    <option value="Table 2">Table 2</option>
+                    <option value="Table 3">Table 3</option>
+                    <option value="Table 4">Table 4</option>
+                    <option value="Table 5">Table 5</option>
+                    <option value="Table 6">Table 6</option>
+                    <option value="Table 7">Table 7</option>
+                    <option value="Table 8">Table 8</option>
+                    <option value="Table 9">Table 9</option>
+                    <option value="Table 10">Table 10</option>
+                    <option value="Table 11">Table 11</option>
+                    <option value="Table 12">Table 12</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row-3">
+                <div>
+                  <label for="paymentMethod" style="color:var(--brand); font-weight:700;">Payment Method</label>
+                  <select id="paymentMethod">
+                    <option value="Cash">Cash Payment</option>
+                    <option value="Card">Card Payment</option>
+                    <option value="Online">Online Payment</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="cName">Customer Name</label>
+                  <input id="cName" placeholder="Walk-in Customer" />
                 </div>
                 <div>
                   <label for="cMobile">Customer Mobile</label>
                   <input id="cMobile" type="tel" placeholder="03XXXXXXXXX" />
                 </div>
               </div>
-
-              <label for="cName">Customer Name</label>
-              <input id="cName" placeholder="Walk-in Customer" />
 
               <table>
                 <thead>
@@ -983,22 +1088,26 @@
 
             <div class="box" id="printableReceipt">
               <div class="box-head no-print">
-                <h2>Printable Bill (Single Page)</h2>
+                <h2>Thermal Receipt (58mm / 3-Inch)</h2>
               </div>
 
-              <div id="invoiceContainer" class="invoice-sheet">
-                <div class="invoice-banner">
-                  <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
-                  <div class="invoice-sub">
-                    Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera<br />
-                    Phone: <strong>0301-5977178</strong> &nbsp;|&nbsp; <strong>Free Delivery Upto 3km</strong>
+              <div class="thermal-preview-wrap">
+                <div id="invoiceContainer" class="invoice-sheet">
+                  <div class="invoice-banner">
+                    <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
+                    <div class="invoice-sub">
+                      Al Madina Market, Basement Floor,<br />
+                      Kheshgi Payan Chowk, Nowshera<br />
+                      Ph: <strong>0301-5977178</strong><br />
+                      Free Delivery Upto 3km
+                    </div>
                   </div>
+                  <p style="text-align:center; color:#475569; margin:12px 0; font-size:10px;">No bill generated yet.</p>
                 </div>
-                <p style="text-align:center; color:#64748b; margin:16px 0;">No bill generated yet.</p>
               </div>
 
               <div class="btn-group no-print">
-                <button class="btn-sky" onclick="printSingleBill()">Print Bill</button>
+                <button class="btn-sky" onclick="printSingleBill()">Print Thermal Bill</button>
                 <button class="btn-outline" onclick="saveReceiptTxt()">Save .TXT</button>
                 <button class="btn-amber" onclick="mailReceipt()">Email</button>
               </div>
@@ -1007,7 +1116,105 @@
         </div>
       </div>
 
-      <!-- SECTION 2: STAFF MANAGEMENT (ADMIN ONLY) -->
+      <!-- SECTION 2: EXPENSES & PURCHASES (ADMIN ONLY) -->
+      <div id="sectionEXPENSES" style="display:none;">
+        <div class="summary-strip">
+          <div class="metric-card red">
+            <span>Today's Expenses</span>
+            <strong id="expToday">PKR 0.00</strong>
+          </div>
+          <div class="metric-card amber">
+            <span>Last 7 Days Expenses</span>
+            <strong id="expWeekly">PKR 0.00</strong>
+          </div>
+          <div class="metric-card purple">
+            <span>This Month Expenses</span>
+            <strong id="expMonthly">PKR 0.00</strong>
+          </div>
+          <div class="metric-card sky">
+            <span>Total Expense Entries</span>
+            <strong id="expCount">0</strong>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <div>
+            <div class="box">
+              <div class="box-head">
+                <h2>Add Restaurant Expense / Purchase</h2>
+              </div>
+              <div class="row-4">
+                <div>
+                  <label for="expTitle">Item / Expense Description</label>
+                  <input id="expTitle" placeholder="e.g. Chicken, Vegetables, Cheese, Gas" />
+                </div>
+                <div>
+                  <label for="expCategory">Category</label>
+                  <select id="expCategory">
+                    <option value="Vegetables & Grocery">Vegetables & Grocery</option>
+                    <option value="Meat & Chicken">Meat & Chicken</option>
+                    <option value="Dairy & Cheese">Dairy & Cheese</option>
+                    <option value="Gas & Electricity">Gas & Electricity</option>
+                    <option value="Packaging & Boxes">Packaging & Boxes</option>
+                    <option value="Maintenance & Other">Maintenance & Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="expAmount">Amount Spent (PKR)</label>
+                  <input id="expAmount" type="number" min="1" placeholder="3500" />
+                </div>
+                <div>
+                  <label for="expDate">Date</label>
+                  <input id="expDate" type="date" />
+                </div>
+              </div>
+              <label for="expNote">Notes / Supplier Details (Optional)</label>
+              <input id="expNote" placeholder="e.g. Purchased from Main Sabzi Mandi" />
+              <button class="btn-brand" onclick="addExpenseItem()">+ Save Expense</button>
+            </div>
+
+            <div class="box">
+              <div class="box-head">
+                <h2>Restaurant Expenses History</h2>
+              </div>
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Description</th>
+                      <th>Category</th>
+                      <th>Notes</th>
+                      <th>Amount</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="expenseRows"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="box">
+              <div class="box-head">
+                <h2>Profit & Deduction Summary (This Month)</h2>
+              </div>
+              <div class="totals-box" id="liveProfitBox">
+                <div><span>Total Monthly Sales</span><span id="pSales">PKR 0.00</span></div>
+                <div><span>Paid Staff Salaries</span><span id="pSalaries" style="color:var(--danger);">- PKR 0.00</span></div>
+                <div><span>Monthly Expenses</span><span id="pExpenses" style="color:var(--danger);">- PKR 0.00</span></div>
+                <div class="grand"><span>Remaining Net Profit</span><span id="pRemaining">PKR 0.00</span></div>
+              </div>
+              <p class="sub" style="font-size:12px; color:var(--muted); margin:0;">
+                * Remaining Net Profit is automatically calculated by subtracting Paid Staff Salaries and Restaurant Expenses from Total Sales.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: STAFF MANAGEMENT (ADMIN ONLY) -->
       <div id="sectionSTAFF" style="display:none;">
         <div class="summary-strip">
           <div class="metric-card sky">
@@ -1119,18 +1326,18 @@
         </div>
       </div>
 
-      <!-- SECTION 3: SETTINGS -->
+      <!-- SECTION 4: SETTINGS -->
       <div id="sectionSETTINGS" style="display:none;">
         <div class="settings-grid">
           <!-- LEFT COLUMN OF SETTINGS -->
           <div>
-            <!-- CLOUD SYNC CONFIGURATION (SAME ORDERS ON LAPTOP & MOBILE) -->
+            <!-- CLOUD SYNC CONFIGURATION -->
             <div class="box" style="border-color: var(--info);">
               <div class="box-head">
                 <h2>Cloud Sync (Same Orders on Laptop & Mobile)</h2>
               </div>
               <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-                Paste your free <strong>Firebase Realtime Database URL</strong> below on both Laptop and Mobile so orders, stock, and staff sync automatically across all devices.
+                Paste your free <strong>Firebase Realtime Database URL</strong> below on both Laptop and Mobile so orders, expenses, and staff sync automatically across all devices.
               </p>
               <label for="firebaseUrlInput">Firebase Database URL</label>
               <input id="firebaseUrlInput" type="url" placeholder="https://your-project-id-default-rtdb.firebaseio.com" />
@@ -1221,12 +1428,12 @@
 
           <!-- RIGHT COLUMN OF SETTINGS -->
           <div>
-            <!-- ADD / RESTOCK ITEM -->
+            <!-- ADD / UPDATE MENU ITEM (NO STOCK) -->
             <div class="box" id="adminPanel">
               <div class="box-head">
-                <h2>Add / Restock Menu Item (Admin)</h2>
+                <h2>Add / Update Menu Item (Admin)</h2>
               </div>
-              <div class="row-2">
+              <div class="row-3">
                 <div>
                   <label for="mName">Item Name</label>
                   <input id="mName" placeholder="e.g. Zinger Burger" />
@@ -1235,35 +1442,29 @@
                   <label for="mCat">Category</label>
                   <input id="mCat" placeholder="e.g. Special Pizzas, Burgers" />
                 </div>
-              </div>
-              <div class="row-2">
                 <div>
                   <label for="mPrice">Price (PKR)</label>
                   <input id="mPrice" type="number" min="1" placeholder="400" />
                 </div>
-                <div>
-                  <label for="mStock">Stock Qty</label>
-                  <input id="mStock" type="number" min="0" placeholder="25" />
-                </div>
               </div>
-              <button class="btn-amber" onclick="upsertMenuItem()">Save / Restock Item</button>
+              <button class="btn-amber" onclick="upsertMenuItem()">Save Menu Item</button>
             </div>
 
-            <!-- WEEKLY & MONTHLY SALES BILL -->
+            <!-- WEEKLY & MONTHLY SALES BILL (CASH / CARD / ONLINE + SALARY & EXPENSE DEDUCTION) -->
             <div class="box">
               <div class="box-head">
-                <h2>Weekly & Monthly Sales Bill (Manager Settlement)</h2>
+                <h2>Weekly & Monthly Sales Settlement Bill</h2>
               </div>
               <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-                Generate a complete settlement bill for the last 7 days (Weekly) or current month (Monthly) with total orders, discounts, tax, and net sales.
+                Complete financial settlement showing <strong>Cash</strong>, <strong>Card</strong>, and <strong>Online</strong> sales separately, combined total sales, minus <strong>Staff Salaries</strong> and <strong>Expenses</strong>, showing exact <strong>Net Profit Remaining</strong>.
               </p>
               <div class="btn-group">
-                <button class="btn-amber" onclick="generatePeriodSettlement('WEEKLY')">Weekly Sales Bill (7 Days)</button>
-                <button class="btn-brand" onclick="generatePeriodSettlement('MONTHLY')">Monthly Sales Bill (Month)</button>
+                <button class="btn-amber" onclick="generatePeriodSettlement('WEEKLY')">Weekly Settlement (7 Days)</button>
+                <button class="btn-brand" onclick="generatePeriodSettlement('MONTHLY')">Monthly Settlement (Month)</button>
               </div>
 
               <div id="periodPrintArea" class="period-output">
-                <pre id="periodSettlementBox">Select Weekly or Monthly Sales Bill to view settlement statement.</pre>
+                <pre id="periodSettlementBox">Select Weekly or Monthly Settlement to view full Cash/Card/Online breakdown & Net Profit after Salary/Expenses.</pre>
                 <div class="btn-group no-print">
                   <button class="btn-sky" onclick="printPeriodStatement()">Print Statement</button>
                   <button class="btn-outline" onclick="savePeriodTxt()">Save Statement .TXT</button>
@@ -1297,18 +1498,18 @@
     };
 
     const DB = {
-      MENU: "ahb_pos_menu_v2",
-      SALES: "ahb_pos_sales_v2",
-      ORDER_SEQ: "ahb_pos_order_seq_v2",
-      PASS: "ahb_pos_pass_v2",
-      THEME: "ahb_pos_theme_v2",
-      STAFF: "ahb_pos_staff_v2",
-      STAFF_LOGS: "ahb_pos_staff_logs_v2",
-      MEMBERS: "ahb_pos_members_v2",
-      CLOUD_URL: "ahb_pos_cloud_url_v2"
+      MENU: "ahb_pos_menu_v3",
+      SALES: "ahb_pos_sales_v3",
+      ORDER_SEQ: "ahb_pos_order_seq_v3",
+      PASS: "ahb_pos_pass_v3",
+      THEME: "ahb_pos_theme_v3",
+      STAFF: "ahb_pos_staff_v3",
+      STAFF_LOGS: "ahb_pos_staff_logs_v3",
+      MEMBERS: "ahb_pos_members_v3",
+      EXPENSES: "ahb_pos_expenses_v3",
+      CLOUD_URL: "ahb_pos_cloud_url_v3"
     };
 
-    // OPTIONAL: Paste your Firebase Realtime Database URL inside quotes below so you don't even have to enter it in Settings
     const DEFAULT_CLOUD_URL = "";
 
     const pizza800 = [
@@ -1345,89 +1546,89 @@
     ];
 
     const rawStarterMenu = [
-      { name: "Hunger Box Special Pizza", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Supreme Pizza", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Libnane Pizza", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Vegetarian Pizza", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Cheese Lover", category: "Special Pizzas", price: 700, stock: 40, variants: pizza700 },
-      { name: "Customer Choice", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Four Season", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Crown Crust", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Chicken Tandore", category: "Special Pizzas", price: 700, stock: 40, variants: pizza700 },
-      { name: "Grilled Chicken", category: "Special Pizzas", price: 700, stock: 40, variants: pizza700 },
-      { name: "Chicken Fajita", category: "Special Pizzas", price: 700, stock: 40, variants: pizza700 },
-      { name: "Kabab Crust", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Stuffed Crust", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
+      { name: "Hunger Box Special Pizza", category: "Special Pizzas", price: 800, variants: pizza800 },
+      { name: "Supreme Pizza", category: "Special Pizzas", price: 800, variants: pizza800 },
+      { name: "Libnane Pizza", category: "Special Pizzas", price: 800, variants: pizza800 },
+      { name: "Vegetarian Pizza", category: "Special Pizzas", price: 800, variants: pizza800 },
+      { name: "Cheese Lover", category: "Special Pizzas", price: 700, variants: pizza700 },
+      { name: "Customer Choice", category: "Special Pizzas", price: 800, variants: pizza800 },
+      { name: "Four Season", category: "Special Pizzas", price: 800, variants: pizza800 },
+      { name: "Crown Crust", category: "Special Pizzas", price: 800, variants: pizza800 },
+      { name: "Chicken Tandore", category: "Special Pizzas", price: 700, variants: pizza700 },
+      { name: "Grilled Chicken", category: "Special Pizzas", price: 700, variants: pizza700 },
+      { name: "Chicken Fajita", category: "Special Pizzas", price: 700, variants: pizza700 },
+      { name: "Kabab Crust", category: "Special Pizzas", price: 800, variants: pizza800 },
+      { name: "Stuffed Crust", category: "Special Pizzas", price: 800, variants: pizza800 },
 
-      { name: "Hunger Box Special Burger", category: "Burgers", price: 700, stock: 30 },
-      { name: "Zinger Burger", category: "Burgers", price: 400, stock: 40 },
-      { name: "Grilled Burger", category: "Burgers", price: 450, stock: 30 },
-      { name: "Grilled Chicken Burger", category: "Burgers", price: 600, stock: 30 },
-      { name: "Grilled Beef Burger", category: "Burgers", price: 700, stock: 25 },
-      { name: "Tower Burger", category: "Burgers", price: 700, stock: 25 },
-      { name: "Zinger Cheese burger", category: "Burgers", price: 450, stock: 35 },
+      { name: "Hunger Box Special Burger", category: "Burgers", price: 700 },
+      { name: "Zinger Burger", category: "Burgers", price: 400 },
+      { name: "Grilled Burger", category: "Burgers", price: 450 },
+      { name: "Grilled Chicken Burger", category: "Burgers", price: 600 },
+      { name: "Grilled Beef Burger", category: "Burgers", price: 700 },
+      { name: "Tower Burger", category: "Burgers", price: 700 },
+      { name: "Zinger Cheese burger", category: "Burgers", price: 450 },
 
-      { name: "Chicken Shawarma", category: "Shawarma & Rolls", price: 200, stock: 50 },
-      { name: "Chicken Cheese Shawarma", category: "Shawarma & Rolls", price: 250, stock: 40 },
-      { name: "Chicken Zinger Shawarma", category: "Shawarma & Rolls", price: 350, stock: 35 },
-      { name: "Chicken burger", category: "Shawarma & Rolls", price: 200, stock: 40 },
-      { name: "Chicken Parata Roll", category: "Shawarma & Rolls", price: 280, stock: 40 },
-      { name: "Chicken Cheese Parata Roll", category: "Shawarma & Rolls", price: 330, stock: 35 },
-      { name: "Zinger Parata Roll", category: "Shawarma & Rolls", price: 400, stock: 30 },
-      { name: "Zingr Cheese Parata Roll", category: "Shawarma & Rolls", price: 450, stock: 30 },
+      { name: "Chicken Shawarma", category: "Shawarma & Rolls", price: 200 },
+      { name: "Chicken Cheese Shawarma", category: "Shawarma & Rolls", price: 250 },
+      { name: "Chicken Zinger Shawarma", category: "Shawarma & Rolls", price: 350 },
+      { name: "Chicken burger", category: "Shawarma & Rolls", price: 200 },
+      { name: "Chicken Parata Roll", category: "Shawarma & Rolls", price: 280 },
+      { name: "Chicken Cheese Parata Roll", category: "Shawarma & Rolls", price: 330 },
+      { name: "Zinger Parata Roll", category: "Shawarma & Rolls", price: 400 },
+      { name: "Zingr Cheese Parata Roll", category: "Shawarma & Rolls", price: 450 },
 
-      { name: "Hunger Box Special Pasta", category: "Chinese & Italian", price: 900, stock: 25 },
-      { name: "Chicken Chilly Dry", category: "Chinese & Italian", price: 700, stock: 25 },
-      { name: "Chicken Fried Rice", category: "Chinese & Italian", price: 600, stock: 25 },
-      { name: "Chicken Shashlik", category: "Chinese & Italian", price: 700, stock: 25 },
-      { name: "Chicken Chow Mein", category: "Chinese & Italian", price: 700, stock: 25 },
-      { name: "Special Pasta", category: "Chinese & Italian", price: 800, stock: 25 },
-      { name: "Grilled Chicken Pasta", category: "Chinese & Italian", price: 700, stock: 25 },
-      { name: "Chicken Alfaredo Pasta", category: "Chinese & Italian", price: 650, stock: 25 },
+      { name: "Hunger Box Special Pasta", category: "Chinese & Italian", price: 900 },
+      { name: "Chicken Chilly Dry", category: "Chinese & Italian", price: 700 },
+      { name: "Chicken Fried Rice", category: "Chinese & Italian", price: 600 },
+      { name: "Chicken Shashlik", category: "Chinese & Italian", price: 700 },
+      { name: "Chicken Chow Mein", category: "Chinese & Italian", price: 700 },
+      { name: "Special Pasta", category: "Chinese & Italian", price: 800 },
+      { name: "Grilled Chicken Pasta", category: "Chinese & Italian", price: 700 },
+      { name: "Chicken Alfaredo Pasta", category: "Chinese & Italian", price: 650 },
 
-      { name: "Fried Chicken Piece", category: "Fried Items", price: 350, stock: 50 },
-      { name: "Nuggets 10 Piece", category: "Fried Items", price: 600, stock: 35 },
-      { name: "Hot Wings 10 Piece", category: "Fried Items", price: 700, stock: 35 },
-      { name: "Buffalo Wings", category: "Fried Items", price: 750, stock: 30 },
-      { name: "Full Broast", category: "Fried Items", price: 1600, stock: 20 },
+      { name: "Fried Chicken Piece", category: "Fried Items", price: 350 },
+      { name: "Nuggets 10 Piece", category: "Fried Items", price: 600 },
+      { name: "Hot Wings 10 Piece", category: "Fried Items", price: 700 },
+      { name: "Buffalo Wings", category: "Fried Items", price: 750 },
+      { name: "Full Broast", category: "Fried Items", price: 1600 },
 
-      { name: "Pizza Deal 1 (1 Small Pizza, 2 Zinger Burger, 1 Regular Fries, 1 Ltr Drink)", category: "Pizza Deals", price: 1800, stock: 25 },
-      { name: "Pizza Deal 2 (2 Medium Pizza, 4 Zinger Burger, 1 large Fries, 1.5 Ltr Drink)", category: "Pizza Deals", price: 4200, stock: 20 },
-      { name: "Pizza Deal 3 (2 Large Pizza, 5 Zinger Burger, 1 large Fries, 2.5 Ltr Drink)", category: "Pizza Deals", price: 5800, stock: 15 },
-      { name: "Pizza Deal 4 (2 Extra large Pizza, 2.5 Ltr Drink)", category: "Pizza Deals", price: 4400, stock: 15 },
-      { name: "Pizza Deal 5 Party Deal (1 Party Pizza, 6 Zinger Burger, 10 Hot Wings, 1 Large Fries, 2.5 Ltr Drink)", category: "Pizza Deals", price: 7200, stock: 12 },
+      { name: "Pizza Deal 1 (1 Small Pizza, 2 Zinger Burger, 1 Regular Fries, 1 Ltr Drink)", category: "Pizza Deals", price: 1800 },
+      { name: "Pizza Deal 2 (2 Medium Pizza, 4 Zinger Burger, 1 large Fries, 1.5 Ltr Drink)", category: "Pizza Deals", price: 4200 },
+      { name: "Pizza Deal 3 (2 Large Pizza, 5 Zinger Burger, 1 large Fries, 2.5 Ltr Drink)", category: "Pizza Deals", price: 5800 },
+      { name: "Pizza Deal 4 (2 Extra large Pizza, 2.5 Ltr Drink)", category: "Pizza Deals", price: 4400 },
+      { name: "Pizza Deal 5 Party Deal (1 Party Pizza, 6 Zinger Burger, 10 Hot Wings, 1 Large Fries, 2.5 Ltr Drink)", category: "Pizza Deals", price: 7200 },
 
-      { name: "Burger Deal 1 (1 zinger burger, 1 Regular Fries, 1 Regular Drink)", category: "Burger Deals", price: 580, stock: 35 },
-      { name: "Burger Deal 2 (2 zinger burger, 1 Regular Fries, 1 Regular Drink)", category: "Burger Deals", price: 980, stock: 30 },
-      { name: "Burger Deal 3 (3 zinger burger, 1 lareg Fries, 1 Drink 1Ltr)", category: "Burger Deals", price: 1500, stock: 25 },
-      { name: "Burger Deal 4 (4 zinger burger, 1 lareg Fries, 1 Drink 1Ltr)", category: "Burger Deals", price: 1900, stock: 20 },
-      { name: "Burger Deal 5 (5 zinger burger, 10 Nuggets, 1 lareg Fries, 1 Drink 1.5Ltr)", category: "Burger Deals", price: 2850, stock: 15 },
+      { name: "Burger Deal 1 (1 zinger burger, 1 Regular Fries, 1 Regular Drink)", category: "Burger Deals", price: 580 },
+      { name: "Burger Deal 2 (2 zinger burger, 1 Regular Fries, 1 Regular Drink)", category: "Burger Deals", price: 980 },
+      { name: "Burger Deal 3 (3 zinger burger, 1 lareg Fries, 1 Drink 1Ltr)", category: "Burger Deals", price: 1500 },
+      { name: "Burger Deal 4 (4 zinger burger, 1 lareg Fries, 1 Drink 1Ltr)", category: "Burger Deals", price: 1900 },
+      { name: "Burger Deal 5 (5 zinger burger, 10 Nuggets, 1 lareg Fries, 1 Drink 1.5Ltr)", category: "Burger Deals", price: 2850 },
 
-      { name: "vanilla", category: "Ice Cream", price: 120, stock: 50, variants: iceCreamSizes },
-      { name: "Pineapple", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
-      { name: "Pesta", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
-      { name: "Chocolate", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
-      { name: "Tooty Fruity", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
-      { name: "Strawberry", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
-      { name: "Mango", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
-      { name: "Blueberry", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
-      { name: "Qulpa", category: "Ice Cream", price: 160, stock: 40, variants: [{ label: "Small Cup", price: 160 }, { label: "Medium Cup", price: 240 }, { label: "Large Cup", price: 320 }] },
-      { name: "Kaju", category: "Ice Cream", price: 150, stock: 40, variants: [{ label: "Small Cup", price: 150 }, { label: "Medium Cup", price: 220 }, { label: "Large Cup", price: 300 }] },
+      { name: "vanilla", category: "Ice Cream", price: 120, variants: iceCreamSizes },
+      { name: "Pineapple", category: "Ice Cream", price: 140, variants: iceCream140Sizes },
+      { name: "Pesta", category: "Ice Cream", price: 140, variants: iceCream140Sizes },
+      { name: "Chocolate", category: "Ice Cream", price: 140, variants: iceCream140Sizes },
+      { name: "Tooty Fruity", category: "Ice Cream", price: 140, variants: iceCream140Sizes },
+      { name: "Strawberry", category: "Ice Cream", price: 140, variants: iceCream140Sizes },
+      { name: "Mango", category: "Ice Cream", price: 140, variants: iceCream140Sizes },
+      { name: "Blueberry", category: "Ice Cream", price: 140, variants: iceCream140Sizes },
+      { name: "Qulpa", category: "Ice Cream", price: 160, variants: [{ label: "Small Cup", price: 160 }, { label: "Medium Cup", price: 240 }, { label: "Large Cup", price: 320 }] },
+      { name: "Kaju", category: "Ice Cream", price: 150, variants: [{ label: "Small Cup", price: 150 }, { label: "Medium Cup", price: 220 }, { label: "Large Cup", price: 300 }] },
 
-      { name: "Mango Juice", category: "Juice", price: 200, stock: 40, variants: juiceSizes },
-      { name: "Strawberry Juice", category: "Juice", price: 200, stock: 40, variants: juiceSizes },
-      { name: "Banana Juice", category: "Juice", price: 200, stock: 40, variants: juiceSizes },
-      { name: "Ice Cream Shake", category: "Juice", price: 200, stock: 40, variants: juiceSizes },
+      { name: "Mango Juice", category: "Juice", price: 200, variants: juiceSizes },
+      { name: "Strawberry Juice", category: "Juice", price: 200, variants: juiceSizes },
+      { name: "Banana Juice", category: "Juice", price: 200, variants: juiceSizes },
+      { name: "Ice Cream Shake", category: "Juice", price: 200, variants: juiceSizes },
 
-      { name: "Large Fries", category: "Fries", price: 300, stock: 50 },
-      { name: "Reguler fries", category: "Fries", price: 200, stock: 60 },
-      { name: "Loaded Fries", category: "Fries", price: 500, stock: 40 },
+      { name: "Large Fries", category: "Fries", price: 300 },
+      { name: "Reguler fries", category: "Fries", price: 200 },
+      { name: "Loaded Fries", category: "Fries", price: 500 },
 
-      { name: "Soup With Egg", category: "Soup", price: 250, stock: 35 },
-      { name: "Chicken Soup", category: "Soup", price: 200, stock: 35 },
+      { name: "Soup With Egg", category: "Soup", price: 250 },
+      { name: "Chicken Soup", category: "Soup", price: 200 },
 
-      { name: "Black Coffee", category: "Coffee", price: 250, stock: 40 },
-      { name: "Cappuccino", category: "Coffee", price: 350, stock: 40 }
+      { name: "Black Coffee", category: "Coffee", price: 250 },
+      { name: "Cappuccino", category: "Coffee", price: 350 }
     ];
 
     function formatCode(num) {
@@ -1453,6 +1654,7 @@
     let staffList = JSON.parse(localStorage.getItem(DB.STAFF)) || [];
     let staffMessageLogs = JSON.parse(localStorage.getItem(DB.STAFF_LOGS)) || [];
     let loyaltyMembers = JSON.parse(localStorage.getItem(DB.MEMBERS)) || [];
+    let expensesList = JSON.parse(localStorage.getItem(DB.EXPENSES)) || [];
     let cloudBaseUrl = (localStorage.getItem(DB.CLOUD_URL) || DEFAULT_CLOUD_URL).replace(/\/+$/, "");
 
     let role = null;
@@ -1467,6 +1669,10 @@
 
     if (localStorage.getItem(DB.THEME) === "light") {
       document.body.classList.add("light-theme");
+    }
+
+    function getTodayIso() {
+      return new Date().toISOString().slice(0, 10);
     }
 
     function updateOrderBadge() {
@@ -1489,6 +1695,7 @@
       localStorage.setItem(DB.STAFF, JSON.stringify(staffList));
       localStorage.setItem(DB.STAFF_LOGS, JSON.stringify(staffMessageLogs));
       localStorage.setItem(DB.MEMBERS, JSON.stringify(loyaltyMembers));
+      localStorage.setItem(DB.EXPENSES, JSON.stringify(expensesList));
       updateOrderBadge();
     }
 
@@ -1507,6 +1714,7 @@
           staffList,
           staffMessageLogs,
           loyaltyMembers,
+          expensesList,
           updatedAt: Date.now()
         };
         const res = await fetch(`${cloudBaseUrl}/ahb_pos_data.json`, {
@@ -1532,7 +1740,6 @@
         const data = await res.json();
 
         if (!data) {
-          // Database is empty on first connect — upload current device data to cloud
           await pushToCloud();
           if (!silent) {
             const msg = document.getElementById("cloudMsg");
@@ -1548,6 +1755,7 @@
         if (Array.isArray(data.staffList)) staffList = data.staffList;
         if (Array.isArray(data.staffMessageLogs)) staffMessageLogs = data.staffMessageLogs;
         if (Array.isArray(data.loyaltyMembers)) loyaltyMembers = data.loyaltyMembers;
+        if (Array.isArray(data.expensesList)) expensesList = data.expensesList;
 
         saveLocalCache();
         updateOrderBadge();
@@ -1555,6 +1763,7 @@
         renderMenu();
         renderMetrics();
         if (role === "ADMIN") {
+          renderExpenses();
           renderStaff();
           renderStaffLogs();
           renderMembers();
@@ -1666,6 +1875,9 @@
       const urlInput = document.getElementById("firebaseUrlInput");
       if (urlInput) urlInput.value = cloudBaseUrl;
 
+      const expDateEl = document.getElementById("expDate");
+      if (expDateEl) expDateEl.value = getTodayIso();
+
       switchSection("POS");
       updateOrderBadge();
       renderCategories();
@@ -1673,6 +1885,7 @@
       renderBill();
       renderMetrics();
       if (isAdmin) {
+        renderExpenses();
         renderStaff();
         renderStaffLogs();
         renderMembers();
@@ -1697,13 +1910,18 @@
     function switchSection(sec) {
       if (role !== "ADMIN" && sec !== "POS") return;
       document.getElementById("sectionPOS").style.display = sec === "POS" ? "block" : "none";
+      document.getElementById("sectionEXPENSES").style.display = sec === "EXPENSES" ? "block" : "none";
       document.getElementById("sectionSTAFF").style.display = sec === "STAFF" ? "block" : "none";
       document.getElementById("sectionSETTINGS").style.display = sec === "SETTINGS" ? "block" : "none";
 
       document.getElementById("navPosBtn").classList.toggle("active", sec === "POS");
+      document.getElementById("navExpensesBtn").classList.toggle("active", sec === "EXPENSES");
       document.getElementById("navStaffBtn").classList.toggle("active", sec === "STAFF");
       document.getElementById("navSettingsBtn").classList.toggle("active", sec === "SETTINGS");
 
+      if (sec === "EXPENSES") {
+        renderExpenses();
+      }
       if (sec === "STAFF") {
         renderStaff();
         renderStaffLogs();
@@ -1711,6 +1929,107 @@
       if (sec === "SETTINGS") {
         renderMembers();
       }
+    }
+
+    /* EXPENSES & PURCHASES MANAGEMENT */
+    function addExpenseItem() {
+      if (role !== "ADMIN") return;
+      const title = document.getElementById("expTitle").value.trim();
+      const category = document.getElementById("expCategory").value;
+      const amount = Number(document.getElementById("expAmount").value);
+      const date = document.getElementById("expDate").value || getTodayIso();
+      const note = document.getElementById("expNote").value.trim() || "-";
+
+      if (!title || isNaN(amount) || amount <= 0) {
+        alert("Enter valid expense item description and amount.");
+        return;
+      }
+
+      expensesList.unshift({
+        id: Date.now(),
+        title,
+        category,
+        amount,
+        date,
+        note
+      });
+
+      document.getElementById("expTitle").value = "";
+      document.getElementById("expAmount").value = "";
+      document.getElementById("expNote").value = "";
+
+      syncStore();
+      renderExpenses();
+    }
+
+    function removeExpenseItem(id) {
+      if (role !== "ADMIN") return;
+      if (!confirm("Delete this expense record?")) return;
+      expensesList = expensesList.filter(e => e.id !== id);
+      syncStore();
+      renderExpenses();
+    }
+
+    function renderExpenses() {
+      const tbody = document.getElementById("expenseRows");
+      if (!tbody) return;
+
+      const now = new Date();
+      const todayIso = getTodayIso();
+      const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+      const monthPrefix = todayIso.slice(0, 7);
+
+      const todayTotal = expensesList
+        .filter(e => e.date === todayIso)
+        .reduce((s, e) => s + Number(e.amount || 0), 0);
+
+      const weeklyTotal = expensesList
+        .filter(e => e.date >= sevenDaysAgo && e.date <= todayIso)
+        .reduce((s, e) => s + Number(e.amount || 0), 0);
+
+      const monthlyExpenses = expensesList
+        .filter(e => String(e.date || "").startsWith(monthPrefix))
+        .reduce((s, e) => s + Number(e.amount || 0), 0);
+
+      document.getElementById("expToday").textContent = "PKR " + todayTotal.toFixed(2);
+      document.getElementById("expWeekly").textContent = "PKR " + weeklyTotal.toFixed(2);
+      document.getElementById("expMonthly").textContent = "PKR " + monthlyExpenses.toFixed(2);
+      document.getElementById("expCount").textContent = String(expensesList.length);
+
+      // Update live monthly profit card
+      const monthlySales = orders
+        .filter(o => String(o.date || "").startsWith(monthPrefix))
+        .reduce((s, o) => s + Number(o.total || 0), 0);
+
+      const paidSalariesTotal = staffList
+        .filter(s => s.paid)
+        .reduce((s, st) => s + Number(st.salary || 0), 0);
+
+      const remainingNetProfit = monthlySales - paidSalariesTotal - monthlyExpenses;
+
+      document.getElementById("pSales").textContent = "PKR " + monthlySales.toFixed(2);
+      document.getElementById("pSalaries").textContent = "- PKR " + paidSalariesTotal.toFixed(2);
+      document.getElementById("pExpenses").textContent = "- PKR " + monthlyExpenses.toFixed(2);
+      document.getElementById("pRemaining").textContent = "PKR " + remainingNetProfit.toFixed(2);
+
+      tbody.innerHTML = "";
+      if (expensesList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--muted);">No expenses recorded yet.</td></tr>`;
+        return;
+      }
+
+      expensesList.forEach(exp => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${exp.date}</td>
+          <td><b>${exp.title}</b></td>
+          <td>${exp.category}</td>
+          <td>${exp.note}</td>
+          <td style="color:var(--danger); font-weight:700;">PKR ${Number(exp.amount).toFixed(2)}</td>
+          <td><button class="btn-red btn-sm" onclick="removeExpenseItem(${exp.id})">Delete</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
     }
 
     /* LOYALTY / MEMBERSHIP CARD SYSTEM */
@@ -1727,7 +2046,7 @@
 
       const nextNum = loyaltyMembers.length + 1;
       const cardNumber = "AHB-" + formatCode(nextNum);
-      const issuedDate = new Date().toISOString().slice(0, 10);
+      const issuedDate = getTodayIso();
 
       const newMember = {
         cardNumber,
@@ -1889,6 +2208,7 @@
 
       syncStore();
       renderStaff();
+      renderExpenses();
     }
 
     function toggleStaffPaid(id) {
@@ -1898,6 +2218,7 @@
       member.paid = !member.paid;
       syncStore();
       renderStaff();
+      renderExpenses();
     }
 
     function toggleStaffSuspend(id) {
@@ -1917,6 +2238,7 @@
       staffList = staffList.filter(s => s.id !== id);
       syncStore();
       renderStaff();
+      renderExpenses();
     }
 
     function resetMonthlySalaries() {
@@ -1925,6 +2247,7 @@
       staffList.forEach(s => { s.paid = false; });
       syncStore();
       renderStaff();
+      renderExpenses();
     }
 
     function formatPakPhone(phone) {
@@ -2101,7 +2424,7 @@
       });
     }
 
-    /* MENU & BILLING */
+    /* MENU & BILLING (NO STOCK RESTRICTIONS) */
     function renderCategories() {
       const cats = ["All", ...new Set(items.map(i => i.category))];
       const bar = document.getElementById("categoryBar");
@@ -2142,7 +2465,7 @@
           ? `From PKR ${Number(it.variants[0].price).toFixed(2)}`
           : `PKR ${Number(it.price).toFixed(2)}`;
         const btnAction = hasVar ? `openVariantPicker(${it.id})` : `addBillItem(${it.id})`;
-        const btnText = it.stock <= 0 ? "Out of Stock" : (hasVar ? "Select Size/Option" : "+ Add");
+        const btnText = hasVar ? "Select Size/Option" : "+ Add";
 
         card.innerHTML = `
           <div>
@@ -2152,9 +2475,8 @@
           </div>
           <div>
             <div class="amt">${priceLabel}</div>
-            <div class="stk ${it.stock <= 5 ? "low" : ""}">Stock: ${it.stock}</div>
           </div>
-          <button class="btn-brand" ${it.stock <= 0 ? "disabled" : ""} onclick="${btnAction}">
+          <button class="btn-brand" onclick="${btnAction}">
             ${btnText}
           </button>
         `;
@@ -2164,7 +2486,7 @@
 
     function openVariantPicker(itemId) {
       const item = items.find(i => i.id === itemId);
-      if (!item || item.stock <= 0 || !item.variants) return;
+      if (!item || !item.variants) return;
 
       document.getElementById("variantPickerTitle").textContent = `[${item.code || formatCode(item.id)}] ${item.name} — Select Size / Option`;
       const grid = document.getElementById("variantOptionsGrid");
@@ -2188,16 +2510,7 @@
 
     function addVariantToBill(itemId, variant) {
       const item = items.find(i => i.id === itemId);
-      if (!item || item.stock <= 0) return;
-
-      const usedParentQty = bill
-        .filter(b => b.parentId === itemId)
-        .reduce((sum, b) => sum + b.qty, 0);
-
-      if (usedParentQty + 1 > item.stock) {
-        alert("Not enough stock for " + item.name);
-        return;
-      }
+      if (!item) return;
 
       const itemCode = item.code || formatCode(item.id);
       const lineKey = `${itemId}_${variant.label}`;
@@ -2222,10 +2535,9 @@
       const name = document.getElementById("mName").value.trim();
       const category = document.getElementById("mCat").value.trim() || "General";
       const price = Number(document.getElementById("mPrice").value);
-      const stock = parseInt(document.getElementById("mStock").value, 10);
 
-      if (!name || price <= 0 || isNaN(stock) || stock < 0) {
-        alert("Enter valid item name, price, and stock.");
+      if (!name || price <= 0) {
+        alert("Enter valid item name and price.");
         return;
       }
 
@@ -2233,35 +2545,28 @@
       if (found) {
         found.category = category;
         found.price = price;
-        found.stock += stock;
         if (!found.code) found.code = formatCode(found.id);
       } else {
         const nextId = items.length ? Math.max(...items.map(i => i.id)) + 1 : 1;
-        items.push({ id: nextId, code: formatCode(nextId), name, category, price, stock });
+        items.push({ id: nextId, code: formatCode(nextId), name, category, price });
       }
 
       document.getElementById("mName").value = "";
       document.getElementById("mCat").value = "";
       document.getElementById("mPrice").value = "";
-      document.getElementById("mStock").value = "";
 
       syncStore();
       renderCategories();
       renderMenu();
       renderMetrics();
-      alert("Item saved / restocked & synced!");
+      alert("Menu item saved & synced!");
     }
 
     function addBillItem(id) {
       const it = items.find(i => i.id === id);
-      if (!it || it.stock <= 0) return;
+      if (!it) return;
       const lineKey = `item_${id}`;
       const row = bill.find(b => b.lineKey === lineKey);
-      const qty = row ? row.qty : 0;
-      if (qty + 1 > it.stock) {
-        alert("Not enough stock.");
-        return;
-      }
       if (row) row.qty += 1;
       else bill.push({
         lineKey,
@@ -2326,12 +2631,13 @@
         return;
       }
 
-      // Fetch latest cloud sequence before creating bill so two devices never clash on order numbers
       if (cloudBaseUrl) {
         await pullFromCloud(true);
       }
 
       const orderType = document.getElementById("orderType").value;
+      const tableNumber = document.getElementById("tableNumber").value;
+      const paymentMethod = document.getElementById("paymentMethod").value;
       const cust = document.getElementById("cName").value.trim() || "Walk-in Customer";
       const mobile = document.getElementById("cMobile").value.trim() || "N/A";
       const memberTag = activeMemberCard ? `${activeMemberCard.cardNumber} (${activeMemberCard.discountPct}% Off)` : "None";
@@ -2355,16 +2661,13 @@
         lineTotal: b.price * b.qty
       }));
 
-      bill.forEach(b => {
-        const target = items.find(i => i.id === b.parentId);
-        if (target) target.stock = Math.max(0, target.stock - b.qty);
-      });
-
       orders.push({
         orderNumber: formattedOrderNo,
         date: dateIso,
         timestamp: timeStr,
         orderType,
+        tableNumber,
+        paymentMethod,
         role,
         customer: cust,
         mobile,
@@ -2375,58 +2678,60 @@
         total: c.total
       });
 
-      const rowsHtml = billedLines.map((item, idx) => `
+      const rowsHtml = billedLines.map(item => `
         <tr>
-          <td>${idx + 1}</td>
-          <td><b>${item.code}</b></td>
-          <td>${item.name}</td>
+          <td>[${item.code}] ${item.name}</td>
           <td class="num">${item.qty}</td>
-          <td class="num">PKR ${item.unitPrice.toFixed(2)}</td>
-          <td class="num">PKR ${item.lineTotal.toFixed(2)}</td>
+          <td class="num">${item.lineTotal.toFixed(0)}</td>
         </tr>
       `).join("");
+
+      const tableLineHtml = tableNumber !== "No Table" ? `<div><strong>Table:</strong> ${tableNumber}</div>` : "";
 
       document.getElementById("invoiceContainer").innerHTML = `
         <div class="invoice-banner">
           <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
           <div class="invoice-sub">
-            ${RESTAURANT_INFO.addressLine1} ${RESTAURANT_INFO.addressLine2}<br />
-            Phone: <strong>${RESTAURANT_INFO.phone}</strong> &nbsp;|&nbsp; <strong>${RESTAURANT_INFO.deliveryNote}</strong>
+            ${RESTAURANT_INFO.addressLine1}<br />
+            ${RESTAURANT_INFO.addressLine2}<br />
+            Ph: <strong>${RESTAURANT_INFO.phone}</strong><br />
+            ${RESTAURANT_INFO.deliveryNote}
           </div>
         </div>
 
         <div class="invoice-meta-grid">
           <div><strong>Order #:</strong> ${formattedOrderNo}</div>
-          <div><strong>Date & Time:</strong> ${timeStr}</div>
-          <div><strong>Customer Name:</strong> ${cust}</div>
+          <div><strong>Date:</strong> ${timeStr}</div>
+          <div><strong>Service:</strong> ${orderType}</div>
+          ${tableLineHtml}
+          <div><strong>Payment:</strong> ${paymentMethod}</div>
+          <div><strong>Customer:</strong> ${cust}</div>
           <div><strong>Mobile:</strong> ${mobile}</div>
-          <div><strong>Service Option:</strong> ${orderType}</div>
-          <div><strong>Loyalty Card:</strong> ${memberTag}</div>
+          ${activeMemberCard ? `<div><strong>Card:</strong> ${memberTag}</div>` : ""}
         </div>
 
         <table class="invoice-table">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Code</th>
-              <th>Item Description</th>
+              <th>Item</th>
               <th class="num">Qty</th>
-              <th class="num">Rate</th>
-              <th class="num">Amount</th>
+              <th class="num">Amt</th>
             </tr>
           </thead>
           <tbody>${rowsHtml}</tbody>
         </table>
 
         <div class="invoice-summary">
-          <div class="invoice-summary-row"><span>Subtotal</span><span>PKR ${c.subtotal.toFixed(2)}</span></div>
-          <div class="invoice-summary-row"><span>Discount</span><span>PKR ${c.discount.toFixed(2)}</span></div>
-          <div class="invoice-summary-row"><span>Tax</span><span>PKR ${c.tax.toFixed(2)}</span></div>
-          <div class="invoice-summary-row grand-row"><span>Grand Total</span><span>PKR ${c.total.toFixed(2)}</span></div>
+          <div class="invoice-summary-row"><span>Subtotal:</span><span>PKR ${c.subtotal.toFixed(2)}</span></div>
+          <div class="invoice-summary-row"><span>Discount:</span><span>PKR ${c.discount.toFixed(2)}</span></div>
+          <div class="invoice-summary-row"><span>Tax:</span><span>PKR ${c.tax.toFixed(2)}</span></div>
+          <div class="invoice-summary-row grand-row"><span>TOTAL (${paymentMethod.toUpperCase()}):</span><span>PKR ${c.total.toFixed(2)}</span></div>
         </div>
 
         <div class="invoice-footer">
-          Thank you for choosing <strong>${RESTAURANT_INFO.name}</strong> • ${RESTAURANT_INFO.deliveryNote} • Contact: ${RESTAURANT_INFO.phone}
+          Thank you for your order!<br />
+          ${RESTAURANT_INFO.deliveryNote}<br />
+          Ph: ${RESTAURANT_INFO.phone}
         </div>
       `;
 
@@ -2435,14 +2740,15 @@
         `${RESTAURANT_INFO.addressLine1} ${RESTAURANT_INFO.addressLine2}`,
         `Phone: ${RESTAURANT_INFO.phone} | ${RESTAURANT_INFO.deliveryNote}`,
         `Order #: ${formattedOrderNo} | Date: ${timeStr}`,
+        `Service: ${orderType} | Table: ${tableNumber} | Payment: ${paymentMethod}`,
         `Customer: ${cust} | Mobile: ${mobile} | Loyalty: ${memberTag}`,
-        "--------------------------------------------------",
-        ...billedLines.map(i => `[${i.code}] ${i.name} | Qty: ${i.qty} | Rate: PKR ${i.unitPrice.toFixed(2)} | Total: PKR ${i.lineTotal.toFixed(2)}`),
-        "--------------------------------------------------",
+        "------------------------------------------",
+        ...billedLines.map(i => `[${i.code}] ${i.name} x${i.qty} = PKR ${i.lineTotal.toFixed(2)}`),
+        "------------------------------------------",
         `Subtotal: PKR ${c.subtotal.toFixed(2)}`,
         `Discount: PKR ${c.discount.toFixed(2)}`,
         `Tax: PKR ${c.tax.toFixed(2)}`,
-        `GRAND TOTAL: PKR ${c.total.toFixed(2)}`
+        `GRAND TOTAL (${paymentMethod}): PKR ${c.total.toFixed(2)}`
       ].join("\n");
 
       latestOrderNo = formattedOrderNo;
@@ -2456,15 +2762,18 @@
       document.getElementById("dPct").value = "0";
 
       syncStore();
-      renderMenu();
       renderBill();
       renderMetrics();
-      if (role === "ADMIN") renderMembers();
+      if (role === "ADMIN") {
+        renderMembers();
+        renderExpenses();
+      }
     }
 
     function generatePeriodSettlement(periodMode) {
       const now = new Date();
       let filteredOrders = [];
+      let filteredExpenses = [];
       let titleLabel = "";
       let rangeLabel = "";
 
@@ -2473,23 +2782,49 @@
         const cutoffIso = sevenDaysAgo.toISOString().slice(0, 10);
         const todayIso = now.toISOString().slice(0, 10);
         filteredOrders = orders.filter(o => o.date >= cutoffIso && o.date <= todayIso);
-        titleLabel = "WEEKLY SALES SETTLEMENT BILL (LAST 7 DAYS)";
+        filteredExpenses = expensesList.filter(e => e.date >= cutoffIso && e.date <= todayIso);
+        titleLabel = "WEEKLY FINANCIAL SETTLEMENT (LAST 7 DAYS)";
         rangeLabel = `${cutoffIso} to ${todayIso}`;
       } else {
         const monthPrefix = now.toISOString().slice(0, 7);
         filteredOrders = orders.filter(o => String(o.date || "").startsWith(monthPrefix));
-        titleLabel = "MONTHLY SALES SETTLEMENT BILL";
+        filteredExpenses = expensesList.filter(e => String(e.date || "").startsWith(monthPrefix));
+        titleLabel = "MONTHLY FINANCIAL SETTLEMENT STATEMENT";
         rangeLabel = `Month: ${monthPrefix}`;
       }
 
       const totalOrdersCount = filteredOrders.length;
+
+      // Payment Breakdown
+      const cashSales = filteredOrders
+        .filter(o => (o.paymentMethod || "Cash") === "Cash")
+        .reduce((s, o) => s + Number(o.total || 0), 0);
+
+      const cardSales = filteredOrders
+        .filter(o => o.paymentMethod === "Card")
+        .reduce((s, o) => s + Number(o.total || 0), 0);
+
+      const onlineSales = filteredOrders
+        .filter(o => o.paymentMethod === "Online")
+        .reduce((s, o) => s + Number(o.total || 0), 0);
+
       const grossSubtotal = filteredOrders.reduce((s, o) => s + Number(o.subtotal || 0), 0);
       const totalDiscount = filteredOrders.reduce((s, o) => s + Number(o.discount || 0), 0);
       const totalTax = filteredOrders.reduce((s, o) => s + Number(o.tax || 0), 0);
-      const netSales = filteredOrders.reduce((s, o) => s + Number(o.total || 0), 0);
+      const combinedSales = cashSales + cardSales + onlineSales;
+
+      // Deductions: Paid Staff Salaries & Expenses
+      const paidSalariesTotal = staffList
+        .filter(s => s.paid)
+        .reduce((s, st) => s + Number(st.salary || 0), 0);
+
+      const totalExpensesAmount = filteredExpenses
+        .reduce((s, e) => s + Number(e.amount || 0), 0);
+
+      const remainingProfit = combinedSales - paidSalariesTotal - totalExpensesAmount;
 
       const orderLines = filteredOrders.length
-        ? filteredOrders.map(o => `Order #${o.orderNumber} | ${o.date} | ${o.customer} | ${o.orderType || ""} | PKR ${Number(o.total).toFixed(2)}`)
+        ? filteredOrders.map(o => `#${o.orderNumber} | ${o.date} | ${o.customer} | ${o.tableNumber || o.orderType} | [${o.paymentMethod || "Cash"}] | PKR ${Number(o.total).toFixed(2)}`)
         : ["No orders recorded in this period yet."];
 
       const statementLines = [
@@ -2503,19 +2838,30 @@
         ` Generated:   ${now.toLocaleString()}`,
         ` Prepared By: ${role || "ADMIN"}`,
         "----------------------------------------------------------",
+        " ORDERS BREAKDOWN:",
         ...orderLines,
         "----------------------------------------------------------",
-        ` Total Orders Count:    ${totalOrdersCount}`,
-        ` Gross Subtotal:        PKR ${grossSubtotal.toFixed(2)}`,
-        ` Total Discounts:       PKR ${totalDiscount.toFixed(2)}`,
-        ` Total Tax:             PKR ${totalTax.toFixed(2)}`,
+        " PAYMENT COLLECTION SUMMARY:",
+        ` Total Orders Count:          ${totalOrdersCount}`,
+        ` 1. Cash Payments Received:   PKR ${cashSales.toFixed(2)}`,
+        ` 2. Card Payments Received:   PKR ${cardSales.toFixed(2)}`,
+        ` 3. Online Payments Received: PKR ${onlineSales.toFixed(2)}`,
+        " --------------------------------------------------------",
+        ` Gross Subtotal:              PKR ${grossSubtotal.toFixed(2)}`,
+        ` Total Discounts Given:       PKR ${totalDiscount.toFixed(2)}`,
+        ` Total Tax Collected:         PKR ${totalTax.toFixed(2)}`,
+        ` TOTAL COMBINED SALES:        PKR ${combinedSales.toFixed(2)}`,
+        "----------------------------------------------------------",
+        " DEDUCTIONS (SALARIES & EXPENSES):",
+        ` (-) Paid Staff Salaries:     PKR ${paidSalariesTotal.toFixed(2)}`,
+        ` (-) Restaurant Expenses:     PKR ${totalExpensesAmount.toFixed(2)}`,
         "==========================================================",
-        ` NET PERIOD SALES:      PKR ${netSales.toFixed(2)}`,
+        ` NET PROFIT REMAINING:        PKR ${remainingProfit.toFixed(2)}`,
         "=========================================================="
       ];
 
       latestPeriodText = statementLines.join("\n");
-      latestPeriodType = periodMode.toLowerCase() + "_sales_bill";
+      latestPeriodType = periodMode.toLowerCase() + "_settlement";
       document.getElementById("periodSettlementBox").textContent = latestPeriodText;
     }
 
@@ -2526,7 +2872,7 @@
 
     function printPeriodStatement() {
       if (!latestPeriodText) {
-        alert("Generate Weekly or Monthly Sales Bill first.");
+        alert("Generate Weekly or Monthly Settlement first.");
         return;
       }
       document.body.classList.remove("print-card-mode");
@@ -2537,7 +2883,7 @@
 
     function savePeriodTxt() {
       if (!latestPeriodText) {
-        alert("Generate Weekly or Monthly Sales Bill first.");
+        alert("Generate Weekly or Monthly Settlement first.");
         return;
       }
       const blob = new Blob([latestPeriodText], { type: "text/plain;charset=utf-8" });
@@ -2564,20 +2910,57 @@
     }
 
     function renderMetrics() {
-      const today = new Date().toISOString().slice(0, 10);
+      const today = getTodayIso();
       const todayList = orders.filter(o => o.date === today);
-      const disc = todayList.reduce((s, o) => s + o.discount, 0);
-      const net = todayList.reduce((s, o) => s + o.total, 0);
+
+      const cashToday = todayList
+        .filter(o => (o.paymentMethod || "Cash") === "Cash")
+        .reduce((s, o) => s + Number(o.total || 0), 0);
+
+      const cardToday = todayList
+        .filter(o => o.paymentMethod === "Card")
+        .reduce((s, o) => s + Number(o.total || 0), 0);
+
+      const onlineToday = todayList
+        .filter(o => o.paymentMethod === "Online")
+        .reduce((s, o) => s + Number(o.total || 0), 0);
+
+      const net = cashToday + cardToday + onlineToday;
 
       document.getElementById("mOrders").textContent = String(todayList.length);
-      document.getElementById("mDisc").textContent = "PKR " + disc.toFixed(2);
+      document.getElementById("mCash").textContent = "PKR " + cashToday.toFixed(2);
+      document.getElementById("mCard").textContent = "PKR " + cardToday.toFixed(2);
+      document.getElementById("mOnline").textContent = "PKR " + onlineToday.toFixed(2);
       document.getElementById("mNet").textContent = "PKR " + net.toFixed(2);
-      document.getElementById("mItems").textContent = String(items.length);
+
+      // Render Today's Payment Log Table
+      const payBody = document.getElementById("todayPaymentRows");
+      if (payBody) {
+        payBody.innerHTML = "";
+        if (todayList.length === 0) {
+          payBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--muted);">No orders recorded today yet.</td></tr>`;
+        } else {
+          [...todayList].reverse().forEach(o => {
+            const pm = o.paymentMethod || "Cash";
+            const pillClass = pm === "Card" ? "pill-card" : (pm === "Online" ? "pill-online" : "pill-paid");
+            const tblDisplay = (o.tableNumber && o.tableNumber !== "No Table") ? `${o.tableNumber} (${o.orderType})` : o.orderType;
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td><b>#${o.orderNumber}</b></td>
+              <td>${o.customer}</td>
+              <td>${tblDisplay}</td>
+              <td><span class="status-pill ${pillClass}">${pm.toUpperCase()}</span></td>
+              <td><b>PKR ${Number(o.total).toFixed(2)}</b></td>
+            `;
+            payBody.appendChild(tr);
+          });
+        }
+      }
     }
 
     function downloadSalesCsv() {
-      const csv = "OrderNumber,Timestamp,Option,Role,Customer,Mobile,LoyaltyCard,Subtotal,Discount,Tax,Total\n" +
-        orders.map(o => `${o.orderNumber},"${o.timestamp}","${o.orderType}","${o.role}","${o.customer}","${o.mobile}","${o.memberCard || 'None'}",${o.subtotal.toFixed(2)},${o.discount.toFixed(2)},${o.tax.toFixed(2)},${o.total.toFixed(2)}`).join("\n");
+      const csv = "OrderNumber,Timestamp,Option,Table,PaymentMethod,Role,Customer,Mobile,LoyaltyCard,Subtotal,Discount,Tax,Total\n" +
+        orders.map(o => `${o.orderNumber},"${o.timestamp}","${o.orderType}","${o.tableNumber || 'No Table'}","${o.paymentMethod || 'Cash'}","${o.role}","${o.customer}","${o.mobile}","${o.memberCard || 'None'}",${o.subtotal.toFixed(2)},${o.discount.toFixed(2)},${o.tax.toFixed(2)},${o.total.toFixed(2)}`).join("\n");
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
@@ -2587,33 +2970,38 @@
 
     function wipeSalesData() {
       if (role !== "ADMIN") return;
-      if (!confirm("Reset menu, stock, order sequence (#000), and sales records on ALL synced devices?")) return;
+      if (!confirm("Reset menu, expenses, order sequence (#000), and sales records on ALL synced devices?")) return;
       localStorage.removeItem(DB.MENU);
       localStorage.removeItem(DB.SALES);
       localStorage.removeItem(DB.ORDER_SEQ);
+      localStorage.removeItem(DB.EXPENSES);
       items = [...starterMenu];
       orders = [];
+      expensesList = [];
       orderCounter = 0;
       bill = [];
       activeMemberCard = null;
       latestReceiptText = "";
       latestPeriodText = "";
-      document.getElementById("periodSettlementBox").textContent = "Select Weekly or Monthly Sales Bill to view settlement statement.";
+      document.getElementById("periodSettlementBox").textContent = "Select Weekly or Monthly Settlement to view full Cash/Card/Online breakdown & Net Profit after Salary/Expenses.";
       document.getElementById("invoiceContainer").innerHTML = `
         <div class="invoice-banner">
           <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
           <div class="invoice-sub">
-            Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera<br />
-            Phone: <strong>0301-5977178</strong> &nbsp;|&nbsp; <strong>Free Delivery Upto 3km</strong>
+            Al Madina Market, Basement Floor,<br />
+            Kheshgi Payan Chowk, Nowshera<br />
+            Ph: <strong>0301-5977178</strong><br />
+            Free Delivery Upto 3km
           </div>
         </div>
-        <p style="text-align:center; color:#64748b; margin:16px 0;">No bill generated yet.</p>
+        <p style="text-align:center; color:#475569; margin:12px 0; font-size:10px;">No bill generated yet.</p>
       `;
       syncStore();
       renderCategories();
       renderMenu();
       renderBill();
       renderMetrics();
+      renderExpenses();
     }
   </script>
 </body>
