@@ -703,6 +703,16 @@
       border-top: 1px dashed #000000;
       font-size: 9.5px;
       color: #000000;
+      line-height: 1.35;
+    }
+
+    .invoice-dev-credit {
+      margin-top: 4px;
+      padding-top: 3px;
+      border-top: 1px dotted #000000;
+      font-size: 8.5px;
+      font-weight: 700;
+      color: #000000;
     }
 
     .period-output {
@@ -844,7 +854,7 @@
       <button class="btn-brand" style="width:100%;" onclick="loginUser()">Open Dashboard</button>
 
       <div class="dev-credit-box">
-        Software Developed by Umair Ahmed
+        Software Developed by Umair Ahmad
       </div>
 
       <!-- FORGOT PASSWORD PANEL -->
@@ -1097,9 +1107,7 @@
                     <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
                     <div class="invoice-sub">
                       Al Madina Market, Basement Floor,<br />
-                      Kheshgi Payan Chowk, Nowshera<br />
-                      Ph: <strong>0301-5977178</strong><br />
-                      Free Delivery Upto 3km
+                      Kheshgi Payan Chowk, Nowshera
                     </div>
                   </div>
                   <p style="text-align:center; color:#475569; margin:12px 0; font-size:10px;">No bill generated yet.</p>
@@ -1207,7 +1215,7 @@
                 <div class="grand"><span>Remaining Net Profit</span><span id="pRemaining">PKR 0.00</span></div>
               </div>
               <p class="sub" style="font-size:12px; color:var(--muted); margin:0;">
-                * Remaining Net Profit is automatically calculated by subtracting Paid Staff Salaries and Restaurant Expenses from Total Sales.
+                Remaining Net Profit is automatically calculated by subtracting Paid Staff Salaries and Restaurant Expenses from Total Sales.
               </p>
             </div>
           </div>
@@ -1494,7 +1502,8 @@
       addressLine1: "Al Madina Market, Basement Floor,",
       addressLine2: "Kheshgi Payan Chowk, District Nowshera",
       phone: "0301-5977178",
-      deliveryNote: "Free Delivery Upto 3km"
+      deliveryNote: "Free Delivery Upto 3km",
+      devCredit: "Software Developed by Umair Ahmad"
     };
 
     const DB = {
@@ -2693,9 +2702,7 @@
           <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
           <div class="invoice-sub">
             ${RESTAURANT_INFO.addressLine1}<br />
-            ${RESTAURANT_INFO.addressLine2}<br />
-            Ph: <strong>${RESTAURANT_INFO.phone}</strong><br />
-            ${RESTAURANT_INFO.deliveryNote}
+            ${RESTAURANT_INFO.addressLine2}
           </div>
         </div>
 
@@ -2730,15 +2737,15 @@
 
         <div class="invoice-footer">
           Thank you for your order!<br />
-          ${RESTAURANT_INFO.deliveryNote}<br />
-          Ph: ${RESTAURANT_INFO.phone}
+          <strong>${RESTAURANT_INFO.deliveryNote}</strong><br />
+          Ph: <strong>${RESTAURANT_INFO.phone}</strong>
+          <div class="invoice-dev-credit">${RESTAURANT_INFO.devCredit}</div>
         </div>
       `;
 
       latestReceiptText = [
         RESTAURANT_INFO.name,
         `${RESTAURANT_INFO.addressLine1} ${RESTAURANT_INFO.addressLine2}`,
-        `Phone: ${RESTAURANT_INFO.phone} | ${RESTAURANT_INFO.deliveryNote}`,
         `Order #: ${formattedOrderNo} | Date: ${timeStr}`,
         `Service: ${orderType} | Table: ${tableNumber} | Payment: ${paymentMethod}`,
         `Customer: ${cust} | Mobile: ${mobile} | Loyalty: ${memberTag}`,
@@ -2748,7 +2755,10 @@
         `Subtotal: PKR ${c.subtotal.toFixed(2)}`,
         `Discount: PKR ${c.discount.toFixed(2)}`,
         `Tax: PKR ${c.tax.toFixed(2)}`,
-        `GRAND TOTAL (${paymentMethod}): PKR ${c.total.toFixed(2)}`
+        `GRAND TOTAL (${paymentMethod}): PKR ${c.total.toFixed(2)}`,
+        "------------------------------------------",
+        `${RESTAURANT_INFO.deliveryNote} | Phone: ${RESTAURANT_INFO.phone}`,
+        RESTAURANT_INFO.devCredit
       ].join("\n");
 
       latestOrderNo = formattedOrderNo;
@@ -2857,7 +2867,8 @@
         ` (-) Restaurant Expenses:     PKR ${totalExpensesAmount.toFixed(2)}`,
         "==========================================================",
         ` NET PROFIT REMAINING:        PKR ${remainingProfit.toFixed(2)}`,
-        "=========================================================="
+        "==========================================================",
+        ` ${RESTAURANT_INFO.devCredit}`
       ];
 
       latestPeriodText = statementLines.join("\n");
@@ -2989,9 +3000,7 @@
           <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
           <div class="invoice-sub">
             Al Madina Market, Basement Floor,<br />
-            Kheshgi Payan Chowk, Nowshera<br />
-            Ph: <strong>0301-5977178</strong><br />
-            Free Delivery Upto 3km
+            Kheshgi Payan Chowk, Nowshera
           </div>
         </div>
         <p style="text-align:center; color:#475569; margin:12px 0; font-size:10px;">No bill generated yet.</p>
