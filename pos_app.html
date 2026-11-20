@@ -166,6 +166,86 @@
       .dash-grid { grid-template-columns: 1fr; }
     }
 
+    /* Admin Side Navigation Layout */
+    .admin-shell {
+      display: grid;
+      grid-template-columns: 205px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    @media (max-width: 820px) {
+      .admin-shell { grid-template-columns: 1fr; }
+    }
+
+    .side-nav {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: sticky;
+      top: 78px;
+    }
+
+    @media (max-width: 820px) {
+      .side-nav {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+    }
+
+    .side-nav-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      padding: 4px 8px;
+      width: 100%;
+    }
+
+    @media (max-width: 820px) {
+      .side-nav-label { display: none; }
+    }
+
+    .side-tab-btn {
+      width: 100%;
+      text-align: left;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--line);
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    @media (max-width: 820px) {
+      .side-tab-btn { width: auto; flex: 1 1 auto; }
+    }
+
+    .side-tab-btn.active {
+      background: var(--brand);
+      color: #05160e;
+      border-color: var(--brand);
+    }
+
+    .side-count-pill {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.18);
+      color: inherit;
+    }
+
     .box {
       background: var(--panel);
       border: 1px solid var(--line);
@@ -675,1209 +755,194 @@
         </div>
       </div>
 
-      <div class="dash-grid">
-        <div>
-          <div class="box">
-            <div class="box-head">
-              <h2>Menu & Stock</h2>
-              <input id="searchItem" placeholder="Search code (001) or name..." style="width:225px; margin:0;" oninput="renderMenu()" />
-            </div>
+      <div id="adminWorkspace" class="admin-shell">
+        <aside id="adminSideNav" class="side-nav" style="display:none;">
+          <div class="side-nav-label">Admin Menu</div>
+          <button type="button" id="navBtnPos" class="side-tab-btn active" onclick="switchAdminSection('pos')">
+            <span>POS &amp; Sales</span>
+          </button>
+          <button type="button" id="navBtnStaff" class="side-tab-btn" onclick="switchAdminSection('staff')">
+            <span>Staff &amp; Salary</span>
+            <span id="sideStaffCount" class="side-count-pill">0</span>
+          </button>
+          <button type="button" id="navBtnSettings" class="side-tab-btn" onclick="switchAdminSection('settings')">
+            <span>Settings</span>
+          </button>
+        </aside>
 
-            <div id="categoryBar" class="filter-bar"></div>
+        <div id="adminMainColumn">
+          <div class="dash-grid" id="posSection">
+            <div>
+              <div class="box">
+                <div class="box-head">
+                  <h2>Menu &amp; Stock</h2>
+                  <input id="searchItem" placeholder="Search code (001) or name..." style="width:225px; margin:0;" oninput="renderMenu()" />
+                </div>
 
-            <div id="variantSelectorBox" class="variant-picker" style="display:none;">
-              <div class="variant-picker-head">
-                <span id="variantPickerTitle">Select Option</span>
-                <button class="btn-outline" style="padding:3px 9px; font-size:11px;" onclick="closeVariantPicker()">Close</button>
+                <div id="categoryBar" class="filter-bar"></div>
+
+                <div id="variantSelectorBox" class="variant-picker" style="display:none;">
+                  <div class="variant-picker-head">
+                    <span id="variantPickerTitle">Select Option</span>
+                    <button class="btn-outline" style="padding:3px 9px; font-size:11px;" onclick="closeVariantPicker()">Close</button>
+                  </div>
+                  <div id="variantOptionsGrid" class="variant-options"></div>
+                </div>
+
+                <div id="menuCards" class="menu-grid"></div>
               </div>
-              <div id="variantOptionsGrid" class="variant-options"></div>
-            </div>
 
-            <div id="menuCards" class="menu-grid"></div>
-          </div>
+              <div class="box">
+                <div class="box-head">
+                  <h2>Weekly &amp; Monthly Sales Bill (Manager Settlement)</h2>
+                </div>
+                <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
+                  Generate a complete settlement bill for the last 7 days (Weekly) or current month (Monthly) with total orders, discounts, tax, and net sales.
+                </p>
+                <div class="btn-group">
+                  <button class="btn-amber" onclick="generatePeriodSettlement('WEEKLY')">Weekly Sales Bill (7 Days)</button>
+                  <button class="btn-brand" onclick="generatePeriodSettlement('MONTHLY')">Monthly Sales Bill (Month)</button>
+                </div>
 
-          <div class="box">
-            <div class="box-head">
-              <h2>Weekly & Monthly Sales Bill (Manager Settlement)</h2>
-            </div>
-            <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-              Generate a complete settlement bill for the last 7 days (Weekly) or current month (Monthly) with total orders, discounts, tax, and net sales.
-            </p>
-            <div class="btn-group">
-              <button class="btn-amber" onclick="generatePeriodSettlement('WEEKLY')">Weekly Sales Bill (7 Days)</button>
-              <button class="btn-brand" onclick="generatePeriodSettlement('MONTHLY')">Monthly Sales Bill (Month)</button>
-            </div>
-
-            <div id="periodPrintArea" class="period-output">
-              <pre id="periodSettlementBox">Select Weekly or Monthly Sales Bill to view settlement statement.</pre>
-              <div class="btn-group no-print">
-                <button class="btn-sky" onclick="printPeriodStatement()">Print Statement</button>
-                <button class="btn-outline" onclick="savePeriodTxt()">Save Statement .TXT</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="box" id="adminPanel">
-            <div class="box-head">
-              <h2>Add / Restock Item (Admin)</h2>
-            </div>
-            <div class="row-2">
-              <div>
-                <label for="mName">Item Name</label>
-                <input id="mName" placeholder="e.g. Zinger Burger" />
-              </div>
-              <div>
-                <label for="mCat">Category</label>
-                <input id="mCat" placeholder="e.g. Special Pizzas, Burgers" />
-              </div>
-            </div>
-            <div class="row-2">
-              <div>
-                <label for="mPrice">Price (PKR)</label>
-                <input id="mPrice" type="number" min="1" placeholder="400" />
-              </div>
-              <div>
-                <label for="mStock">Stock Qty</label>
-                <input id="mStock" type="number" min="0" placeholder="25" />
-              </div>
-            </div>
-            <button class="btn-amber" onclick="upsertMenuItem()">Save Item</button>
-
-            <hr style="border:none; border-top:1px solid var(--line); margin:18px 0;" />
-
-            <div class="box-head">
-              <h2>Staff Management & Salary System (Admin Only)</h2>
-              <span class="order-tag" id="staffCountBadge">0 Staff</span>
-            </div>
-
-            <div class="payroll-strip">
-              <div class="mini-stat">
-                <span>Monthly Base Payroll</span>
-                <strong id="sumBaseSalary">PKR 0.00</strong>
-              </div>
-              <div class="mini-stat">
-                <span>Advances & Paid</span>
-                <strong id="sumPaidOut">PKR 0.00</strong>
-              </div>
-              <div class="mini-stat">
-                <span>Remaining Salary Due</span>
-                <strong id="sumSalaryDue">PKR 0.00</strong>
-              </div>
-            </div>
-
-            <div class="row-4">
-              <div>
-                <label for="stName">Staff Name</label>
-                <input id="stName" placeholder="e.g. Bilal Khan" />
-              </div>
-              <div>
-                <label for="stRole">Role / Duty</label>
-                <select id="stRole">
-                  <option value="Chef">Chef</option>
-                  <option value="Pizza Maker">Pizza Maker</option>
-                  <option value="Counter / Cashier">Counter / Cashier</option>
-                  <option value="Delivery Rider">Delivery Rider</option>
-                  <option value="Kitchen Helper">Kitchen Helper</option>
-                  <option value="Cleaner">Cleaner</option>
-                </select>
-              </div>
-              <div>
-                <label for="stPhone">Phone Number</label>
-                <input id="stPhone" type="tel" placeholder="03XXXXXXXXX" />
-              </div>
-              <div>
-                <label for="stSalary">Monthly Salary (PKR)</label>
-                <input id="stSalary" type="number" min="1" placeholder="25000" />
-              </div>
-            </div>
-
-            <div class="btn-group">
-              <button class="btn-brand" onclick="addStaffMember()">+ Add Staff</button>
-              <button class="btn-outline" onclick="resetMonthlyPayroll()">New Month Reset (Keep Staff)</button>
-            </div>
-            <div id="staffMsg" class="ok-text"></div>
-
-            <div class="table-scroll" style="margin-top:10px;">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Staff</th>
-                    <th>Role</th>
-                    <th>Phone</th>
-                    <th>Base Salary</th>
-                    <th>Advance</th>
-                    <th>Paid</th>
-                    <th>Remaining</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="staffRows"></tbody>
-              </table>
-            </div>
-
-            <div class="period-output" style="margin-top:8px;">
-              <strong style="display:block; margin-bottom:6px; color:var(--info);">Recent Salary & Advance Log</strong>
-              <pre id="salaryLogBox" style="margin:0;">No salary or advance entries recorded yet.</pre>
-            </div>
-
-            <hr style="border:none; border-top:1px solid var(--line); margin:18px 0;" />
-
-            <div class="box-head">
-              <h2>Role Passwords (Admin)</h2>
-            </div>
-            <div class="row-2">
-              <div>
-                <label for="updAdmin">New Admin Password</label>
-                <input id="updAdmin" type="password" placeholder="Optional" />
-              </div>
-              <div>
-                <label for="updCashier">New Cashier Password</label>
-                <input id="updCashier" type="password" placeholder="Optional" />
-              </div>
-            </div>
-            <button class="btn-outline" onclick="savePasswords()">Update Passwords</button>
-            <div id="passMsg" class="ok-text"></div>
-          </div>
-        </div>
-
-        <div>
-          <div class="box">
-            <div class="box-head">
-              <h2>Active Bill</h2>
-              <span id="currentOrderBadge" class="order-tag">Order #1001</span>
-            </div>
-
-            <div class="bill-meta-banner">
-              <strong>Arham Hunger Box</strong><br />
-              Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera<br />
-              Phone: <strong>0301-5977178</strong> • Free Delivery Upto 3km
-            </div>
-
-            <div class="row-2">
-              <div>
-                <label for="orderType">Order / Delivery Option</label>
-                <select id="orderType">
-                  <option value="Delivery (Free Upto 3km)">Delivery (Free Upto 3km)</option>
-                  <option value="Dine-In">Dine-In</option>
-                  <option value="Takeaway">Takeaway</option>
-                </select>
-              </div>
-              <div>
-                <label for="cMobile">Customer Mobile</label>
-                <input id="cMobile" type="tel" placeholder="03XXXXXXXXX" />
-              </div>
-            </div>
-
-            <label for="cName">Customer Name</label>
-            <input id="cName" placeholder="Walk-in Customer" />
-
-            <table>
-              <thead>
-                <tr>
-                  <th>Code / Item</th>
-                  <th>Qty</th>
-                  <th>Total</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="billRows"></tbody>
-            </table>
-
-            <div class="row-2">
-              <div>
-                <label for="dPct">Discount (%)</label>
-                <input id="dPct" type="number" min="0" max="100" value="0" onchange="renderBill()" />
-              </div>
-              <div>
-                <label for="tPct">Tax (%)</label>
-                <input id="tPct" type="number" min="0" max="50" value="0" onchange="renderBill()" />
-              </div>
-            </div>
-
-            <div class="totals-box">
-              <div><span>Subtotal</span><span id="bSub">PKR 0.00</span></div>
-              <div><span>Discount</span><span id="bDisc">PKR 0.00</span></div>
-              <div><span>Tax</span><span id="bTax">PKR 0.00</span></div>
-              <div class="grand"><span>Grand Total</span><span id="bGrand">PKR 0.00</span></div>
-            </div>
-
-            <div class="btn-group">
-              <button class="btn-brand" onclick="generateBill()">Generate Bill</button>
-              <button class="btn-red" onclick="emptyBill()">Clear</button>
-            </div>
-          </div>
-
-          <div class="box" id="printableReceipt">
-            <div class="box-head no-print">
-              <h2>Printable Bill (Single Page)</h2>
-            </div>
-
-            <div id="invoiceContainer" class="invoice-sheet">
-              <div class="invoice-banner">
-                <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
-                <div class="invoice-sub">
-                  Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera<br />
-                  Phone: <strong>0301-5977178</strong> &nbsp;|&nbsp; <strong>Free Delivery Upto 3km</strong>
+                <div id="periodPrintArea" class="period-output">
+                  <pre id="periodSettlementBox">Select Weekly or Monthly Sales Bill to view settlement statement.</pre>
+                  <div class="btn-group no-print">
+                    <button class="btn-sky" onclick="printPeriodStatement()">Print Statement</button>
+                    <button class="btn-outline" onclick="savePeriodTxt()">Save Statement .TXT</button>
+                  </div>
                 </div>
               </div>
-              <p style="text-align:center; color:#64748b; margin:16px 0;">No bill generated yet.</p>
+
+              <div class="box" id="adminItemBox">
+                <div class="box-head">
+                  <h2>Add / Restock Item (Admin)</h2>
+                </div>
+                <div class="row-2">
+                  <div>
+                    <label for="mName">Item Name</label>
+                    <input id="mName" placeholder="e.g. Zinger Burger" />
+                  </div>
+                  <div>
+                    <label for="mCat">Category</label>
+                    <input id="mCat" placeholder="e.g. Special Pizzas, Burgers" />
+                  </div>
+                </div>
+                <div class="row-2">
+                  <div>
+                    <label for="mPrice">Price (PKR)</label>
+                    <input id="mPrice" type="number" min="1" placeholder="400" />
+                  </div>
+                  <div>
+                    <label for="mStock">Stock Qty</label>
+                    <input id="mStock" type="number" min="0" placeholder="25" />
+                  </div>
+                </div>
+                <button class="btn-amber" onclick="upsertMenuItem()">Save Item</button>
+              </div>
             </div>
 
-            <div class="btn-group no-print">
-              <button class="btn-sky" onclick="printSingleBill()">Print Bill</button>
-              <button class="btn-outline" onclick="saveReceiptTxt()">Save .TXT</button>
-              <button class="btn-amber" onclick="mailReceipt()">Email</button>
+            <div>
+              <div class="box">
+                <div class="box-head">
+                  <h2>Active Bill</h2>
+                  <span id="currentOrderBadge" class="order-tag">Order #1001</span>
+                </div>
+
+                <div class="bill-meta-banner">
+                  <strong>Arham Hunger Box</strong><br />
+                  Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera<br />
+                  Phone: <strong>0301-5977178</strong> • Free Delivery Upto 3km
+                </div>
+
+                <div class="row-2">
+                  <div>
+                    <label for="orderType">Order / Delivery Option</label>
+                    <select id="orderType">
+                      <option value="Delivery (Free Upto 3km)">Delivery (Free Upto 3km)</option>
+                      <option value="Dine-In">Dine-In</option>
+                      <option value="Takeaway">Takeaway</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="cMobile">Customer Mobile</label>
+                    <input id="cMobile" type="tel" placeholder="03XXXXXXXXX" />
+                  </div>
+                </div>
+
+                <label for="cName">Customer Name</label>
+                <input id="cName" placeholder="Walk-in Customer" />
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Code / Item</th>
+                      <th>Qty</th>
+                      <th>Total</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="billRows"></tbody>
+                </table>
+
+                <div class="row-2">
+                  <div>
+                    <label for="dPct">Discount (%)</label>
+                    <input id="dPct" type="number" min="0" max="100" value="0" onchange="renderBill()" />
+                  </div>
+                  <div>
+                    <label for="tPct">Tax (%)</label>
+                    <input id="tPct" type="number" min="0" max="50" value="0" onchange="renderBill()" />
+                  </div>
+                </div>
+
+                <div class="totals-box">
+                  <div><span>Subtotal</span><span id="bSub">PKR 0.00</span></div>
+                  <div><span>Discount</span><span id="bDisc">PKR 0.00</span></div>
+                  <div><span>Tax</span><span id="bTax">PKR 0.00</span></div>
+                  <div class="grand"><span>Grand Total</span><span id="bGrand">PKR 0.00</span></div>
+                </div>
+
+                <div class="btn-group">
+                  <button class="btn-brand" onclick="generateBill()">Generate Bill</button>
+                  <button class="btn-red" onclick="emptyBill()">Clear</button>
+                </div>
+              </div>
+
+              <div class="box" id="printableReceipt">
+                <div class="box-head no-print">
+                  <h2>Printable Bill (Single Page)</h2>
+                </div>
+
+                <div id="invoiceContainer" class="invoice-sheet">
+                  <div class="invoice-banner">
+                    <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
+                    <div class="invoice-sub">
+                      Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera<br />
+                      Phone: <strong>0301-5977178</strong> &nbsp;|&nbsp; <strong>Free Delivery Upto 3km</strong>
+                    </div>
+                  </div>
+                  <p style="text-align:center; color:#64748b; margin:16px 0;">No bill generated yet.</p>
+                </div>
+
+                <div class="btn-group no-print">
+                  <button class="btn-sky" onclick="printSingleBill()">Print Bill</button>
+                  <button class="btn-outline" onclick="saveReceiptTxt()">Save .TXT</button>
+                  <button class="btn-amber" onclick="mailReceipt()">Email</button>
+                </div>
+              </div>
+
+              <div class="box">
+                <div class="box-head">
+                  <h2>Sales Export &amp; Reset</h2>
+                </div>
+                <div class="btn-group">
+                  <button class="btn-outline" onclick="downloadSalesCsv()">Export CSV</button>
+                  <button class="btn-red" id="wipeBtn" onclick="wipeSalesData()">Reset Data</button>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="box">
+          <div id="staffSection" class="box" style="display:none;">
             <div class="box-head">
-              <h2>Sales Export & Reset</h2>
-            </div>
-            <div class="btn-group">
-              <button class="btn-outline" onclick="downloadSalesCsv()">Export CSV</button>
-              <button class="btn-red" id="wipeBtn" onclick="wipeSalesData()">Reset Data</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const RESTAURANT_INFO = {
-      name: "ARHAM HUNGER BOX",
-      addressLine1: "Al Madina Market, Basement Floor,",
-      addressLine2: "Kheshgi Payan Chowk, District Nowshera",
-      phone: "0301-5977178",
-      deliveryNote: "Free Delivery Upto 3km"
-    };
-
-    const DB = {
-      MENU: "ahb_period_menu_v1",
-      SALES: "ahb_period_sales_v1",
-      STAFF: "ahb_period_staff_v1",
-      SALARY_LOG: "ahb_period_salary_log_v1",
-      ORDER_SEQ: "ahb_period_order_seq_v1",
-      PASS: "ahb_period_pass_v1",
-      THEME: "ahb_period_theme_v1"
-    };
-
-    const pizza800 = [
-      { label: "S", price: 800 },
-      { label: "M", price: 1400 },
-      { label: "L", price: 2000 },
-      { label: "XL", price: 2500 },
-      { label: "Party", price: 4500 }
-    ];
-
-    const pizza700 = [
-      { label: "S", price: 700 },
-      { label: "M", price: 1200 },
-      { label: "L", price: 1800 },
-      { label: "XL", price: 2200 },
-      { label: "Party", price: 4000 }
-    ];
-
-    const iceCreamSizes = [
-      { label: "Small Cup", price: 120 },
-      { label: "Medium Cup", price: 180 },
-      { label: "Large Cup", price: 240 }
-    ];
-
-    const iceCream140Sizes = [
-      { label: "Small Cup", price: 140 },
-      { label: "Medium Cup", price: 200 },
-      { label: "Large Cup", price: 260 }
-    ];
-
-    const juiceSizes = [
-      { label: "Regular", price: 200 },
-      { label: "Large", price: 250 }
-    ];
-
-    const rawStarterMenu = [
-      { name: "Hunger Box Special Pizza", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Supreme Pizza", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Libnane Pizza", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Vegetarian Pizza", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Cheese Lover", category: "Special Pizzas", price: 700, stock: 40, variants: pizza700 },
-      { name: "Customer Choice", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Four Season", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Crown Crust", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Chicken Tandore", category: "Special Pizzas", price: 700, stock: 40, variants: pizza700 },
-      { name: "Grilled Chicken", category: "Special Pizzas", price: 700, stock: 40, variants: pizza700 },
-      { name: "Chicken Fajita", category: "Special Pizzas", price: 700, stock: 40, variants: pizza700 },
-      { name: "Kabab Crust", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-      { name: "Stuffed Crust", category: "Special Pizzas", price: 800, stock: 40, variants: pizza800 },
-
-      { name: "Hunger Box Special Burger", category: "Burgers", price: 700, stock: 30 },
-      { name: "Zinger Burger", category: "Burgers", price: 400, stock: 40 },
-      { name: "Grilled Burger", category: "Burgers", price: 450, stock: 30 },
-      { name: "Grilled Chicken Burger", category: "Burgers", price: 600, stock: 30 },
-      { name: "Grilled Beef Burger", category: "Burgers", price: 700, stock: 25 },
-      { name: "Tower Burger", category: "Burgers", price: 700, stock: 25 },
-      { name: "Zinger Cheese burger", category: "Burgers", price: 450, stock: 35 },
-
-      { name: "Chicken Shawarma", category: "Shawarma & Rolls", price: 200, stock: 50 },
-      { name: "Chicken Cheese Shawarma", category: "Shawarma & Rolls", price: 250, stock: 40 },
-      { name: "Chicken Zinger Shawarma", category: "Shawarma & Rolls", price: 350, stock: 35 },
-      { name: "Chicken burger", category: "Shawarma & Rolls", price: 200, stock: 40 },
-      { name: "Chicken Parata Roll", category: "Shawarma & Rolls", price: 280, stock: 40 },
-      { name: "Chicken Cheese Parata Roll", category: "Shawarma & Rolls", price: 330, stock: 35 },
-      { name: "Zinger Parata Roll", category: "Shawarma & Rolls", price: 400, stock: 30 },
-      { name: "Zingr Cheese Parata Roll", category: "Shawarma & Rolls", price: 450, stock: 30 },
-
-      { name: "Hunger Box Special Pasta", category: "Chinese & Italian", price: 900, stock: 25 },
-      { name: "Chicken Chilly Dry", category: "Chinese & Italian", price: 700, stock: 25 },
-      { name: "Chicken Fried Rice", category: "Chinese & Italian", price: 600, stock: 25 },
-      { name: "Chicken Shashlik", category: "Chinese & Italian", price: 700, stock: 25 },
-      { name: "Chicken Chow Mein", category: "Chinese & Italian", price: 700, stock: 25 },
-      { name: "Special Pasta", category: "Chinese & Italian", price: 800, stock: 25 },
-      { name: "Grilled Chicken Pasta", category: "Chinese & Italian", price: 700, stock: 25 },
-      { name: "Chicken Alfaredo Pasta", category: "Chinese & Italian", price: 650, stock: 25 },
-
-      { name: "Fried Chicken Piece", category: "Fried Items", price: 350, stock: 50 },
-      { name: "Nuggets 10 Piece", category: "Fried Items", price: 600, stock: 35 },
-      { name: "Hot Wings 10 Piece", category: "Fried Items", price: 700, stock: 35 },
-      { name: "Buffalo Wings", category: "Fried Items", price: 750, stock: 30 },
-      { name: "Full Broast", category: "Fried Items", price: 1600, stock: 20 },
-
-      { name: "Pizza Deal 1 (1 Small Pizza, 2 Zinger Burger, 1 Regular Fries, 1 Ltr Drink)", category: "Pizza Deals", price: 1800, stock: 25 },
-      { name: "Pizza Deal 2 (2 Medium Pizza, 4 Zinger Burger, 1 large Fries, 1.5 Ltr Drink)", category: "Pizza Deals", price: 4200, stock: 20 },
-      { name: "Pizza Deal 3 (2 Large Pizza, 5 Zinger Burger, 1 large Fries, 2.5 Ltr Drink)", category: "Pizza Deals", price: 5800, stock: 15 },
-      { name: "Pizza Deal 4 (2 Extra large Pizza, 2.5 Ltr Drink)", category: "Pizza Deals", price: 4400, stock: 15 },
-      { name: "Pizza Deal 5 Party Deal (1 Party Pizza, 6 Zinger Burger, 10 Hot Wings, 1 Large Fries, 2.5 Ltr Drink)", category: "Pizza Deals", price: 7200, stock: 12 },
-
-      { name: "Burger Deal 1 (1 zinger burger, 1 Regular Fries, 1 Regular Drink)", category: "Burger Deals", price: 580, stock: 35 },
-      { name: "Burger Deal 2 (2 zinger burger, 1 Regular Fries, 1 Regular Drink)", category: "Burger Deals", price: 980, stock: 30 },
-      { name: "Burger Deal 3 (3 zinger burger, 1 lareg Fries, 1 Drink 1Ltr)", category: "Burger Deals", price: 1500, stock: 25 },
-      { name: "Burger Deal 4 (4 zinger burger, 1 lareg Fries, 1 Drink 1Ltr)", category: "Burger Deals", price: 1900, stock: 20 },
-      { name: "Burger Deal 5 (5 zinger burger, 10 Nuggets, 1 lareg Fries, 1 Drink 1.5Ltr)", category: "Burger Deals", price: 2850, stock: 15 },
-
-      { name: "vanilla", category: "Ice Cream", price: 120, stock: 50, variants: iceCreamSizes },
-      { name: "Pineapple", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
-      { name: "Pesta", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
-      { name: "Chocolate", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
-      { name: "Tooty Fruity", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
-      { name: "Strawberry", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
-      { name: "Mango", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
-      { name: "Blueberry", category: "Ice Cream", price: 140, stock: 50, variants: iceCream140Sizes },
-      { name: "Qulpa", category: "Ice Cream", price: 160, stock: 40, variants: [{ label: "Small Cup", price: 160 }, { label: "Medium Cup", price: 240 }, { label: "Large Cup", price: 320 }] },
-      { name: "Kaju", category: "Ice Cream", price: 150, stock: 40, variants: [{ label: "Small Cup", price: 150 }, { label: "Medium Cup", price: 220 }, { label: "Large Cup", price: 300 }] },
-
-      { name: "Mango Juice", category: "Juice", price: 200, stock: 40, variants: juiceSizes },
-      { name: "Strawberry Juice", category: "Juice", price: 200, stock: 40, variants: juiceSizes },
-      { name: "Banana Juice", category: "Juice", price: 200, stock: 40, variants: juiceSizes },
-      { name: "Ice Cream Shake", category: "Juice", price: 200, stock: 40, variants: juiceSizes },
-
-      { name: "Large Fries", category: "Fries", price: 300, stock: 50 },
-      { name: "Reguler fries", category: "Fries", price: 200, stock: 60 },
-      { name: "Loaded Fries", category: "Fries", price: 500, stock: 40 },
-
-      { name: "Soup With Egg", category: "Soup", price: 250, stock: 35 },
-      { name: "Chicken Soup", category: "Soup", price: 200, stock: 35 },
-
-      { name: "Black Coffee", category: "Coffee", price: 250, stock: 40 },
-      { name: "Cappuccino", category: "Coffee", price: 350, stock: 40 }
-    ];
-
-    function formatCode(num) {
-      return String(num).padStart(3, "0");
-    }
-
-    const starterMenu = rawStarterMenu.map((item, idx) => ({
-      ...item,
-      id: idx + 1,
-      code: formatCode(idx + 1)
-    }));
-
-    let auth = JSON.parse(localStorage.getItem(DB.PASS)) || {
-      ADMIN: "admin123",
-      CASHIER: "cashier123"
-    };
-    let items = JSON.parse(localStorage.getItem(DB.MENU)) || JSON.parse(JSON.stringify(starterMenu));
-    let orders = JSON.parse(localStorage.getItem(DB.SALES)) || [];
-    let staffList = JSON.parse(localStorage.getItem(DB.STAFF)) || [];
-    let salaryLogs = JSON.parse(localStorage.getItem(DB.SALARY_LOG)) || [];
-    let orderCounter = Number(localStorage.getItem(DB.ORDER_SEQ)) || 1001;
-
-    let role = null;
-    let activeCat = "All";
-    let bill = [];
-    let latestReceiptText = "";
-    let latestOrderNo = null;
-    let latestPeriodText = "";
-    let latestPeriodType = "summary";
-
-    if (localStorage.getItem(DB.THEME) === "light") {
-      document.body.classList.add("light-theme");
-    }
-
-    function updateOrderBadge() {
-      const badge = document.getElementById("currentOrderBadge");
-      if (badge) badge.textContent = "Order #" + orderCounter;
-    }
-
-    function syncStore() {
-      localStorage.setItem(DB.MENU, JSON.stringify(items));
-      localStorage.setItem(DB.SALES, JSON.stringify(orders));
-      localStorage.setItem(DB.STAFF, JSON.stringify(staffList));
-      localStorage.setItem(DB.SALARY_LOG, JSON.stringify(salaryLogs));
-      localStorage.setItem(DB.ORDER_SEQ, String(orderCounter));
-      localStorage.setItem(DB.PASS, JSON.stringify(auth));
-      updateOrderBadge();
-    }
-
-    function switchTheme() {
-      document.body.classList.toggle("light-theme");
-      localStorage.setItem(DB.THEME, document.body.classList.contains("light-theme") ? "light" : "dark");
-    }
-
-    function loginUser() {
-      const r = document.getElementById("roleSelect").value;
-      const p = document.getElementById("passInput").value;
-      const err = document.getElementById("loginErr");
-
-      if (p !== auth[r]) {
-        err.textContent = "Wrong password for " + r + ".";
-        return;
-      }
-
-      err.textContent = "";
-      document.getElementById("passInput").value = "";
-      role = r;
-
-      document.getElementById("loginScreen").style.display = "none";
-      document.getElementById("dashboardShell").style.display = "block";
-      document.getElementById("roleBadge").textContent = "Role: " + role;
-
-      const isAdmin = role === "ADMIN";
-      document.getElementById("adminPanel").style.display = isAdmin ? "block" : "none";
-      document.getElementById("wipeBtn").style.display = isAdmin ? "inline-block" : "none";
-
-      updateOrderBadge();
-      renderCategories();
-      renderMenu();
-      renderBill();
-      renderMetrics();
-      if (isAdmin) {
-        renderStaffPanel();
-      }
-    }
-
-    function logoutUser() {
-      role = null;
-      bill = [];
-      closeVariantPicker();
-      document.getElementById("dashboardShell").style.display = "none";
-      document.getElementById("loginScreen").style.display = "flex";
-    }
-
-    function getRemainingSalary(member) {
-      const base = Number(member.salary || 0);
-      const adv = Number(member.advance || 0);
-      const paid = Number(member.paid || 0);
-      return Math.max(0, base - adv - paid);
-    }
-
-    function setStaffNotice(text, isError = false) {
-      const el = document.getElementById("staffMsg");
-      if (!el) return;
-      el.style.color = isError ? "var(--danger)" : "var(--brand)";
-      el.textContent = text;
-    }
-
-    function addStaffMember() {
-      if (role !== "ADMIN") return;
-      const name = document.getElementById("stName").value.trim();
-      const jobRole = document.getElementById("stRole").value;
-      const phone = document.getElementById("stPhone").value.trim() || "N/A";
-      const salary = Number(document.getElementById("stSalary").value);
-
-      if (!name || isNaN(salary) || salary <= 0) {
-        setStaffNotice("Enter a valid staff name and monthly salary.", true);
-        return;
-      }
-
-      const nextId = staffList.length ? Math.max(...staffList.map(s => s.id)) + 1 : 1;
-      staffList.push({
-        id: nextId,
-        name,
-        role: jobRole,
-        phone,
-        salary,
-        advance: 0,
-        paid: 0
-      });
-
-      document.getElementById("stName").value = "";
-      document.getElementById("stPhone").value = "";
-      document.getElementById("stSalary").value = "";
-
-      syncStore();
-      renderStaffPanel();
-      setStaffNotice(`Added ${name} (${jobRole}) — Monthly Salary: PKR ${salary.toFixed(2)}.`);
-    }
-
-    function removeStaffMember(id) {
-      if (role !== "ADMIN") return;
-      const member = staffList.find(s => s.id === id);
-      if (!member) return;
-      if (!confirm(`Remove ${member.name} (${member.role}) from staff list?`)) return;
-
-      staffList = staffList.filter(s => s.id !== id);
-      syncStore();
-      renderStaffPanel();
-      setStaffNotice(`Removed ${member.name} from staff.`);
-    }
-
-    function addStaffAdvance(id) {
-      if (role !== "ADMIN") return;
-      const member = staffList.find(s => s.id === id);
-      if (!member) return;
-
-      const remaining = getRemainingSalary(member);
-      const input = prompt(`Advance amount (PKR) for ${member.name} (Remaining balance: PKR ${remaining.toFixed(2)}):`);
-      if (input === null) return;
-
-      const amt = Number(input);
-      if (isNaN(amt) || amt <= 0) {
-        setStaffNotice("Enter a valid positive advance amount.", true);
-        return;
-      }
-      if (amt > remaining) {
-        setStaffNotice(`Advance cannot exceed remaining balance (PKR ${remaining.toFixed(2)}).`, true);
-        return;
-      }
-
-      member.advance = Number(member.advance || 0) + amt;
-      salaryLogs.unshift(`${new Date().toLocaleString()} | ADVANCE | ${member.name} (${member.role}) | PKR ${amt.toFixed(2)}`);
-      salaryLogs = salaryLogs.slice(0, 30);
-
-      syncStore();
-      renderStaffPanel();
-      setStaffNotice(`Recorded PKR ${amt.toFixed(2)} advance for ${member.name}.`);
-    }
-
-    function payStaffSalary(id) {
-      if (role !== "ADMIN") return;
-      const member = staffList.find(s => s.id === id);
-      if (!member) return;
-
-      const remaining = getRemainingSalary(member);
-      if (remaining <= 0) {
-        setStaffNotice(`${member.name} has zero remaining salary due.`, true);
-        return;
-      }
-
-      const input = prompt(
-        `Enter salary payment (PKR) for ${member.name} (Remaining due: PKR ${remaining.toFixed(2)}):`,
-        String(remaining)
-      );
-      if (input === null) return;
-
-      const amt = Number(input);
-      if (isNaN(amt) || amt <= 0) {
-        setStaffNotice("Enter a valid payment amount.", true);
-        return;
-      }
-      if (amt > remaining) {
-        setStaffNotice(`Payment cannot exceed remaining due (PKR ${remaining.toFixed(2)}).`, true);
-        return;
-      }
-
-      member.paid = Number(member.paid || 0) + amt;
-      salaryLogs.unshift(`${new Date().toLocaleString()} | SALARY PAID | ${member.name} (${member.role}) | PKR ${amt.toFixed(2)}`);
-      salaryLogs = salaryLogs.slice(0, 30);
-
-      syncStore();
-      renderStaffPanel();
-      setStaffNotice(`Paid PKR ${amt.toFixed(2)} salary to ${member.name}.`);
-    }
-
-    function resetMonthlyPayroll() {
-      if (role !== "ADMIN") return;
-      if (!staffList.length) return;
-      if (!confirm("Reset Advance and Paid counters to 0 for a new month while keeping all staff and base salaries?")) return;
-
-      staffList.forEach(s => {
-        s.advance = 0;
-        s.paid = 0;
-      });
-      syncStore();
-      renderStaffPanel();
-      setStaffNotice("Monthly advance & paid counters reset for all staff.");
-    }
-
-    function renderStaffPanel() {
-      const tbody = document.getElementById("staffRows");
-      if (!tbody) return;
-      tbody.innerHTML = "";
-
-      let totalBase = 0;
-      let totalOut = 0;
-      let totalDue = 0;
-
-      staffList.forEach(s => {
-        const base = Number(s.salary || 0);
-        const adv = Number(s.advance || 0);
-        const paid = Number(s.paid || 0);
-        const due = getRemainingSalary(s);
-
-        totalBase += base;
-        totalOut += adv + paid;
-        totalDue += due;
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><b>${s.name}</b></td>
-          <td>${s.role}</td>
-          <td>${s.phone}</td>
-          <td>PKR ${base.toFixed(2)}</td>
-          <td>PKR ${adv.toFixed(2)}</td>
-          <td>PKR ${paid.toFixed(2)}</td>
-          <td><b>PKR ${due.toFixed(2)}</b></td>
-          <td>
-            <div class="action-mini">
-              <button class="btn-brand" onclick="payStaffSalary(${s.id})" ${due <= 0 ? "disabled" : ""}>Pay</button>
-              <button class="btn-amber" onclick="addStaffAdvance(${s.id})" ${due <= 0 ? "disabled" : ""}>Advance</button>
-              <button class="btn-red" onclick="removeStaffMember(${s.id})">Remove</button>
-            </div>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      if (!staffList.length) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--muted);">No staff members added yet.</td></tr>`;
-      }
-
-      document.getElementById("staffCountBadge").textContent = `${staffList.length} Staff`;
-      document.getElementById("sumBaseSalary").textContent = "PKR " + totalBase.toFixed(2);
-      document.getElementById("sumPaidOut").textContent = "PKR " + totalOut.toFixed(2);
-      document.getElementById("sumSalaryDue").textContent = "PKR " + totalDue.toFixed(2);
-      document.getElementById("salaryLogBox").textContent = salaryLogs.length
-        ? salaryLogs.join("\n")
-        : "No salary or advance entries recorded yet.";
-    }
-
-    function savePasswords() {
-      if (role !== "ADMIN") return;
-      const a = document.getElementById("updAdmin").value.trim();
-      const c = document.getElementById("updCashier").value.trim();
-      const msg = document.getElementById("passMsg");
-
-      if (!a && !c) {
-        msg.style.color = "var(--danger)";
-        msg.textContent = "Enter at least one new password.";
-        return;
-      }
-      if (a) auth.ADMIN = a;
-      if (c) auth.CASHIER = c;
-      syncStore();
-
-      document.getElementById("updAdmin").value = "";
-      document.getElementById("updCashier").value = "";
-      msg.style.color = "var(--brand)";
-      msg.textContent = "Passwords saved.";
-    }
-
-    function renderCategories() {
-      const cats = ["All", ...new Set(items.map(i => i.category))];
-      const bar = document.getElementById("categoryBar");
-      bar.innerHTML = "";
-      cats.forEach(cat => {
-        const btn = document.createElement("button");
-        btn.className = "cat-btn" + (cat === activeCat ? " active" : "");
-        btn.textContent = cat;
-        btn.onclick = () => {
-          activeCat = cat;
-          renderCategories();
-          renderMenu();
-        };
-        bar.appendChild(btn);
-      });
-    }
-
-    function renderMenu() {
-      const q = (document.getElementById("searchItem").value || "").toLowerCase().trim();
-      const grid = document.getElementById("menuCards");
-      grid.innerHTML = "";
-
-      const filtered = items.filter(it => {
-        const matchCat = activeCat === "All" || it.category === activeCat;
-        const matchText =
-          !q ||
-          it.name.toLowerCase().includes(q) ||
-          it.category.toLowerCase().includes(q) ||
-          String(it.code || "").toLowerCase().includes(q);
-        return matchCat && matchText;
-      });
-
-      filtered.forEach(it => {
-        const card = document.createElement("div");
-        card.className = "pos-card";
-        const hasVar = Array.isArray(it.variants) && it.variants.length > 0;
-        const priceLabel = hasVar
-          ? `From PKR ${Number(it.variants[0].price).toFixed(2)}`
-          : `PKR ${Number(it.price).toFixed(2)}`;
-        const btnAction = hasVar ? `openVariantPicker(${it.id})` : `addBillItem(${it.id})`;
-        const btnText = it.stock <= 0 ? "Out of Stock" : (hasVar ? "Select Size/Option" : "+ Add");
-
-        card.innerHTML = `
-          <div>
-            <span class="code-badge">Code: ${it.code || formatCode(it.id)}</span>
-            <div class="title">${it.name}</div>
-            <div class="subcat">${it.category}</div>
-          </div>
-          <div>
-            <div class="amt">${priceLabel}</div>
-            <div class="stk ${it.stock <= 5 ? "low" : ""}">Stock: ${it.stock}</div>
-          </div>
-          <button class="btn-brand" ${it.stock <= 0 ? "disabled" : ""} onclick="${btnAction}">
-            ${btnText}
-          </button>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    function openVariantPicker(itemId) {
-      const item = items.find(i => i.id === itemId);
-      if (!item || item.stock <= 0 || !item.variants) return;
-
-      document.getElementById("variantPickerTitle").textContent = `[${item.code || formatCode(item.id)}] ${item.name} — Select Size / Option`;
-      const grid = document.getElementById("variantOptionsGrid");
-      grid.innerHTML = "";
-
-      item.variants.forEach(v => {
-        const btn = document.createElement("button");
-        btn.className = "btn-amber";
-        btn.style.textAlign = "left";
-        btn.innerHTML = `${v.label}<br><small style="font-weight:800;">PKR ${v.price}</small>`;
-        btn.onclick = () => addVariantToBill(itemId, v);
-        grid.appendChild(btn);
-      });
-
-      document.getElementById("variantSelectorBox").style.display = "block";
-    }
-
-    function closeVariantPicker() {
-      document.getElementById("variantSelectorBox").style.display = "none";
-    }
-
-    function addVariantToBill(itemId, variant) {
-      const item = items.find(i => i.id === itemId);
-      if (!item || item.stock <= 0) return;
-
-      const usedParentQty = bill
-        .filter(b => b.parentId === itemId)
-        .reduce((sum, b) => sum + b.qty, 0);
-
-      if (usedParentQty + 1 > item.stock) {
-        alert("Not enough stock for " + item.name);
-        return;
-      }
-
-      const itemCode = item.code || formatCode(item.id);
-      const lineKey = `${itemId}_${variant.label}`;
-      const existing = bill.find(b => b.lineKey === lineKey);
-      if (existing) {
-        existing.qty += 1;
-      } else {
-        bill.push({
-          lineKey,
-          parentId: itemId,
-          code: itemCode,
-          name: `${item.name} (${variant.label})`,
-          price: variant.price,
-          qty: 1
-        });
-      }
-      renderBill();
-    }
-
-    function upsertMenuItem() {
-      if (role !== "ADMIN") return;
-      const name = document.getElementById("mName").value.trim();
-      const category = document.getElementById("mCat").value.trim() || "General";
-      const price = Number(document.getElementById("mPrice").value);
-      const stock = parseInt(document.getElementById("mStock").value, 10);
-
-      if (!name || price <= 0 || isNaN(stock) || stock < 0) {
-        alert("Enter valid item name, price, and stock.");
-        return;
-      }
-
-      const found = items.find(i => i.name.toLowerCase() === name.toLowerCase());
-      if (found) {
-        found.category = category;
-        found.price = price;
-        found.stock += stock;
-        if (!found.code) found.code = formatCode(found.id);
-      } else {
-        const nextId = items.length ? Math.max(...items.map(i => i.id)) + 1 : 1;
-        items.push({ id: nextId, code: formatCode(nextId), name, category, price, stock });
-      }
-
-      document.getElementById("mName").value = "";
-      document.getElementById("mCat").value = "";
-      document.getElementById("mPrice").value = "";
-      document.getElementById("mStock").value = "";
-
-      syncStore();
-      renderCategories();
-      renderMenu();
-      renderMetrics();
-    }
-
-    function addBillItem(id) {
-      const it = items.find(i => i.id === id);
-      if (!it || it.stock <= 0) return;
-      const lineKey = `item_${id}`;
-      const row = bill.find(b => b.lineKey === lineKey);
-      const qty = row ? row.qty : 0;
-      if (qty + 1 > it.stock) {
-        alert("Not enough stock.");
-        return;
-      }
-      if (row) row.qty += 1;
-      else bill.push({
-        lineKey,
-        parentId: it.id,
-        code: it.code || formatCode(it.id),
-        name: it.name,
-        price: it.price,
-        qty: 1
-      });
-      renderBill();
-    }
-
-    function dropBillItem(lineKey) {
-      bill = bill.filter(b => b.lineKey !== lineKey);
-      renderBill();
-    }
-
-    function emptyBill() {
-      bill = [];
-      renderBill();
-    }
-
-    function calcBill() {
-      const subtotal = bill.reduce((s, b) => s + b.price * b.qty, 0);
-      const dPct = Math.min(100, Math.max(0, Number(document.getElementById("dPct").value) || 0));
-      const tPct = Math.min(50, Math.max(0, Number(document.getElementById("tPct").value) || 0));
-      const discount = subtotal * (dPct / 100);
-      const taxable = subtotal - discount;
-      const tax = taxable * (tPct / 100);
-      const total = taxable + tax;
-      return { subtotal, discount, tax, total };
-    }
-
-    function renderBill() {
-      const body = document.getElementById("billRows");
-      body.innerHTML = "";
-      bill.forEach(b => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><b>[${b.code}]</b> ${b.name}</td>
-          <td>${b.qty}</td>
-          <td>PKR ${(b.price * b.qty).toFixed(2)}</td>
-          <td><button class="btn-red" style="padding:3px 7px;" onclick="dropBillItem('${b.lineKey}')">X</button></td>
-        `;
-        body.appendChild(tr);
-      });
-
-      const c = calcBill();
-      document.getElementById("bSub").textContent = "PKR " + c.subtotal.toFixed(2);
-      document.getElementById("bDisc").textContent = "PKR " + c.discount.toFixed(2);
-      document.getElementById("bTax").textContent = "PKR " + c.tax.toFixed(2);
-      document.getElementById("bGrand").textContent = "PKR " + c.total.toFixed(2);
-    }
-
-    function generateBill() {
-      if (bill.length === 0) {
-        alert("Bill is empty.");
-        return;
-      }
-
-      const orderType = document.getElementById("orderType").value;
-      const cust = document.getElementById("cName").value.trim() || "Walk-in Customer";
-      const mobile = document.getElementById("cMobile").value.trim() || "N/A";
-      const c = calcBill();
-      const now = new Date();
-      const dateIso = now.toISOString().slice(0, 10);
-      const timeStr = now.toLocaleString();
-      const currentOrderNo = orderCounter;
-      orderCounter += 1;
-
-      const billedLines = bill.map(b => ({
-        code: b.code,
-        name: b.name,
-        qty: b.qty,
-        unitPrice: b.price,
-        lineTotal: b.price * b.qty
-      }));
-
-      bill.forEach(b => {
-        const target = items.find(i => i.id === b.parentId);
-        if (target) target.stock = Math.max(0, target.stock - b.qty);
-      });
-
-      orders.push({
-        orderNumber: currentOrderNo,
-        date: dateIso,
-        timestamp: timeStr,
-        orderType,
-        role,
-        customer: cust,
-        mobile,
-        subtotal: c.subtotal,
-        discount: c.discount,
-        tax: c.tax,
-        total: c.total
-      });
-
-      const rowsHtml = billedLines.map((item, idx) => `
-        <tr>
-          <td>${idx + 1}</td>
-          <td><b>${item.code}</b></td>
-          <td>${item.name}</td>
-          <td class="num">${item.qty}</td>
-          <td class="num">PKR ${item.unitPrice.toFixed(2)}</td>
-          <td class="num">PKR ${item.lineTotal.toFixed(2)}</td>
-        </tr>
-      `).join("");
-
-      document.getElementById("invoiceContainer").innerHTML = `
-        <div class="invoice-banner">
-          <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
-          <div class="invoice-sub">
-            ${RESTAURANT_INFO.addressLine1} ${RESTAURANT_INFO.addressLine2}<br />
-            Phone: <strong>${RESTAURANT_INFO.phone}</strong> &nbsp;|&nbsp; <strong>${RESTAURANT_INFO.deliveryNote}</strong>
-          </div>
-        </div>
-
-        <div class="invoice-meta-grid">
-          <div><strong>Order #:</strong> ${currentOrderNo}</div>
-          <div><strong>Date & Time:</strong> ${timeStr}</div>
-          <div><strong>Customer Name:</strong> ${cust}</div>
-          <div><strong>Mobile:</strong> ${mobile}</div>
-          <div><strong>Service Option:</strong> ${orderType}</div>
-          <div><strong>Counter Role:</strong> ${role}</div>
-        </div>
-
-        <table class="invoice-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Code</th>
-              <th>Item Description</th>
-              <th class="num">Qty</th>
-              <th class="num">Rate</th>
-              <th class="num">Amount</th>
-            </tr>
-          </thead>
-          <tbody>${rowsHtml}</tbody>
-        </table>
-
-        <div class="invoice-summary">
-          <div class="invoice-summary-row"><span>Subtotal</span><span>PKR ${c.subtotal.toFixed(2)}</span></div>
-          <div class="invoice-summary-row"><span>Discount</span><span>PKR ${c.discount.toFixed(2)}</span></div>
-          <div class="invoice-summary-row"><span>Tax</span><span>PKR ${c.tax.toFixed(2)}</span></div>
-          <div class="invoice-summary-row grand-row"><span>Grand Total</span><span>PKR ${c.total.toFixed(2)}</span></div>
-        </div>
-
-        <div class="invoice-footer">
-          Thank you for choosing <strong>${RESTAURANT_INFO.name}</strong> • ${RESTAURANT_INFO.deliveryNote} • Contact: ${RESTAURANT_INFO.phone}
-        </div>
-      `;
-
-      latestReceiptText = [
-        RESTAURANT_INFO.name,
-        `${RESTAURANT_INFO.addressLine1} ${RESTAURANT_INFO.addressLine2}`,
-        `Phone: ${RESTAURANT_INFO.phone} | ${RESTAURANT_INFO.deliveryNote}`,
-        `Order #: ${currentOrderNo} | Date: ${timeStr}`,
-        `Customer: ${cust} | Mobile: ${mobile} | Option: ${orderType}`,
-        "--------------------------------------------------",
-        ...billedLines.map(i => `[${i.code}] ${i.name} | Qty: ${i.qty} | Rate: PKR ${i.unitPrice.toFixed(2)} | Total: PKR ${i.lineTotal.toFixed(2)}`),
-        "--------------------------------------------------",
-        `Subtotal: PKR ${c.subtotal.toFixed(2)}`,
-        `Discount: PKR ${c.discount.toFixed(2)}`,
-        `Tax: PKR ${c.tax.toFixed(2)}`,
-        `GRAND TOTAL: PKR ${c.total.toFixed(2)}`
-      ].join("\n");
-
-      latestOrderNo = currentOrderNo;
-
-      bill = [];
-      document.getElementById("cName").value = "";
-      document.getElementById("cMobile").value = "";
-      document.getElementById("dPct").value = "0";
-
-      syncStore();
-      renderMenu();
-      renderBill();
-      renderMetrics();
-    }
-
-    function generatePeriodSettlement(periodMode) {
-      const now = new Date();
-      let filteredOrders = [];
-      let titleLabel = "";
-      let rangeLabel = "";
-
-      if (periodMode === "WEEKLY") {
-        const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-        const cutoffIso = sevenDaysAgo.toISOString().slice(0, 10);
-        const todayIso = now.toISOString().slice(0, 10);
-        filteredOrders = orders.filter(o => o.date >= cutoffIso && o.date <= todayIso);
-        titleLabel = "WEEKLY SALES SETTLEMENT BILL (LAST 7 DAYS)";
-        rangeLabel = `${cutoffIso} to ${todayIso}`;
-      } else {
-        const monthPrefix = now.toISOString().slice(0, 7);
-        filteredOrders = orders.filter(o => String(o.date || "").startsWith(monthPrefix));
-        titleLabel = "MONTHLY SALES SETTLEMENT BILL";
-        rangeLabel = `Month: ${monthPrefix}`;
-      }
-
-      const totalOrdersCount = filteredOrders.length;
-      const grossSubtotal = filteredOrders.reduce((s, o) => s + Number(o.subtotal || 0), 0);
-      const totalDiscount = filteredOrders.reduce((s, o) => s + Number(o.discount || 0), 0);
-      const totalTax = filteredOrders.reduce((s, o) => s + Number(o.tax || 0), 0);
-      const netSales = filteredOrders.reduce((s, o) => s + Number(o.total || 0), 0);
-
-      const orderLines = filteredOrders.length
-        ? filteredOrders.map(o => `Order #${o.orderNumber} | ${o.date} | ${o.customer} | ${o.orderType || ""} | PKR ${Number(o.total).toFixed(2)}`)
-        : ["No orders recorded in this period yet."];
-
-      const statementLines = [
-        "==========================================================",
-        `              ${RESTAURANT_INFO.name}`,
-        ` ${RESTAURANT_INFO.addressLine1} ${RESTAURANT_INFO.addressLine2}`,
-        ` Phone: ${RESTAURANT_INFO.phone} | ${RESTAURANT_INFO.deliveryNote}`,
-        "==========================================================",
-        ` ${titleLabel}`,
-        ` Period:      ${rangeLabel}`,
-        ` Generated:   ${now.toLocaleString()}`,
-        ` Prepared By: ${role || "ADMIN"}`,
-        "----------------------------------------------------------",
-        ...orderLines,
-        "----------------------------------------------------------",
-        ` Total Orders Count:    ${totalOrdersCount}`,
-        ` Gross Subtotal:        PKR ${grossSubtotal.toFixed(2)}`,
-        ` Total Discounts:       PKR ${totalDiscount.toFixed(2)}`,
-        ` Total Tax:             PKR ${totalTax.toFixed(2)}`,
-        "==========================================================",
-        ` NET PERIOD SALES:      PKR ${netSales.toFixed(2)}`,
-        "=========================================================="
-      ];
-
-      latestPeriodText = statementLines.join("\n");
-      latestPeriodType = periodMode.toLowerCase() + "_sales_bill";
-      document.getElementById("periodSettlementBox").textContent = latestPeriodText;
-    }
-
-    function printSingleBill() {
-      document.body.classList.remove("print-period-mode");
-      window.print();
-    }
-
-    function printPeriodStatement() {
-      if (!latestPeriodText) {
-        alert("Generate Weekly or Monthly Sales Bill first.");
-        return;
-      }
-      document.body.classList.add("print-period-mode");
-      window.print();
-      setTimeout(() => document.body.classList.remove("print-period-mode"), 400);
-    }
-
-    function savePeriodTxt() {
-      if (!latestPeriodText) {
-        alert("Generate Weekly or Monthly Sales Bill first.");
-        return;
-      }
-      const blob = new Blob([latestPeriodText], { type: "text/plain;charset=utf-8" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = `arham_hunger_box_${latestPeriodType}.txt`;
-      a.click();
-    }
-
-    function saveReceiptTxt() {
-      if (!latestReceiptText) { alert("Generate a bill first."); return; }
-      const blob = new Blob([latestReceiptText], { type: "text/plain;charset=utf-8" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = `order_${latestOrderNo || "bill"}.txt`;
-      a.click();
-    }
-
-    function mailReceipt() {
-      if (!latestReceiptText) { alert("Generate a bill first."); return; }
-      const to = prompt("Enter email address to send receipt:");
-      if (!to) return;
-      window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent("Order #" + (latestOrderNo || "") + " - Arham Hunger Box")}&body=${encodeURIComponent(latestReceiptText)}`;
-    }
-
-    function renderMetrics() {
-      const today = new Date().toISOString().slice(0, 10);
-      const todayList = orders.filter(o => o.date === today);
-      const disc = todayList.reduce((s, o) => s + o.discount, 0);
-      const net = todayList.reduce((s, o) => s + o.total, 0);
-
-      document.getElementById("mOrders").textContent = String(todayList.length);
-      document.getElementById("mDisc").textContent = "PKR " + disc.toFixed(2);
-      document.getElementById("mNet").textContent = "PKR " + net.toFixed(2);
-      document.getElementById("mItems").textContent = String(items.length);
-    }
-
-    function downloadSalesCsv() {
-      const csv = "OrderNumber,Timestamp,Option,Role,Customer,Mobile,Subtotal,Discount,Tax,Total\n" +
-        orders.map(o => `${o.orderNumber},"${o.timestamp}","${o.orderType}","${o.role}","${o.customer}","${o.mobile}",${o.subtotal.toFixed(2)},${o.discount.toFixed(2)},${o.tax.toFixed(2)},${o.total.toFixed(2)}`).join("\n");
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "arham_hunger_box_sales.csv";
-      a.click();
-    }
-
-    function wipeSalesData() {
-      if (role !== "ADMIN") return;
-      if (!confirm("Reset menu, stock, staff, payroll logs, order sequence, and sales records?")) return;
-      localStorage.removeItem(DB.MENU);
-      localStorage.removeItem(DB.SALES);
-      localStorage.removeItem(DB.STAFF);
-      localStorage.removeItem(DB.SALARY_LOG);
-      localStorage.removeItem(DB.ORDER_SEQ);
-      items = JSON.parse(JSON.stringify(starterMenu));
-      orders = [];
-      staffList = [];
-      salaryLogs = [];
-      orderCounter = 1001;
-      bill = [];
-      latestReceiptText = "";
-      latestPeriodText = "";
-      document.getElementById("periodSettlementBox").textContent = "Select Weekly or Monthly Sales Bill to view settlement statement.";
-      document.getElementById("invoiceContainer").innerHTML = `
-        <div class="invoice-banner">
-          <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
-          <div class="invoice-sub">
-            Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera<br />
-            Phone: <strong>0301-5977178</strong> &nbsp;|&nbsp; <strong>Free Delivery Upto 3km</strong>
-          </div>
-        </div>
-        <p style="text-align:center; color:#64748b; margin:16px 0;">No bill generated yet.</p>
-      `;
-      syncStore();
-      renderCategories();
-      renderMenu();
-      renderBill();
-      renderMetrics();
-      renderStaffPanel();
-    }
-  </script>
-</body>
-</html>
+              <h2>Staff Management
