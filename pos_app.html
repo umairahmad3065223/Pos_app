@@ -166,7 +166,6 @@
     .brand-title h1 { margin: 0; font-size: 17px; }
     .brand-title p { margin: 2px 0 0; font-size: 11px; color: var(--muted); }
 
-    /* COMPACT TOP ICON NAVIGATION */
     .compact-nav {
       display: flex;
       align-items: center;
@@ -210,6 +209,22 @@
     }
 
     .top-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+
+    .sync-chip {
+      padding: 5px 9px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--brand);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .sync-chip.offline {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent);
+      border-color: rgba(245, 158, 11, 0.35);
+    }
 
     .role-chip {
       padding: 5px 9px;
@@ -494,7 +509,6 @@
 
     .btn-group { display: flex; flex-wrap: wrap; gap: 6px; }
 
-    /* LOYALTY / MEMBERSHIP CARD PREVIEW */
     .loyalty-card-box {
       background: linear-gradient(135deg, #064e3b 0%, #0f172a 65%, #78350f 100%);
       color: #ffffff;
@@ -546,7 +560,6 @@
       color: #e2e8f0;
     }
 
-    /* SINGLE PAGE INVOICE */
     .invoice-sheet {
       background: #ffffff;
       color: #0f172a;
@@ -765,7 +778,7 @@
       <div class="login-logo">
         <img src="ahb_logo.png" alt="AHB Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;color:#ea580c;font-size:18px;&quot;>AHB</span>';" />
       </div>
-      <span class="tag">ARHAM HUNGER BOX • POS</span>
+      <span class="tag">ARHAM HUNGER BOX • CLOUD POS</span>
       <h2>Counter Sign In</h2>
       <p class="sub">Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera • Phone: 0301-5977178</p>
 
@@ -834,13 +847,14 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>Staff</span>
         </button>
-        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Stock, Reports & Loyalty Cards">
+        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Cloud Sync, Stock, Reports & Loyalty Cards">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Settings</span>
         </button>
       </nav>
 
       <div class="top-actions">
+        <span id="cloudSyncBadge" class="sync-chip offline">Local Mode</span>
         <span id="roleBadge" class="role-chip">ADMIN</span>
         <button class="btn-outline btn-sm" onclick="switchTheme()">Theme</button>
         <button class="btn-outline btn-sm" onclick="logoutUser()">Logout</button>
@@ -895,7 +909,7 @@
             <div class="box">
               <div class="box-head">
                 <h2>Active Bill</h2>
-                <span id="currentOrderBadge" class="order-tag">Order #001</span>
+                <span id="currentOrderBadge" class="order-tag">Order #000</span>
               </div>
 
               <div class="bill-meta-banner">
@@ -904,7 +918,6 @@
                 Phone: <strong>0301-5977178</strong> • Free Delivery Upto 3km
               </div>
 
-              <!-- LOYALTY MEMBERSHIP LOOKUP ON BILL -->
               <div style="background:var(--panel-2); border:1px dashed var(--accent); border-radius:9px; padding:8px 10px; margin-bottom:10px;">
                 <label for="billMemberCode" style="color:var(--accent); font-weight:700;">Loyalty Card # or Member Mobile (Auto-Discount)</label>
                 <div style="display:flex; gap:6px;">
@@ -1074,7 +1087,6 @@
             </div>
           </div>
 
-          <!-- STAFF MESSAGING SYSTEM -->
           <div>
             <div class="box">
               <div class="box-head">
@@ -1107,12 +1119,29 @@
         </div>
       </div>
 
-      <!-- SECTION 3: SETTINGS (ADMIN ONLY — PASSWORDS, MEMBERSHIP CARDS, ADD/RESTOCK, WEEKLY/MONTHLY SETTLEMENT) -->
+      <!-- SECTION 3: SETTINGS -->
       <div id="sectionSETTINGS" style="display:none;">
         <div class="settings-grid">
           <!-- LEFT COLUMN OF SETTINGS -->
           <div>
-            <!-- 1. MEMBERSHIP / LOYALTY CARD GENERATOR -->
+            <!-- CLOUD SYNC CONFIGURATION (SAME ORDERS ON LAPTOP & MOBILE) -->
+            <div class="box" style="border-color: var(--info);">
+              <div class="box-head">
+                <h2>Cloud Sync (Same Orders on Laptop & Mobile)</h2>
+              </div>
+              <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
+                Paste your free <strong>Firebase Realtime Database URL</strong> below on both Laptop and Mobile so orders, stock, and staff sync automatically across all devices.
+              </p>
+              <label for="firebaseUrlInput">Firebase Database URL</label>
+              <input id="firebaseUrlInput" type="url" placeholder="https://your-project-id-default-rtdb.firebaseio.com" />
+              <div class="btn-group">
+                <button class="btn-sky" onclick="saveCloudUrl()">Connect & Sync Now</button>
+                <button class="btn-outline" onclick="pullFromCloud()">Refresh From Cloud</button>
+              </div>
+              <div id="cloudMsg" class="ok-text"></div>
+            </div>
+
+            <!-- MEMBERSHIP / LOYALTY CARD GENERATOR -->
             <div class="box">
               <div class="box-head">
                 <h2>Membership / Loyalty Card System</h2>
@@ -1137,7 +1166,6 @@
               </div>
               <button class="btn-brand" onclick="createLoyaltyMember()">Generate Membership Card</button>
 
-              <!-- GENERATED LOYALTY CARD PREVIEW -->
               <div id="loyaltyCardPrintArea" class="loyalty-card-box" style="display:none;">
                 <div class="loyalty-card-top">
                   <strong>ARHAM HUNGER BOX</strong>
@@ -1167,7 +1195,7 @@
               </div>
             </div>
 
-            <!-- 2. PASSWORDS & RECOVERY PIN -->
+            <!-- PASSWORDS & RECOVERY PIN -->
             <div class="box">
               <div class="box-head">
                 <h2>Passwords & Recovery PIN</h2>
@@ -1193,7 +1221,7 @@
 
           <!-- RIGHT COLUMN OF SETTINGS -->
           <div>
-            <!-- 3. ADD / RESTOCK ITEM (MOVED TO SETTINGS) -->
+            <!-- ADD / RESTOCK ITEM -->
             <div class="box" id="adminPanel">
               <div class="box-head">
                 <h2>Add / Restock Menu Item (Admin)</h2>
@@ -1221,7 +1249,7 @@
               <button class="btn-amber" onclick="upsertMenuItem()">Save / Restock Item</button>
             </div>
 
-            <!-- 4. WEEKLY & MONTHLY SALES BILL (MOVED TO SETTINGS) -->
+            <!-- WEEKLY & MONTHLY SALES BILL -->
             <div class="box">
               <div class="box-head">
                 <h2>Weekly & Monthly Sales Bill (Manager Settlement)</h2>
@@ -1243,7 +1271,7 @@
               </div>
             </div>
 
-            <!-- 5. SALES EXPORT & SYSTEM RESET -->
+            <!-- SALES EXPORT & SYSTEM RESET -->
             <div class="box">
               <div class="box-head">
                 <h2>Sales Export & Reset</h2>
@@ -1276,8 +1304,12 @@
       THEME: "ahb_pos_theme_v2",
       STAFF: "ahb_pos_staff_v2",
       STAFF_LOGS: "ahb_pos_staff_logs_v2",
-      MEMBERS: "ahb_pos_members_v2"
+      MEMBERS: "ahb_pos_members_v2",
+      CLOUD_URL: "ahb_pos_cloud_url_v2"
     };
+
+    // OPTIONAL: Paste your Firebase Realtime Database URL inside quotes below so you don't even have to enter it in Settings
+    const DEFAULT_CLOUD_URL = "";
 
     const pizza800 = [
       { label: "S", price: 800 },
@@ -1417,11 +1449,11 @@
 
     let items = JSON.parse(localStorage.getItem(DB.MENU)) || starterMenu;
     let orders = JSON.parse(localStorage.getItem(DB.SALES)) || [];
-    // ORDER NUMBER STARTS AT 1 -> FORMATTED AS 001
-    let orderCounter = Number(localStorage.getItem(DB.ORDER_SEQ)) || 1;
+    let orderCounter = localStorage.getItem(DB.ORDER_SEQ) !== null ? Number(localStorage.getItem(DB.ORDER_SEQ)) : 0;
     let staffList = JSON.parse(localStorage.getItem(DB.STAFF)) || [];
     let staffMessageLogs = JSON.parse(localStorage.getItem(DB.STAFF_LOGS)) || [];
     let loyaltyMembers = JSON.parse(localStorage.getItem(DB.MEMBERS)) || [];
+    let cloudBaseUrl = (localStorage.getItem(DB.CLOUD_URL) || DEFAULT_CLOUD_URL).replace(/\/+$/, "");
 
     let role = null;
     let activeCat = "All";
@@ -1431,6 +1463,7 @@
     let latestOrderNo = null;
     let latestPeriodText = "";
     let latestPeriodType = "summary";
+    let cloudPollTimer = null;
 
     if (localStorage.getItem(DB.THEME) === "light") {
       document.body.classList.add("light-theme");
@@ -1441,7 +1474,14 @@
       if (badge) badge.textContent = "Order #" + formatCode(orderCounter);
     }
 
-    function syncStore() {
+    function updateCloudBadge(statusText, isOnline) {
+      const badge = document.getElementById("cloudSyncBadge");
+      if (!badge) return;
+      badge.textContent = statusText;
+      badge.classList.toggle("offline", !isOnline);
+    }
+
+    function saveLocalCache() {
       localStorage.setItem(DB.MENU, JSON.stringify(items));
       localStorage.setItem(DB.SALES, JSON.stringify(orders));
       localStorage.setItem(DB.ORDER_SEQ, String(orderCounter));
@@ -1450,6 +1490,111 @@
       localStorage.setItem(DB.STAFF_LOGS, JSON.stringify(staffMessageLogs));
       localStorage.setItem(DB.MEMBERS, JSON.stringify(loyaltyMembers));
       updateOrderBadge();
+    }
+
+    async function pushToCloud() {
+      if (!cloudBaseUrl) {
+        updateCloudBadge("Local Mode", false);
+        return;
+      }
+      try {
+        updateCloudBadge("Syncing...", true);
+        const payload = {
+          items,
+          orders,
+          orderCounter,
+          auth,
+          staffList,
+          staffMessageLogs,
+          loyaltyMembers,
+          updatedAt: Date.now()
+        };
+        const res = await fetch(`${cloudBaseUrl}/ahb_pos_data.json`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error("Cloud write failed");
+        updateCloudBadge("Cloud Synced", true);
+      } catch (err) {
+        updateCloudBadge("Sync Error", false);
+      }
+    }
+
+    async function pullFromCloud(silent = false) {
+      if (!cloudBaseUrl) {
+        updateCloudBadge("Local Mode", false);
+        return;
+      }
+      try {
+        const res = await fetch(`${cloudBaseUrl}/ahb_pos_data.json`);
+        if (!res.ok) throw new Error("Cloud read failed");
+        const data = await res.json();
+
+        if (!data) {
+          // Database is empty on first connect — upload current device data to cloud
+          await pushToCloud();
+          if (!silent) {
+            const msg = document.getElementById("cloudMsg");
+            if (msg) msg.textContent = "Connected! Initial data uploaded to Cloud.";
+          }
+          return;
+        }
+
+        if (Array.isArray(data.items) && data.items.length) items = data.items;
+        if (Array.isArray(data.orders)) orders = data.orders;
+        if (typeof data.orderCounter === "number") orderCounter = data.orderCounter;
+        if (data.auth) auth = data.auth;
+        if (Array.isArray(data.staffList)) staffList = data.staffList;
+        if (Array.isArray(data.staffMessageLogs)) staffMessageLogs = data.staffMessageLogs;
+        if (Array.isArray(data.loyaltyMembers)) loyaltyMembers = data.loyaltyMembers;
+
+        saveLocalCache();
+        updateOrderBadge();
+        renderCategories();
+        renderMenu();
+        renderMetrics();
+        if (role === "ADMIN") {
+          renderStaff();
+          renderStaffLogs();
+          renderMembers();
+        }
+        updateCloudBadge("Cloud Synced", true);
+        if (!silent) {
+          const msg = document.getElementById("cloudMsg");
+          if (msg) msg.textContent = "Synced! Latest orders & data loaded from Cloud.";
+        }
+      } catch (err) {
+        updateCloudBadge("Sync Error", false);
+        if (!silent) {
+          const msg = document.getElementById("cloudMsg");
+          if (msg) {
+            msg.style.color = "var(--danger)";
+            msg.textContent = "Could not connect to Firebase URL. Check rules/URL.";
+          }
+        }
+      }
+    }
+
+    function saveCloudUrl() {
+      if (role !== "ADMIN") return;
+      const rawUrl = (document.getElementById("firebaseUrlInput").value || "").trim().replace(/\/+$/, "");
+      const msg = document.getElementById("cloudMsg");
+      if (!rawUrl || !rawUrl.startsWith("https://")) {
+        msg.style.color = "var(--danger)";
+        msg.textContent = "Please enter a valid https:// Firebase Realtime Database URL.";
+        return;
+      }
+      cloudBaseUrl = rawUrl;
+      localStorage.setItem(DB.CLOUD_URL, cloudBaseUrl);
+      msg.style.color = "var(--brand)";
+      msg.textContent = "Connecting to Cloud...";
+      pullFromCloud(false);
+    }
+
+    function syncStore() {
+      saveLocalCache();
+      pushToCloud();
     }
 
     function switchTheme() {
@@ -1495,7 +1640,10 @@
       msg.textContent = `${targetRole} password reset! You can sign in now.`;
     }
 
-    function loginUser() {
+    async function loginUser() {
+      if (cloudBaseUrl) {
+        await pullFromCloud(true);
+      }
       const r = document.getElementById("roleSelect").value;
       const p = document.getElementById("passInput").value;
       const err = document.getElementById("loginErr");
@@ -1515,6 +1663,8 @@
 
       const isAdmin = role === "ADMIN";
       document.getElementById("compactAdminNav").style.display = isAdmin ? "flex" : "none";
+      const urlInput = document.getElementById("firebaseUrlInput");
+      if (urlInput) urlInput.value = cloudBaseUrl;
 
       switchSection("POS");
       updateOrderBadge();
@@ -1527,12 +1677,18 @@
         renderStaffLogs();
         renderMembers();
       }
+
+      if (cloudPollTimer) clearInterval(cloudPollTimer);
+      if (cloudBaseUrl) {
+        cloudPollTimer = setInterval(() => pullFromCloud(true), 8000);
+      }
     }
 
     function logoutUser() {
       role = null;
       bill = [];
       activeMemberCard = null;
+      if (cloudPollTimer) clearInterval(cloudPollTimer);
       closeVariantPicker();
       document.getElementById("dashboardShell").style.display = "none";
       document.getElementById("loginScreen").style.display = "flex";
@@ -1700,7 +1856,7 @@
       document.getElementById("updCashier").value = "";
       document.getElementById("updPin").value = "";
       msg.style.color = "var(--brand)";
-      msg.textContent = "Settings saved successfully.";
+      msg.textContent = "Settings saved & synced across devices.";
     }
 
     /* STAFF MANAGEMENT */
@@ -2093,7 +2249,7 @@
       renderCategories();
       renderMenu();
       renderMetrics();
-      alert("Item saved / restocked successfully!");
+      alert("Item saved / restocked & synced!");
     }
 
     function addBillItem(id) {
@@ -2164,10 +2320,15 @@
       document.getElementById("bGrand").textContent = "PKR " + c.total.toFixed(2);
     }
 
-    function generateBill() {
+    async function generateBill() {
       if (bill.length === 0) {
         alert("Bill is empty.");
         return;
+      }
+
+      // Fetch latest cloud sequence before creating bill so two devices never clash on order numbers
+      if (cloudBaseUrl) {
+        await pullFromCloud(true);
       }
 
       const orderType = document.getElementById("orderType").value;
@@ -2426,13 +2587,13 @@
 
     function wipeSalesData() {
       if (role !== "ADMIN") return;
-      if (!confirm("Reset menu, stock, order sequence (#001), and sales records?")) return;
+      if (!confirm("Reset menu, stock, order sequence (#000), and sales records on ALL synced devices?")) return;
       localStorage.removeItem(DB.MENU);
       localStorage.removeItem(DB.SALES);
       localStorage.removeItem(DB.ORDER_SEQ);
       items = [...starterMenu];
       orders = [];
-      orderCounter = 1;
+      orderCounter = 0;
       bill = [];
       activeMemberCard = null;
       latestReceiptText = "";
