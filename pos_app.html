@@ -251,7 +251,7 @@
     }
 
     .wrap {
-      max-width: 1460px;
+      max-width: 1520px;
       width: 100%;
       margin: auto;
       padding: 16px;
@@ -296,7 +296,7 @@
 
     .dash-grid {
       display: grid;
-      grid-template-columns: 1.85fr 1.05fr;
+      grid-template-columns: 1.95fr 1.05fr;
       gap: 16px;
       align-items: start;
     }
@@ -418,38 +418,52 @@
       border-color: var(--brand);
     }
 
+    /* 5 ITEMS PER ROW COMPACT MENU GRID */
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    @media (max-width: 1280px) {
+      .menu-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    @media (max-width: 900px) {
+      .menu-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 560px) {
+      .menu-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     .pos-card {
       background: var(--panel-2);
       border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 11px;
+      border-radius: 10px;
+      padding: 8px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 8px;
+      gap: 6px;
     }
 
     .code-badge {
       display: inline-block;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
       color: var(--info);
       background: rgba(56, 189, 248, 0.14);
       border: 1px solid rgba(56, 189, 248, 0.35);
-      border-radius: 6px;
-      padding: 2px 7px;
-      margin-bottom: 5px;
+      border-radius: 5px;
+      padding: 1px 6px;
+      margin-bottom: 4px;
     }
 
-    .pos-card .title { font-weight: 700; font-size: 14px; }
-    .pos-card .subcat { font-size: 11px; color: var(--muted); }
-    .pos-card .amt { font-weight: 800; color: var(--brand); font-size: 14px; }
+    .pos-card .title { font-weight: 700; font-size: 12.5px; line-height: 1.25; }
+    .pos-card .subcat { font-size: 10px; color: var(--muted); margin-top: 2px; }
+    .pos-card .amt { font-weight: 800; color: var(--brand); font-size: 12.5px; }
+    .pos-card button { padding: 6px 8px; font-size: 11px; border-radius: 7px; }
 
     .variant-picker {
       background: var(--panel);
@@ -833,13 +847,10 @@
       <h2>Counter Sign In</h2>
       <p class="sub">Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera • Phone: 0301-5977178</p>
 
-      <label for="roleSelect">Select Role</label>
-      <select id="roleSelect">
-        <option value="ADMIN">Admin</option>
-        <option value="CASHIER">Cashier</option>
-      </select>
+      <label for="usernameInput">Username</label>
+      <input id="usernameInput" type="text" placeholder="Enter username" onkeydown="if(event.key==='Enter') loginUser()" />
 
-      <label for="passInput">Role Password</label>
+      <label for="passInput">Password</label>
       <input id="passInput" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter') loginUser()" />
 
       <div class="login-links">
@@ -851,7 +862,7 @@
       </div>
 
       <div id="loginErr" class="err-text"></div>
-      <button class="btn-brand" style="width:100%;" onclick="loginUser()">Open Dashboard</button>
+      <button class="btn-brand" style="width:100%;" onclick="loginUser()">Login</button>
 
       <div class="dev-credit-box">
         Software Developed by Umair Ahmad
@@ -859,12 +870,12 @@
 
       <!-- FORGOT PASSWORD PANEL -->
       <div id="forgotBox" class="forgot-panel">
-        <h4>Reset Role Password</h4>
-        <p class="sub" style="margin-bottom:8px;">Enter Admin Recovery PIN to reset Admin or Cashier password.</p>
-        <label for="resetRole">Role to Reset</label>
+        <h4>Reset Password</h4>
+        <p class="sub" style="margin-bottom:8px;">Enter Recovery PIN to reset Admin or Cashier password.</p>
+        <label for="resetRole">Account Username</label>
         <select id="resetRole">
-          <option value="ADMIN">Admin</option>
-          <option value="CASHIER">Cashier</option>
+          <option value="ADMIN">admin</option>
+          <option value="CASHIER">cashier</option>
         </select>
         <label for="recoveryPinInput">Recovery PIN</label>
         <input id="recoveryPinInput" type="password" placeholder="Enter Recovery PIN" />
@@ -1855,25 +1866,36 @@
       document.getElementById("recoveryPinInput").value = "";
       document.getElementById("resetNewPass").value = "";
       msg.style.color = "var(--brand)";
-      msg.textContent = `${targetRole} password reset! You can sign in now.`;
+      msg.textContent = `Password reset! You can login now.`;
     }
 
     async function loginUser() {
       if (cloudBaseUrl) {
         await pullFromCloud(true);
       }
-      const r = document.getElementById("roleSelect").value;
+      const rawUser = (document.getElementById("usernameInput").value || "").trim().toUpperCase();
       const p = document.getElementById("passInput").value;
       const err = document.getElementById("loginErr");
 
-      if (p !== auth[r]) {
-        err.textContent = "Wrong password for " + r + ".";
+      if (!rawUser) {
+        err.textContent = "Please enter your username.";
+        return;
+      }
+
+      if (rawUser !== "ADMIN" && rawUser !== "CASHIER") {
+        err.textContent = "Invalid username.";
+        return;
+      }
+
+      if (p !== auth[rawUser]) {
+        err.textContent = "Invalid username or password.";
         return;
       }
 
       err.textContent = "";
+      document.getElementById("usernameInput").value = "";
       document.getElementById("passInput").value = "";
-      role = r;
+      role = rawUser;
 
       document.getElementById("loginScreen").style.display = "none";
       document.getElementById("dashboardShell").style.display = "block";
@@ -2005,7 +2027,6 @@
       document.getElementById("expMonthly").textContent = "PKR " + monthlyExpenses.toFixed(2);
       document.getElementById("expCount").textContent = String(expensesList.length);
 
-      // Update live monthly profit card
       const monthlySales = orders
         .filter(o => String(o.date || "").startsWith(monthPrefix))
         .reduce((s, o) => s + Number(o.total || 0), 0);
@@ -2471,14 +2492,14 @@
         card.className = "pos-card";
         const hasVar = Array.isArray(it.variants) && it.variants.length > 0;
         const priceLabel = hasVar
-          ? `From PKR ${Number(it.variants[0].price).toFixed(2)}`
-          : `PKR ${Number(it.price).toFixed(2)}`;
+          ? `From PKR ${Number(it.variants[0].price).toFixed(0)}`
+          : `PKR ${Number(it.price).toFixed(0)}`;
         const btnAction = hasVar ? `openVariantPicker(${it.id})` : `addBillItem(${it.id})`;
-        const btnText = hasVar ? "Select Size/Option" : "+ Add";
+        const btnText = hasVar ? "Select Size" : "+ Add";
 
         card.innerHTML = `
           <div>
-            <span class="code-badge">Code: ${it.code || formatCode(it.id)}</span>
+            <span class="code-badge">${it.code || formatCode(it.id)}</span>
             <div class="title">${it.name}</div>
             <div class="subcat">${it.category}</div>
           </div>
@@ -2805,7 +2826,6 @@
 
       const totalOrdersCount = filteredOrders.length;
 
-      // Payment Breakdown
       const cashSales = filteredOrders
         .filter(o => (o.paymentMethod || "Cash") === "Cash")
         .reduce((s, o) => s + Number(o.total || 0), 0);
@@ -2823,7 +2843,6 @@
       const totalTax = filteredOrders.reduce((s, o) => s + Number(o.tax || 0), 0);
       const combinedSales = cashSales + cardSales + onlineSales;
 
-      // Deductions: Paid Staff Salaries & Expenses
       const paidSalariesTotal = staffList
         .filter(s => s.paid)
         .reduce((s, st) => s + Number(st.salary || 0), 0);
@@ -2944,7 +2963,6 @@
       document.getElementById("mOnline").textContent = "PKR " + onlineToday.toFixed(2);
       document.getElementById("mNet").textContent = "PKR " + net.toFixed(2);
 
-      // Render Today's Payment Log Table
       const payBody = document.getElementById("todayPaymentRows");
       if (payBody) {
         payBody.innerHTML = "";
