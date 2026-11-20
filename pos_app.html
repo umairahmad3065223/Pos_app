@@ -972,17 +972,28 @@
       return String(num).padStart(3, "0");
     }
 
+    function getLocalDateIso(dateObj = new Date()) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const d = String(dateObj.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    }
+
     const starterMenu = rawStarterMenu.map((item, idx) => ({
       ...item,
       id: idx + 1,
       code: formatCode(idx + 1)
     }));
 
+    function cloneDefaultMenu() {
+      return JSON.parse(JSON.stringify(starterMenu));
+    }
+
     let auth = JSON.parse(localStorage.getItem(DB.PASS)) || {
       ADMIN: "admin123",
       CASHIER: "cashier123"
     };
-    let items = JSON.parse(localStorage.getItem(DB.MENU)) || starterMenu;
+    let items = JSON.parse(localStorage.getItem(DB.MENU)) || cloneDefaultMenu();
     let orders = JSON.parse(localStorage.getItem(DB.SALES)) || [];
     let orderCounter = Number(localStorage.getItem(DB.ORDER_SEQ)) || 1001;
 
@@ -1271,11 +1282,12 @@
       body.innerHTML = "";
       bill.forEach(b => {
         const tr = document.createElement("tr");
+        const safeKey = b.lineKey.replace(/'/g, "\\'");
         tr.innerHTML = `
           <td><b>[${b.code}]</b> ${b.name}</td>
           <td>${b.qty}</td>
           <td>PKR ${(b.price * b.qty).toFixed(2)}</td>
-          <td><button class="btn-red" style="padding:3px 7px;" onclick="dropBillItem('${b.lineKey}')">X</button></td>
+          <td><button class="btn-red" style="padding:3px 7px;" onclick="dropBillItem('${safeKey}')">X</button></td>
         `;
         body.appendChild(tr);
       });
@@ -1298,7 +1310,7 @@
       const mobile = document.getElementById("cMobile").value.trim() || "N/A";
       const c = calcBill();
       const now = new Date();
-      const dateIso = now.toISOString().slice(0, 10);
+      const dateIso = getLocalDateIso(now);
       const timeStr = now.toLocaleString();
       const currentOrderNo = orderCounter;
       orderCounter += 1;
@@ -1421,13 +1433,13 @@
 
       if (periodMode === "WEEKLY") {
         const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-        const cutoffIso = sevenDaysAgo.toISOString().slice(0, 10);
-        const todayIso = now.toISOString().slice(0, 10);
+        const cutoffIso = getLocalDateIso(sevenDaysAgo);
+        const todayIso = getLocalDateIso(now);
         filteredOrders = orders.filter(o => o.date >= cutoffIso && o.date <= todayIso);
         titleLabel = "WEEKLY SALES SETTLEMENT BILL (LAST 7 DAYS)";
         rangeLabel = `${cutoffIso} to ${todayIso}`;
       } else {
-        const monthPrefix = now.toISOString().slice(0, 7);
+        const monthPrefix = getLocalDateIso(now).slice(0, 7);
         filteredOrders = orders.filter(o => String(o.date || "").startsWith(monthPrefix));
         titleLabel = "MONTHLY SALES SETTLEMENT BILL";
         rangeLabel = `Month: ${monthPrefix}`;
@@ -1514,7 +1526,7 @@
     }
 
     function renderMetrics() {
-      const today = new Date().toISOString().slice(0, 10);
+      const today = getLocalDateIso();
       const todayList = orders.filter(o => o.date === today);
       const disc = todayList.reduce((s, o) => s + o.discount, 0);
       const net = todayList.reduce((s, o) => s + o.total, 0);
@@ -1541,7 +1553,7 @@
       localStorage.removeItem(DB.MENU);
       localStorage.removeItem(DB.SALES);
       localStorage.removeItem(DB.ORDER_SEQ);
-      items = [...starterMenu];
+      items = cloneDefaultMenu();
       orders = [];
       orderCounter = 1001;
       bill = [];
