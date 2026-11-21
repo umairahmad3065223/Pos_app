@@ -257,9 +257,9 @@
       padding: 16px;
     }
 
-    .summary-strip-5 {
+    .summary-strip-6 {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 12px;
       margin-bottom: 16px;
     }
@@ -271,12 +271,12 @@
       margin-bottom: 16px;
     }
 
-    @media (max-width: 1050px) {
-      .summary-strip-5 { grid-template-columns: repeat(3, 1fr); }
+    @media (max-width: 1200px) {
+      .summary-strip-6 { grid-template-columns: repeat(3, 1fr); }
     }
 
     @media (max-width: 750px) {
-      .summary-strip, .summary-strip-5 { grid-template-columns: repeat(2, 1fr); }
+      .summary-strip, .summary-strip-6 { grid-template-columns: repeat(2, 1fr); }
     }
 
     .metric-card {
@@ -292,7 +292,7 @@
     .metric-card.purple { border-left-color: var(--purple); }
     .metric-card.red { border-left-color: var(--danger); }
     .metric-card span { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
-    .metric-card strong { display: block; margin-top: 4px; font-size: 17px; }
+    .metric-card strong { display: block; margin-top: 4px; font-size: 16px; }
 
     .dash-grid {
       display: grid;
@@ -701,57 +701,6 @@
       box-shadow: 0 -8px 24px rgba(0,0,0,0.4);
     }
 
-    .loyalty-card-box {
-      background: linear-gradient(135deg, #064e3b 0%, #0f172a 65%, #78350f 100%);
-      color: #ffffff;
-      border: 2px solid #f59e0b;
-      border-radius: 14px;
-      padding: 16px;
-      margin-top: 12px;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.3);
-      position: relative;
-    }
-
-    .loyalty-card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      padding-bottom: 8px;
-      margin-bottom: 10px;
-    }
-
-    .loyalty-card-top strong {
-      font-size: 15px;
-      letter-spacing: 0.5px;
-      color: #fbbf24;
-    }
-
-    .loyalty-badge {
-      background: #10b981;
-      color: #05160e;
-      font-size: 10px;
-      font-weight: 900;
-      padding: 3px 8px;
-      border-radius: 999px;
-      text-transform: uppercase;
-    }
-
-    .loyalty-card-num {
-      font-family: "Consolas", monospace;
-      font-size: 20px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      color: #38bdf8;
-      margin: 6px 0;
-    }
-
-    .loyalty-card-details {
-      font-size: 12px;
-      line-height: 1.5;
-      color: #e2e8f0;
-    }
-
     /* 58MM / 3-INCH THERMAL RECEIPT PREVIEW & PRINT DESIGN */
     .thermal-preview-wrap {
       display: flex;
@@ -869,6 +818,7 @@
       font-size: 8.5px;
       font-weight: 700;
       color: #000000;
+      line-height: 1.35;
     }
 
     .period-output {
@@ -923,23 +873,6 @@
         border: none !important;
         font-size: 9px !important;
       }
-      body.print-card-mode #loyaltyCardPrintArea,
-      body.print-card-mode #loyaltyCardPrintArea * {
-        visibility: visible;
-      }
-      body.print-card-mode #loyaltyCardPrintArea {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 58mm !important;
-        border: 1px solid #000 !important;
-        background: #ffffff !important;
-        color: #000000 !important;
-        padding: 3mm !important;
-      }
-      body.print-card-mode #loyaltyCardPrintArea * {
-        color: #000000 !important;
-      }
       body.print-qr-mode #tableQrPrintArea,
       body.print-qr-mode #tableQrPrintArea * {
         visibility: visible;
@@ -956,11 +889,11 @@
         padding: 3mm !important;
         box-shadow: none !important;
       }
-      body:not(.print-period-mode):not(.print-card-mode):not(.print-qr-mode) #printableReceipt,
-      body:not(.print-period-mode):not(.print-card-mode):not(.print-qr-mode) #printableReceipt * {
+      body:not(.print-period-mode):not(.print-qr-mode) #printableReceipt,
+      body:not(.print-period-mode):not(.print-qr-mode) #printableReceipt * {
         visibility: visible;
       }
-      body:not(.print-period-mode):not(.print-card-mode):not(.print-qr-mode) #printableReceipt {
+      body:not(.print-period-mode):not(.print-qr-mode) #printableReceipt {
         position: fixed;
         left: 0;
         top: 0;
@@ -1202,7 +1135,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>Staff</span>
         </button>
-        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Counter & Table QR, Quick Price Update, Printers & Reports">
+        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Counter & Table QR, Quick Price Update, Printers, Login Log & Reports">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Settings</span>
         </button>
@@ -1219,8 +1152,8 @@
     <div class="wrap">
       <!-- SECTION 1: POS BILLING -->
       <div id="sectionPOS">
-        <!-- LIVE PAYMENT BREAKDOWN METRICS -->
-        <div class="summary-strip-5">
+        <!-- LIVE PAYMENT & DISCOUNT BREAKDOWN METRICS -->
+        <div class="summary-strip-6">
           <div class="metric-card">
             <span>Today's Orders</span>
             <strong id="mOrders">0</strong>
@@ -1236,6 +1169,10 @@
           <div class="metric-card purple">
             <span>Online Payment (Today)</span>
             <strong id="mOnline">PKR 0.00</strong>
+          </div>
+          <div class="metric-card red">
+            <span>Discount Given (Today)</span>
+            <strong id="mDiscountToday">PKR 0.00</strong>
           </div>
           <div class="metric-card amber">
             <span>Total Sales (Today)</span>
@@ -1276,7 +1213,7 @@
             <!-- TODAY'S PAYMENT LOG -->
             <div class="box">
               <div class="box-head">
-                <h2>Today's Payment Log (Cash / Card / Online)</h2>
+                <h2>Today's Payment & Discount Log (Cash / Card / Online)</h2>
               </div>
               <div class="table-scroll" style="max-height:260px; overflow-y:auto;">
                 <table>
@@ -1285,8 +1222,9 @@
                       <th>Order #</th>
                       <th>Customer</th>
                       <th>Table / Option</th>
-                      <th>Payment Method</th>
-                      <th>Amount</th>
+                      <th>Payment</th>
+                      <th>Discount</th>
+                      <th>Final Amount</th>
                     </tr>
                   </thead>
                   <tbody id="todayPaymentRows"></tbody>
@@ -1306,15 +1244,6 @@
                 <strong>Arham Hunger Box</strong><br />
                 Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera<br />
                 Phone: <strong>0301-5977178</strong> • Free Delivery Upto 3km
-              </div>
-
-              <div style="background:var(--panel-2); border:1px dashed var(--accent); border-radius:9px; padding:8px 10px; margin-bottom:10px;">
-                <label for="billMemberCode" style="color:var(--accent); font-weight:700;">Loyalty Card # or Member Mobile (Auto-Discount)</label>
-                <div style="display:flex; gap:6px;">
-                  <input id="billMemberCode" placeholder="e.g. AHB-001 or 03001234567" style="margin:0;" onchange="applyMembershipToBill()" />
-                  <button type="button" class="btn-amber btn-sm" onclick="applyMembershipToBill()">Apply</button>
-                </div>
-                <div id="billMemberInfo" style="font-size:11px; color:var(--brand); margin-top:4px;"></div>
               </div>
 
               <div class="row-2">
@@ -1380,17 +1309,17 @@
               <div class="row-2">
                 <div>
                   <label for="dPct">Discount (%)</label>
-                  <input id="dPct" type="number" min="0" max="100" value="0" onchange="renderBill()" />
+                  <input id="dPct" type="number" min="0" max="100" value="0" oninput="renderBill()" onchange="renderBill()" />
                 </div>
                 <div>
                   <label for="tPct">Tax (%)</label>
-                  <input id="tPct" type="number" min="0" max="50" value="0" onchange="renderBill()" />
+                  <input id="tPct" type="number" min="0" max="50" value="0" oninput="renderBill()" onchange="renderBill()" />
                 </div>
               </div>
 
               <div class="totals-box">
                 <div><span>Subtotal</span><span id="bSub">PKR 0.00</span></div>
-                <div><span>Discount</span><span id="bDisc">PKR 0.00</span></div>
+                <div><span>Discount</span><span id="bDisc" style="color:var(--danger);">PKR 0.00</span></div>
                 <div><span>Tax</span><span id="bTax">PKR 0.00</span></div>
                 <div class="grand"><span>Grand Total</span><span id="bGrand">PKR 0.00</span></div>
               </div>
@@ -1548,93 +1477,59 @@
           </div>
         </div>
 
-        <div class="dash-grid">
-          <div>
-            <div class="box">
-              <div class="box-head">
-                <h2>Add New Staff Member</h2>
-              </div>
-              <div class="row-4">
-                <div>
-                  <label for="stName">Staff Full Name</label>
-                  <input id="stName" placeholder="e.g. Bilal Khan" />
-                </div>
-                <div>
-                  <label for="stRole">Position / Role</label>
-                  <select id="stRole">
-                    <option value="Chef">Chef</option>
-                    <option value="Pizza Maker">Pizza Maker</option>
-                    <option value="Cashier">Cashier</option>
-                    <option value="Waiter">Waiter</option>
-                    <option value="Delivery Rider">Delivery Rider</option>
-                    <option value="Helper">Helper</option>
-                  </select>
-                </div>
-                <div>
-                  <label for="stPhone">Mobile Number (03XXXXXXXXX)</label>
-                  <input id="stPhone" type="tel" placeholder="03001234567" />
-                </div>
-                <div>
-                  <label for="stSalary">Monthly Salary (PKR)</label>
-                  <input id="stSalary" type="number" min="0" placeholder="25000" />
-                </div>
-              </div>
-              <button class="btn-brand" onclick="addStaffMember()">+ Add Staff Member</button>
+        <div class="box">
+          <div class="box-head">
+            <h2>Add New Staff Member</h2>
+          </div>
+          <div class="row-4">
+            <div>
+              <label for="stName">Staff Full Name</label>
+              <input id="stName" placeholder="e.g. Bilal Khan" />
             </div>
-
-            <div class="box">
-              <div class="box-head">
-                <h2>Staff List — Paid / Unpaid, Suspend & Remove</h2>
-                <button class="btn-outline btn-sm" onclick="resetMonthlySalaries()">Reset All to Unpaid</button>
-              </div>
-              <div class="table-scroll">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Name</th>
-                      <th>Role</th>
-                      <th>Mobile</th>
-                      <th>Salary</th>
-                      <th>Salary Status</th>
-                      <th>Duty Status</th>
-                      <th>Controls</th>
-                    </tr>
-                  </thead>
-                  <tbody id="staffRows"></tbody>
-                </table>
-              </div>
+            <div>
+              <label for="stRole">Position / Role</label>
+              <select id="stRole">
+                <option value="Chef">Chef</option>
+                <option value="Pizza Maker">Pizza Maker</option>
+                <option value="Cashier">Cashier</option>
+                <option value="Waiter">Waiter</option>
+                <option value="Delivery Rider">Delivery Rider</option>
+                <option value="Helper">Helper</option>
+              </select>
+            </div>
+            <div>
+              <label for="stPhone">Mobile Number (03XXXXXXXXX)</label>
+              <input id="stPhone" type="tel" placeholder="03001234567" />
+            </div>
+            <div>
+              <label for="stSalary">Monthly Salary (PKR)</label>
+              <input id="stSalary" type="number" min="0" placeholder="25000" />
             </div>
           </div>
+          <button class="btn-brand" onclick="addStaffMember()">+ Add Staff Member</button>
+        </div>
 
-          <div>
-            <div class="box">
-              <div class="box-head">
-                <h2>Send Message to Staff (Single or All)</h2>
-              </div>
-              <label for="msgRecipient">Select Staff Member or All Staff</label>
-              <select id="msgRecipient">
-                <option value="ALL">All Active Staff (Broadcast)</option>
-              </select>
-
-              <label for="msgText">Message Text</label>
-              <textarea id="msgText" placeholder="Write shift timing, salary update, or notice here..."></textarea>
-
-              <div class="btn-group">
-                <button class="btn-brand" onclick="sendStaffMessage('WHATSAPP')">Send via WhatsApp</button>
-                <button class="btn-sky" onclick="sendStaffMessage('SMS')">Send via SMS</button>
-                <button class="btn-outline" onclick="copyStaffMessage()">Copy Text</button>
-              </div>
-              <div id="staffMsgStatus" class="ok-text"></div>
-
-              <hr style="border:none; border-top:1px solid var(--line); margin:14px 0;" />
-              <div class="box-head">
-                <h2>Sent Messages Log</h2>
-              </div>
-              <div id="sentMessagesLog" style="max-height:240px; overflow-y:auto; font-size:12px; color:var(--muted);">
-                No messages sent yet.
-              </div>
-            </div>
+        <div class="box">
+          <div class="box-head">
+            <h2>Staff List — Paid / Unpaid, Suspend & Remove</h2>
+            <button class="btn-outline btn-sm" onclick="resetMonthlySalaries()">Reset All to Unpaid</button>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Mobile</th>
+                  <th>Salary</th>
+                  <th>Salary Status</th>
+                  <th>Duty Status</th>
+                  <th>Controls</th>
+                </tr>
+              </thead>
+              <tbody id="staffRows"></tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -1644,8 +1539,32 @@
         <div class="settings-grid">
           <!-- LEFT COLUMN OF SETTINGS -->
           <div>
-            <!-- TABLE & COUNTER PRO QR CODE GENERATOR -->
+            <!-- ADMIN & CASHIER LOGIN TIME HISTORY LOG -->
             <div class="box" style="border-color: var(--accent);">
+              <div class="box-head">
+                <h2>Admin & Cashier Login History (Sign-In Time Log)</h2>
+                <button class="btn-outline btn-sm" onclick="clearLoginLogs()">Clear Log</button>
+              </div>
+              <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
+                Automatically records the exact date and time whenever an <strong>Admin</strong> or <strong>Cashier</strong> signs in to the POS system.
+              </p>
+              <div class="table-scroll" style="max-height:250px; overflow-y:auto;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Role</th>
+                      <th>Username</th>
+                      <th>Date</th>
+                      <th>Login Time</th>
+                    </tr>
+                  </thead>
+                  <tbody id="loginHistoryRows"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- TABLE & COUNTER PRO QR CODE GENERATOR -->
+            <div class="box" style="border-color: var(--info);">
               <div class="box-head">
                 <h2>Counter & Table Pro QR Code Generator (Digital Menu)</h2>
               </div>
@@ -1757,7 +1676,10 @@
               </div>
               <div id="cloudMsg" class="ok-text"></div>
             </div>
+          </div>
 
+          <!-- RIGHT COLUMN OF SETTINGS -->
+          <div>
             <!-- USERNAME, PASSWORDS & RECOVERY PIN -->
             <div class="box">
               <div class="box-head">
@@ -1790,10 +1712,7 @@
               <button class="btn-brand" onclick="savePasswords()">Save Username & Passwords</button>
               <div id="passMsg" class="ok-text"></div>
             </div>
-          </div>
 
-          <!-- RIGHT COLUMN OF SETTINGS -->
-          <div>
             <!-- QUICK ITEM PRICE UPDATER BY CODE OR NAME -->
             <div class="box" style="border-color: var(--brand);">
               <div class="box-head">
@@ -1849,56 +1768,6 @@
               <button class="btn-amber" onclick="upsertMenuItem()">Save Menu Item</button>
             </div>
 
-            <!-- MEMBERSHIP / LOYALTY CARD GENERATOR -->
-            <div class="box">
-              <div class="box-head">
-                <h2>Membership / Loyalty Card System</h2>
-              </div>
-              <div class="row-3">
-                <div>
-                  <label for="memName">Customer Name</label>
-                  <input id="memName" placeholder="e.g. Usman Ali" />
-                </div>
-                <div>
-                  <label for="memPhone">Mobile Number</label>
-                  <input id="memPhone" type="tel" placeholder="03001234567" />
-                </div>
-                <div>
-                  <label for="memDisc">Discount (%)</label>
-                  <input id="memDisc" type="number" min="1" max="50" value="10" />
-                </div>
-              </div>
-              <button class="btn-brand" onclick="createLoyaltyMember()">Generate Membership Card</button>
-
-              <div id="loyaltyCardPrintArea" class="loyalty-card-box" style="display:none;">
-                <div class="loyalty-card-top">
-                  <strong>ARHAM HUNGER BOX</strong>
-                  <span class="loyalty-badge">VIP LOYALTY CARD</span>
-                </div>
-                <div id="cardPreviewNumber" class="loyalty-card-num">AHB-001</div>
-                <div id="cardPreviewDetails" class="loyalty-card-details"></div>
-              </div>
-              <div id="cardPrintActions" class="btn-group no-print" style="display:none; margin-top:8px;">
-                <button class="btn-sky btn-sm" onclick="printLoyaltyCard()">Print Card</button>
-              </div>
-
-              <div class="table-scroll" style="margin-top:14px;">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Card #</th>
-                      <th>Member Name</th>
-                      <th>Mobile</th>
-                      <th>Discount</th>
-                      <th>Orders</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody id="memberRows"></tbody>
-                </table>
-              </div>
-            </div>
-
             <!-- WEEKLY & MONTHLY SALES BILL -->
             <div class="box">
               <div class="box-head">
@@ -1910,7 +1779,7 @@
               </div>
 
               <div id="periodPrintArea" class="period-output">
-                <pre id="periodSettlementBox">Select Weekly or Monthly Settlement to view full Cash/Card/Online breakdown & Net Profit after Salary/Expenses.</pre>
+                <pre id="periodSettlementBox">Select Weekly or Monthly Settlement to view full Cash/Card/Online breakdown, Total Discounts & Net Profit after Salary/Expenses.</pre>
                 <div class="btn-group no-print">
                   <button class="btn-sky" onclick="printPeriodStatement()">Print Statement</button>
                   <button class="btn-outline" onclick="savePeriodTxt()">Save Statement .TXT</button>
@@ -1941,22 +1810,22 @@
       addressLine2: "Kheshgi Payan Chowk, District Nowshera",
       phone: "0301-5977178",
       deliveryNote: "Free Delivery Upto 3km",
-      devCredit: "Software Developed by Umair Ahmad"
+      devCredit: "Software Developed by Umair Ahmad",
+      devContact: "For Software Inquiries: 0306-5223123"
     };
 
     const DB = {
-      MENU: "ahb_pos_menu_v3",
-      SALES: "ahb_pos_sales_v3",
-      ORDER_SEQ: "ahb_pos_order_seq_v3",
-      PASS: "ahb_pos_pass_v3",
-      THEME: "ahb_pos_theme_v3",
-      STAFF: "ahb_pos_staff_v3",
-      STAFF_LOGS: "ahb_pos_staff_logs_v3",
-      MEMBERS: "ahb_pos_members_v3",
-      EXPENSES: "ahb_pos_expenses_v3",
-      CLOUD_URL: "ahb_pos_cloud_url_v3",
-      TABLE_QUEUE: "ahb_pos_table_queue_v3",
-      PERIPHERALS: "ahb_pos_peripherals_v3"
+      MENU: "ahb_pos_menu_v4",
+      SALES: "ahb_pos_sales_v4",
+      ORDER_SEQ: "ahb_pos_order_seq_v4",
+      PASS: "ahb_pos_pass_v4",
+      THEME: "ahb_pos_theme_v4",
+      STAFF: "ahb_pos_staff_v4",
+      LOGIN_LOGS: "ahb_pos_login_logs_v4",
+      EXPENSES: "ahb_pos_expenses_v4",
+      CLOUD_URL: "ahb_pos_cloud_url_v4",
+      TABLE_QUEUE: "ahb_pos_table_queue_v4",
+      PERIPHERALS: "ahb_pos_peripherals_v4"
     };
 
     const DEFAULT_CLOUD_URL = "";
@@ -2105,8 +1974,7 @@
     let orders = JSON.parse(localStorage.getItem(DB.SALES)) || [];
     let orderCounter = localStorage.getItem(DB.ORDER_SEQ) !== null ? Number(localStorage.getItem(DB.ORDER_SEQ)) : 0;
     let staffList = JSON.parse(localStorage.getItem(DB.STAFF)) || [];
-    let staffMessageLogs = JSON.parse(localStorage.getItem(DB.STAFF_LOGS)) || [];
-    let loyaltyMembers = JSON.parse(localStorage.getItem(DB.MEMBERS)) || [];
+    let loginHistoryLogs = JSON.parse(localStorage.getItem(DB.LOGIN_LOGS)) || [];
     let expensesList = JSON.parse(localStorage.getItem(DB.EXPENSES)) || [];
     let tableOrderQueue = JSON.parse(localStorage.getItem(DB.TABLE_QUEUE)) || [];
     let peripheralSettings = JSON.parse(localStorage.getItem(DB.PERIPHERALS)) || {
@@ -2125,7 +1993,6 @@
     let activeCustomerTable = "Counter Direct";
     let custSelectedOrderType = "Dine-In";
     let custSelectedPaymentMethod = "Cash";
-    let activeMemberCard = null;
     let latestReceiptText = "";
     let latestOrderNo = null;
     let latestPeriodText = "";
@@ -2159,8 +2026,7 @@
       localStorage.setItem(DB.ORDER_SEQ, String(orderCounter));
       localStorage.setItem(DB.PASS, JSON.stringify(auth));
       localStorage.setItem(DB.STAFF, JSON.stringify(staffList));
-      localStorage.setItem(DB.STAFF_LOGS, JSON.stringify(staffMessageLogs));
-      localStorage.setItem(DB.MEMBERS, JSON.stringify(loyaltyMembers));
+      localStorage.setItem(DB.LOGIN_LOGS, JSON.stringify(loginHistoryLogs));
       localStorage.setItem(DB.EXPENSES, JSON.stringify(expensesList));
       localStorage.setItem(DB.TABLE_QUEUE, JSON.stringify(tableOrderQueue));
       localStorage.setItem(DB.PERIPHERALS, JSON.stringify(peripheralSettings));
@@ -2180,8 +2046,7 @@
           orderCounter,
           auth,
           staffList,
-          staffMessageLogs,
-          loyaltyMembers,
+          loginHistoryLogs,
           expensesList,
           tableOrderQueue,
           updatedAt: Date.now()
@@ -2230,8 +2095,7 @@
           };
         }
         if (Array.isArray(data.staffList)) staffList = data.staffList;
-        if (Array.isArray(data.staffMessageLogs)) staffMessageLogs = data.staffMessageLogs;
-        if (Array.isArray(data.loyaltyMembers)) loyaltyMembers = data.loyaltyMembers;
+        if (Array.isArray(data.loginHistoryLogs)) loginHistoryLogs = data.loginHistoryLogs;
         if (Array.isArray(data.expensesList)) expensesList = data.expensesList;
         if (Array.isArray(data.tableOrderQueue)) tableOrderQueue = data.tableOrderQueue;
 
@@ -2244,8 +2108,7 @@
         if (role === "ADMIN") {
           renderExpenses();
           renderStaff();
-          renderStaffLogs();
-          renderMembers();
+          renderLoginHistory();
         }
         updateCloudBadge("Cloud Synced", true);
         if (!silent) {
@@ -2662,7 +2525,7 @@
     }
 
     function printTableQrPoster() {
-      document.body.classList.remove("print-period-mode", "print-card-mode");
+      document.body.classList.remove("print-period-mode");
       document.body.classList.add("print-qr-mode");
       window.print();
       setTimeout(() => document.body.classList.remove("print-qr-mode"), 400);
@@ -2726,7 +2589,10 @@
         </div>
         <div class="invoice-footer">
           Thermal Printer Working Perfectly!<br />
-          <div class="invoice-dev-credit">${RESTAURANT_INFO.devCredit}</div>
+          <div class="invoice-dev-credit">
+            ${RESTAURANT_INFO.devCredit}<br />
+            ${RESTAURANT_INFO.devContact}
+          </div>
         </div>
       `;
       printSingleBill();
@@ -2820,7 +2686,7 @@
       lookupQuickPriceItem();
     }
 
-    /* LOGIN & FORGOT PASSWORD */
+    /* LOGIN, LOGIN HISTORY LOG & FORGOT PASSWORD */
     function toggleLoginPassword(show) {
       document.getElementById("passInput").type = show ? "text" : "password";
     }
@@ -2858,6 +2724,37 @@
       msg.textContent = `Password reset! You can login now.`;
     }
 
+    function renderLoginHistory() {
+      const tbody = document.getElementById("loginHistoryRows");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      if (!loginHistoryLogs || loginHistoryLogs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--muted);">No login activity recorded yet.</td></tr>`;
+        return;
+      }
+
+      loginHistoryLogs.slice(0, 50).forEach(log => {
+        const pillClass = log.role === "ADMIN" ? "pill-unpaid" : "pill-card";
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><span class="status-pill ${pillClass}">${log.role}</span></td>
+          <td><b>${log.username}</b></td>
+          <td>${log.date}</td>
+          <td>${log.time}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function clearLoginLogs() {
+      if (role !== "ADMIN") return;
+      if (!confirm("Clear all Admin and Cashier login history records?")) return;
+      loginHistoryLogs = [];
+      syncStore();
+      renderLoginHistory();
+    }
+
     async function loginUser() {
       if (cloudBaseUrl) {
         await pullFromCloud(true);
@@ -2893,6 +2790,19 @@
       document.getElementById("passInput").value = "";
       role = matchedRole;
 
+      // RECORD ADMIN OR CASHIER LOGIN DATE & TIME
+      const loginNow = new Date();
+      loginHistoryLogs.unshift({
+        role: matchedRole,
+        username: rawUser,
+        date: loginNow.toLocaleDateString(),
+        time: loginNow.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })
+      });
+      if (loginHistoryLogs.length > 100) {
+        loginHistoryLogs = loginHistoryLogs.slice(0, 100);
+      }
+      syncStore();
+
       document.getElementById("loginScreen").style.display = "none";
       document.getElementById("dashboardShell").style.display = "block";
       document.getElementById("roleBadge").textContent = `${role} (${rawUser})`;
@@ -2917,8 +2827,7 @@
       if (isAdmin) {
         renderExpenses();
         renderStaff();
-        renderStaffLogs();
-        renderMembers();
+        renderLoginHistory();
       }
 
       if (cloudPollTimer) clearInterval(cloudPollTimer);
@@ -2930,7 +2839,6 @@
     function logoutUser() {
       role = null;
       bill = [];
-      activeMemberCard = null;
       if (cloudPollTimer) clearInterval(cloudPollTimer);
       closeVariantPicker();
       document.getElementById("dashboardShell").style.display = "none";
@@ -2954,10 +2862,9 @@
       }
       if (sec === "STAFF") {
         renderStaff();
-        renderStaffLogs();
       }
       if (sec === "SETTINGS") {
-        renderMembers();
+        renderLoginHistory();
         generateTableQrCode();
         loadPeripheralUi();
         document.getElementById("updAdminUser").placeholder = `Current: ${auth.ADMIN_USER}`;
@@ -3063,128 +2970,6 @@
         `;
         tbody.appendChild(tr);
       });
-    }
-
-    /* LOYALTY / MEMBERSHIP CARD SYSTEM */
-    function createLoyaltyMember() {
-      if (role !== "ADMIN") return;
-      const name = document.getElementById("memName").value.trim();
-      const phone = document.getElementById("memPhone").value.trim();
-      const discountPct = Number(document.getElementById("memDisc").value) || 0;
-
-      if (!name || !phone || discountPct <= 0 || discountPct > 50) {
-        alert("Enter valid customer name, mobile number, and discount (1-50%).");
-        return;
-      }
-
-      const nextNum = loyaltyMembers.length + 1;
-      const cardNumber = "AHB-" + formatCode(nextNum);
-      const issuedDate = getTodayIso();
-
-      const newMember = {
-        cardNumber,
-        name,
-        phone,
-        discountPct,
-        issuedDate,
-        ordersCount: 0
-      };
-
-      loyaltyMembers.unshift(newMember);
-      syncStore();
-      renderMembers();
-      showLoyaltyCardPreview(newMember);
-
-      document.getElementById("memName").value = "";
-      document.getElementById("memPhone").value = "";
-      document.getElementById("memDisc").value = "10";
-    }
-
-    function showLoyaltyCardPreview(member) {
-      const box = document.getElementById("loyaltyCardPrintArea");
-      const actions = document.getElementById("cardPrintActions");
-      document.getElementById("cardPreviewNumber").textContent = member.cardNumber;
-      document.getElementById("cardPreviewDetails").innerHTML = `
-        <strong>Member Name:</strong> ${member.name}<br/>
-        <strong>Mobile:</strong> ${member.phone}<br/>
-        <strong>Privilege Discount:</strong> ${member.discountPct}% OFF on Every Order<br/>
-        <strong>Issued Date:</strong> ${member.issuedDate} • Nowshera Branch
-      `;
-      box.style.display = "block";
-      actions.style.display = "flex";
-    }
-
-    function printLoyaltyCard() {
-      document.body.classList.remove("print-period-mode", "print-qr-mode");
-      document.body.classList.add("print-card-mode");
-      window.print();
-      setTimeout(() => document.body.classList.remove("print-card-mode"), 400);
-    }
-
-    function removeLoyaltyMember(cardNumber) {
-      if (role !== "ADMIN") return;
-      if (!confirm(`Delete membership card ${cardNumber}?`)) return;
-      loyaltyMembers = loyaltyMembers.filter(m => m.cardNumber !== cardNumber);
-      syncStore();
-      renderMembers();
-    }
-
-    function renderMembers() {
-      const tbody = document.getElementById("memberRows");
-      if (!tbody) return;
-      tbody.innerHTML = "";
-
-      if (loyaltyMembers.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--muted);">No loyalty members registered yet.</td></tr>`;
-        return;
-      }
-
-      loyaltyMembers.forEach(m => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><b style="color:var(--info);">${m.cardNumber}</b></td>
-          <td>${m.name}</td>
-          <td>${m.phone}</td>
-          <td><span class="status-pill pill-paid">${m.discountPct}% OFF</span></td>
-          <td>${m.ordersCount || 0}</td>
-          <td>
-            <div class="btn-group">
-              <button class="btn-sky btn-sm" onclick='showLoyaltyCardPreview(${JSON.stringify(m)})'>View Card</button>
-              <button class="btn-red btn-sm" onclick="removeLoyaltyMember('${m.cardNumber}')">Delete</button>
-            </div>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function applyMembershipToBill() {
-      const query = (document.getElementById("billMemberCode").value || "").trim().toUpperCase();
-      const infoEl = document.getElementById("billMemberInfo");
-      if (!query) {
-        activeMemberCard = null;
-        infoEl.textContent = "";
-        return;
-      }
-
-      const found = loyaltyMembers.find(
-        m => m.cardNumber.toUpperCase() === query || m.phone.replace(/\D/g, "") === query.replace(/\D/g, "")
-      );
-
-      if (!found) {
-        activeMemberCard = null;
-        infoEl.style.color = "var(--danger)";
-        infoEl.textContent = "Membership card / mobile not found.";
-        return;
-      }
-
-      activeMemberCard = found;
-      document.getElementById("cName").value = found.name;
-      document.getElementById("cMobile").value = found.phone;
-      document.getElementById("dPct").value = found.discountPct;
-      infoEl.style.color = "var(--brand)";
-      infoEl.textContent = `Card ${found.cardNumber} (${found.name}) applied — ${found.discountPct}% Loyalty Discount!`;
-      renderBill();
     }
 
     /* SETTINGS: USERNAME, PASSWORDS & RECOVERY PIN */
@@ -3297,127 +3082,10 @@
       renderExpenses();
     }
 
-    function formatPakPhone(phone) {
-      const digits = String(phone || "").replace(/\D/g, "");
-      if (digits.startsWith("03") && digits.length === 11) {
-        return "92" + digits.slice(1);
-      }
-      return digits;
-    }
-
-    function sendStaffMessage(channel) {
-      if (role !== "ADMIN") return;
-      const target = document.getElementById("msgRecipient").value;
-      const text = document.getElementById("msgText").value.trim();
-      const statusEl = document.getElementById("staffMsgStatus");
-
-      if (!text) {
-        statusEl.style.color = "var(--danger)";
-        statusEl.textContent = "Please write a message first.";
-        return;
-      }
-
-      if (target === "ALL") {
-        const recipients = staffList.filter(s => !s.suspended && s.phone);
-        if (recipients.length === 0) {
-          statusEl.style.color = "var(--danger)";
-          statusEl.textContent = "No active staff with mobile numbers found.";
-          return;
-        }
-
-        const fullBroadcastText = `ARHAM HUNGER BOX (Staff Notice):\n${text}`;
-        staffMessageLogs.unshift({
-          time: new Date().toLocaleString(),
-          to: `All Active Staff (${recipients.length} members)`,
-          channel,
-          text
-        });
-        syncStore();
-        renderStaffLogs();
-
-        if (channel === "SMS") {
-          const numbers = recipients.map(r => r.phone).join(",");
-          window.location.href = `sms:${numbers}?body=${encodeURIComponent(fullBroadcastText)}`;
-          statusEl.style.color = "var(--brand)";
-          statusEl.textContent = `Opened group SMS for ${recipients.length} staff members.`;
-        } else {
-          navigator.clipboard?.writeText(fullBroadcastText);
-          const firstWa = formatPakPhone(recipients[0].phone);
-          window.open(`https://wa.me/${firstWa}?text=${encodeURIComponent(fullBroadcastText)}`, "_blank");
-          statusEl.style.color = "var(--brand)";
-          statusEl.textContent = `WhatsApp opened for ${recipients[0].name} & message copied for remaining ${recipients.length - 1} staff.`;
-        }
-      } else {
-        const member = staffList.find(s => String(s.id) === String(target));
-        if (!member) return;
-        const personalText = `Assalam-o-Alaikum ${member.name} (${member.role}) — Arham Hunger Box:\n${text}`;
-
-        staffMessageLogs.unshift({
-          time: new Date().toLocaleString(),
-          to: `${member.name} (${member.phone})`,
-          channel,
-          text
-        });
-        syncStore();
-        renderStaffLogs();
-
-        if (channel === "SMS") {
-          window.location.href = `sms:${member.phone}?body=${encodeURIComponent(personalText)}`;
-        } else {
-          const waNum = formatPakPhone(member.phone);
-          window.open(`https://wa.me/${waNum}?text=${encodeURIComponent(personalText)}`, "_blank");
-        }
-        statusEl.style.color = "var(--brand)";
-        statusEl.textContent = `Message ready for ${member.name} via ${channel}.`;
-      }
-
-      document.getElementById("msgText").value = "";
-    }
-
-    function copyStaffMessage() {
-      const text = document.getElementById("msgText").value.trim();
-      const statusEl = document.getElementById("staffMsgStatus");
-      if (!text) {
-        statusEl.style.color = "var(--danger)";
-        statusEl.textContent = "Write a message first to copy.";
-        return;
-      }
-      navigator.clipboard?.writeText(`ARHAM HUNGER BOX:\n${text}`);
-      statusEl.style.color = "var(--brand)";
-      statusEl.textContent = "Message copied to clipboard!";
-    }
-
-    function renderStaffLogs() {
-      const box = document.getElementById("sentMessagesLog");
-      if (!box) return;
-      if (!staffMessageLogs.length) {
-        box.innerHTML = "No messages sent yet.";
-        return;
-      }
-      box.innerHTML = staffMessageLogs.slice(0, 15).map(l => `
-        <div style="border-bottom:1px solid var(--line); padding:6px 0;">
-          <strong style="color:var(--text);">To: ${l.to}</strong> <span style="color:var(--info);">[${l.channel}]</span><br/>
-          <span>${l.text}</span><br/>
-          <small>${l.time}</small>
-        </div>
-      `).join("");
-    }
-
     function renderStaff() {
       const tbody = document.getElementById("staffRows");
-      const recipientSelect = document.getElementById("msgRecipient");
       if (!tbody) return;
-
       tbody.innerHTML = "";
-      if (recipientSelect) {
-        recipientSelect.innerHTML = `<option value="ALL">All Active Staff (${staffList.filter(s => !s.suspended).length} Members)</option>`;
-        staffList.forEach(s => {
-          const opt = document.createElement("option");
-          opt.value = String(s.id);
-          opt.textContent = `${s.name} — ${s.role} (${s.phone})${s.suspended ? " [Suspended]" : ""}`;
-          recipientSelect.appendChild(opt);
-        });
-      }
 
       const totalCount = staffList.length;
       const suspendedCount = staffList.filter(s => s.suspended).length;
@@ -3633,9 +3301,6 @@
 
     function emptyBill() {
       bill = [];
-      activeMemberCard = null;
-      document.getElementById("billMemberCode").value = "";
-      document.getElementById("billMemberInfo").textContent = "";
       document.getElementById("dPct").value = "0";
       renderBill();
     }
@@ -3687,18 +3352,12 @@
       const paymentMethod = document.getElementById("paymentMethod").value;
       const cust = document.getElementById("cName").value.trim() || "Walk-in Customer";
       const mobile = document.getElementById("cMobile").value.trim() || "N/A";
-      const memberTag = activeMemberCard ? `${activeMemberCard.cardNumber} (${activeMemberCard.discountPct}% Off)` : "None";
       const c = calcBill();
       const now = new Date();
       const dateIso = now.toISOString().slice(0, 10);
       const timeStr = now.toLocaleString();
       const formattedOrderNo = formatCode(orderCounter);
       orderCounter += 1;
-
-      if (activeMemberCard) {
-        const mRecord = loyaltyMembers.find(m => m.cardNumber === activeMemberCard.cardNumber);
-        if (mRecord) mRecord.ordersCount = (mRecord.ordersCount || 0) + 1;
-      }
 
       const billedLines = bill.map(b => ({
         code: b.code,
@@ -3718,7 +3377,6 @@
         role,
         customer: cust,
         mobile,
-        memberCard: memberTag,
         subtotal: c.subtotal,
         discount: c.discount,
         tax: c.tax,
@@ -3752,7 +3410,6 @@
           <div><strong>Payment:</strong> ${paymentMethod}</div>
           <div><strong>Customer:</strong> ${cust}</div>
           <div><strong>Mobile:</strong> ${mobile}</div>
-          ${activeMemberCard ? `<div><strong>Card:</strong> ${memberTag}</div>` : ""}
         </div>
 
         <table class="invoice-table">
@@ -3777,7 +3434,10 @@
           Thank you for your order!<br />
           <strong>${RESTAURANT_INFO.deliveryNote}</strong><br />
           Ph: <strong>${RESTAURANT_INFO.phone}</strong>
-          <div class="invoice-dev-credit">${RESTAURANT_INFO.devCredit}</div>
+          <div class="invoice-dev-credit">
+            ${RESTAURANT_INFO.devCredit}<br />
+            ${RESTAURANT_INFO.devContact}
+          </div>
         </div>
       `;
 
@@ -3786,7 +3446,7 @@
         `${RESTAURANT_INFO.addressLine1} ${RESTAURANT_INFO.addressLine2}`,
         `Order #: ${formattedOrderNo} | Date: ${timeStr}`,
         `Service: ${orderType} | Table: ${tableNumber} | Payment: ${paymentMethod}`,
-        `Customer: ${cust} | Mobile: ${mobile} | Loyalty: ${memberTag}`,
+        `Customer: ${cust} | Mobile: ${mobile}`,
         "------------------------------------------",
         ...billedLines.map(i => `[${i.code}] ${i.name} x${i.qty} = PKR ${i.lineTotal.toFixed(2)}`),
         "------------------------------------------",
@@ -3796,15 +3456,13 @@
         `GRAND TOTAL (${paymentMethod}): PKR ${c.total.toFixed(2)}`,
         "------------------------------------------",
         `${RESTAURANT_INFO.deliveryNote} | Phone: ${RESTAURANT_INFO.phone}`,
-        RESTAURANT_INFO.devCredit
+        RESTAURANT_INFO.devCredit,
+        RESTAURANT_INFO.devContact
       ].join("\n");
 
       latestOrderNo = formattedOrderNo;
 
       bill = [];
-      activeMemberCard = null;
-      document.getElementById("billMemberCode").value = "";
-      document.getElementById("billMemberInfo").textContent = "";
       document.getElementById("cName").value = "";
       document.getElementById("cMobile").value = "";
       document.getElementById("dPct").value = "0";
@@ -3813,7 +3471,6 @@
       renderBill();
       renderMetrics();
       if (role === "ADMIN") {
-        renderMembers();
         renderExpenses();
       }
 
@@ -3875,7 +3532,7 @@
       const remainingProfit = combinedSales - paidSalariesTotal - totalExpensesAmount;
 
       const orderLines = filteredOrders.length
-        ? filteredOrders.map(o => `#${o.orderNumber} | ${o.date} | ${o.customer} | ${o.tableNumber || o.orderType} | [${o.paymentMethod || "Cash"}] | PKR ${Number(o.total).toFixed(2)}`)
+        ? filteredOrders.map(o => `#${o.orderNumber} | ${o.date} | ${o.customer} | ${o.tableNumber || o.orderType} | [${o.paymentMethod || "Cash"}] | Disc: PKR ${Number(o.discount || 0).toFixed(0)} | PKR ${Number(o.total).toFixed(2)}`)
         : ["No orders recorded in this period yet."];
 
       const statementLines = [
@@ -3909,7 +3566,8 @@
         "==========================================================",
         ` NET PROFIT REMAINING:        PKR ${remainingProfit.toFixed(2)}`,
         "==========================================================",
-        ` ${RESTAURANT_INFO.devCredit}`
+        ` ${RESTAURANT_INFO.devCredit}`,
+        ` ${RESTAURANT_INFO.devContact}`
       ];
 
       latestPeriodText = statementLines.join("\n");
@@ -3918,7 +3576,7 @@
     }
 
     function printSingleBill() {
-      document.body.classList.remove("print-period-mode", "print-card-mode", "print-qr-mode");
+      document.body.classList.remove("print-period-mode", "print-qr-mode");
       window.print();
     }
 
@@ -3927,7 +3585,7 @@
         alert("Generate Weekly or Monthly Settlement first.");
         return;
       }
-      document.body.classList.remove("print-card-mode", "print-qr-mode");
+      document.body.classList.remove("print-qr-mode");
       document.body.classList.add("print-period-mode");
       window.print();
       setTimeout(() => document.body.classList.remove("print-period-mode"), 400);
@@ -3977,30 +3635,36 @@
         .filter(o => o.paymentMethod === "Online")
         .reduce((s, o) => s + Number(o.total || 0), 0);
 
+      const discountToday = todayList
+        .reduce((s, o) => s + Number(o.discount || 0), 0);
+
       const net = cashToday + cardToday + onlineToday;
 
       document.getElementById("mOrders").textContent = String(todayList.length);
       document.getElementById("mCash").textContent = "PKR " + cashToday.toFixed(2);
       document.getElementById("mCard").textContent = "PKR " + cardToday.toFixed(2);
       document.getElementById("mOnline").textContent = "PKR " + onlineToday.toFixed(2);
+      document.getElementById("mDiscountToday").textContent = "PKR " + discountToday.toFixed(2);
       document.getElementById("mNet").textContent = "PKR " + net.toFixed(2);
 
       const payBody = document.getElementById("todayPaymentRows");
       if (payBody) {
         payBody.innerHTML = "";
         if (todayList.length === 0) {
-          payBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--muted);">No orders recorded today yet.</td></tr>`;
+          payBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--muted);">No orders recorded today yet.</td></tr>`;
         } else {
           [...todayList].reverse().forEach(o => {
             const pm = o.paymentMethod || "Cash";
             const pillClass = pm === "Card" ? "pill-card" : (pm === "Online" ? "pill-online" : "pill-paid");
             const tblDisplay = (o.tableNumber && o.tableNumber !== "No Table") ? `${o.tableNumber} (${o.orderType})` : o.orderType;
+            const discAmt = Number(o.discount || 0);
             const tr = document.createElement("tr");
             tr.innerHTML = `
               <td><b>#${o.orderNumber}</b></td>
               <td>${o.customer}</td>
               <td>${tblDisplay}</td>
               <td><span class="status-pill ${pillClass}">${pm.toUpperCase()}</span></td>
+              <td style="color:${discAmt > 0 ? 'var(--danger)' : 'var(--muted)'}; font-weight:700;">PKR ${discAmt.toFixed(2)}</td>
               <td><b>PKR ${Number(o.total).toFixed(2)}</b></td>
             `;
             payBody.appendChild(tr);
@@ -4010,8 +3674,8 @@
     }
 
     function downloadSalesCsv() {
-      const csv = "OrderNumber,Timestamp,Option,Table,PaymentMethod,Role,Customer,Mobile,LoyaltyCard,Subtotal,Discount,Tax,Total\n" +
-        orders.map(o => `${o.orderNumber},"${o.timestamp}","${o.orderType}","${o.tableNumber || 'No Table'}","${o.paymentMethod || 'Cash'}","${o.role}","${o.customer}","${o.mobile}","${o.memberCard || 'None'}",${o.subtotal.toFixed(2)},${o.discount.toFixed(2)},${o.tax.toFixed(2)},${o.total.toFixed(2)}`).join("\n");
+      const csv = "OrderNumber,Timestamp,Option,Table,PaymentMethod,Role,Customer,Mobile,Subtotal,Discount,Tax,Total\n" +
+        orders.map(o => `${o.orderNumber},"${o.timestamp}","${o.orderType}","${o.tableNumber || 'No Table'}","${o.paymentMethod || 'Cash'}","${o.role}","${o.customer}","${o.mobile}",${o.subtotal.toFixed(2)},${o.discount.toFixed(2)},${o.tax.toFixed(2)},${o.total.toFixed(2)}`).join("\n");
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
@@ -4033,10 +3697,9 @@
       tableOrderQueue = [];
       orderCounter = 0;
       bill = [];
-      activeMemberCard = null;
       latestReceiptText = "";
       latestPeriodText = "";
-      document.getElementById("periodSettlementBox").textContent = "Select Weekly or Monthly Settlement to view full Cash/Card/Online breakdown & Net Profit after Salary/Expenses.";
+      document.getElementById("periodSettlementBox").textContent = "Select Weekly or Monthly Settlement to view full Cash/Card/Online breakdown, Total Discounts & Net Profit after Salary/Expenses.";
       document.getElementById("invoiceContainer").innerHTML = `
         <div class="invoice-banner">
           <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
