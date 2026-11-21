@@ -977,7 +977,6 @@
       </div>
       <div class="btn-group">
         <button class="btn-outline btn-sm" onclick="switchTheme()">Theme</button>
-        <button class="btn-sky btn-sm" onclick="exitCustomerPortal()">Manager Login</button>
       </div>
     </div>
 
@@ -1141,7 +1140,6 @@
       </nav>
 
       <div class="top-actions">
-        <span id="printerStatusBadge" class="sync-chip">Print: Manual</span>
         <span id="cloudSyncBadge" class="sync-chip offline">Local Mode</span>
         <span id="roleBadge" class="role-chip">ADMIN</span>
         <button class="btn-outline btn-sm" onclick="switchTheme()">Theme</button>
@@ -2083,14 +2081,6 @@
       badge.classList.toggle("offline", !isOnline);
     }
 
-    function updatePrinterTopBadge() {
-      const pBadge = document.getElementById("printerStatusBadge");
-      if (!pBadge) return;
-      const modeLabel = peripheralSettings.printMode === "AUTO" ? "Auto Print ON" : "Manual Print";
-      pBadge.textContent = `${modeLabel} (${peripheralSettings.paperSize})`;
-      pBadge.classList.toggle("offline", peripheralSettings.printMode !== "AUTO");
-    }
-
     function saveLocalCache() {
       localStorage.setItem(DB.MENU, JSON.stringify(items));
       localStorage.setItem(DB.SALES, JSON.stringify(orders));
@@ -2103,7 +2093,6 @@
       localStorage.setItem(DB.TABLE_QUEUE, JSON.stringify(tableOrderQueue));
       localStorage.setItem(DB.PERIPHERALS, JSON.stringify(peripheralSettings));
       updateOrderBadge();
-      updatePrinterTopBadge();
     }
 
     async function pushToCloud() {
@@ -2262,11 +2251,6 @@
       renderCustomerCategories();
       renderCustomerMenu();
       renderCustomerCart();
-    }
-
-    function exitCustomerPortal() {
-      document.getElementById("customerQrPortal").style.display = "none";
-      document.getElementById("loginScreen").style.display = "flex";
     }
 
     function openTablePreviewPortal() {
@@ -2552,7 +2536,6 @@
       if (pp) pp.value = peripheralSettings.paperSize || "58mm";
       if (pc) pc.value = peripheralSettings.connType || "SYSTEM";
       if (dm) dm.value = peripheralSettings.displayMode || "SINGLE";
-      updatePrinterTopBadge();
     }
 
     function savePeripheralSettings() {
