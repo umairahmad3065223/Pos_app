@@ -570,7 +570,7 @@
 
     .btn-group { display: flex; flex-wrap: wrap; gap: 6px; }
 
-    /* TABLE QR ORDER CARD IN MANAGER QUEUE */
+    /* TABLE & COUNTER QR ORDER CARD IN MANAGER QUEUE */
     .qr-queue-item {
       background: var(--panel-2);
       border: 1px solid var(--accent);
@@ -585,7 +585,7 @@
       gap: 10px;
     }
 
-    /* TABLE PRO QR CODE CARD */
+    /* TABLE / COUNTER PRO QR CODE CARD */
     .qr-poster-card {
       background: #ffffff;
       color: #0f172a;
@@ -632,7 +632,7 @@
       color: #334155;
     }
 
-    /* CUSTOMER PUBLIC TABLE ORDERING PORTAL */
+    /* CUSTOMER PUBLIC DIGITAL MENU & QR ORDERING PORTAL */
     #customerQrPortal {
       display: none;
       min-height: 100vh;
@@ -652,6 +652,38 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 8px;
+    }
+
+    .cust-option-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .cust-choice-btn {
+      background: var(--panel-2);
+      color: var(--text);
+      border: 2px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 6px;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .cust-choice-btn.active {
+      background: rgba(16, 185, 129, 0.16);
+      border-color: var(--brand);
+      color: var(--brand);
+    }
+
+    .cust-choice-btn.pay-active {
+      background: rgba(56, 189, 248, 0.16);
+      border-color: var(--info);
+      color: var(--info);
     }
 
     .cust-floating-bar {
@@ -963,7 +995,7 @@
 </head>
 <body>
 
-  <!-- PUBLIC CUSTOMER TABLE QR ORDERING PORTAL (OPENS WHEN TABLE QR IS SCANNED) -->
+  <!-- PUBLIC CUSTOMER DIGITAL MENU & QR ORDERING PORTAL (OPENS WHEN TABLE OR COUNTER QR IS SCANNED) -->
   <div id="customerQrPortal">
     <div class="cust-header">
       <div class="brand-title">
@@ -972,7 +1004,7 @@
         </div>
         <div>
           <h1>Arham Hunger Box — Digital Menu</h1>
-          <p id="custTableBanner" style="color:var(--accent); font-weight:800; font-size:12px;">Table Ordering Mode</p>
+          <p id="custTableBanner" style="color:var(--accent); font-weight:800; font-size:12px;">Direct Counter & Table Ordering</p>
         </div>
       </div>
       <div class="btn-group">
@@ -1001,20 +1033,55 @@
 
       <div class="box" id="custCartSection">
         <div class="box-head">
-          <h2>Your Table Order Summary</h2>
-          <span id="custTablePill" class="order-tag">Table 1</span>
+          <h2>Your Order Summary & Preferences</h2>
+          <span id="custTablePill" class="order-tag">Counter Direct</span>
         </div>
+
+        <!-- 1. ORDER SERVICE OPTION (DINE-IN / TAKEAWAY / DELIVERY) -->
+        <label style="color:var(--brand); font-weight:800; font-size:12.5px;">1. Select Order Option (یہاں کھانا ہے / لے جانا ہے / ڈیلیوری):</label>
+        <div class="cust-option-group">
+          <button type="button" id="optDineIn" class="cust-choice-btn active" onclick="selectCustOrderType('Dine-In')">
+            Dine-In<br><small style="font-weight:600; opacity:0.85;">یہاں کھانا ہے</small>
+          </button>
+          <button type="button" id="optTakeaway" class="cust-choice-btn" onclick="selectCustOrderType('Takeaway')">
+            Takeaway<br><small style="font-weight:600; opacity:0.85;">ساتھ لے جانا ہے</small>
+          </button>
+          <button type="button" id="optDelivery" class="cust-choice-btn" onclick="selectCustOrderType('Delivery (Free Upto 3km)')">
+            Delivery<br><small style="font-weight:600; opacity:0.85;">ڈیلیوری (Free 3km)</small>
+          </button>
+        </div>
+
+        <!-- DELIVERY ADDRESS FIELD (AUTO SHOWS WHEN DELIVERY IS SELECTED) -->
+        <div id="custDeliveryAddressWrap" style="display:none;">
+          <label for="custDeliveryAddress" style="color:var(--accent); font-weight:700;">Delivery Address (مکمل پتہ لکھیں) *</label>
+          <input id="custDeliveryAddress" placeholder="e.g. House #, Street / Mohalla, Kheshgi Payan..." />
+        </div>
+
+        <!-- 2. PAYMENT METHOD SELECTION (CASH / ONLINE / CARD) -->
+        <label style="color:var(--info); font-weight:800; font-size:12.5px;">2. Select Payment Method (ادائیگی کا طریقہ):</label>
+        <div class="cust-option-group">
+          <button type="button" id="payCashBtn" class="cust-choice-btn pay-active" onclick="selectCustPaymentMethod('Cash')">
+            Cash Payment<br><small style="font-weight:600; opacity:0.85;">کیش پیمنٹ</small>
+          </button>
+          <button type="button" id="payOnlineBtn" class="cust-choice-btn" onclick="selectCustPaymentMethod('Online')">
+            Online Payment<br><small style="font-weight:600; opacity:0.85;">آن لائن / ایزی پیسہ</small>
+          </button>
+          <button type="button" id="payCardBtn" class="cust-choice-btn" onclick="selectCustPaymentMethod('Card')">
+            Card Payment<br><small style="font-weight:600; opacity:0.85;">کارڈ پیمنٹ</small>
+          </button>
+        </div>
+
         <div class="row-3">
           <div>
-            <label for="custOrderName">Your Name (Optional)</label>
+            <label for="custOrderName">Your Name (نام)</label>
             <input id="custOrderName" placeholder="e.g. Ali" />
           </div>
           <div>
-            <label for="custOrderPhone">Mobile Number (Optional)</label>
+            <label for="custOrderPhone">Mobile Number (موبائل نمبر)</label>
             <input id="custOrderPhone" type="tel" placeholder="03XXXXXXXXX" />
           </div>
           <div>
-            <label for="custOrderNote">Special Instructions</label>
+            <label for="custOrderNote">Special Instructions (ہدایات)</label>
             <input id="custOrderNote" placeholder="e.g. Extra spicy, less mayo" />
           </div>
         </div>
@@ -1032,11 +1099,13 @@
         </table>
 
         <div class="totals-box">
+          <div><span>Order Type</span><strong id="custSummaryService" style="color:var(--brand);">Dine-In</strong></div>
+          <div><span>Payment Method</span><strong id="custSummaryPayment" style="color:var(--info);">Cash Payment</strong></div>
           <div class="grand"><span>Estimated Total</span><span id="custGrandTotal">PKR 0.00</span></div>
         </div>
 
         <button class="btn-brand" style="width:100%; padding:12px; font-size:15px;" onclick="submitCustomerTableOrder()">
-          Send Order Directly to Manager Counter
+          Send Order Directly to Counter
         </button>
         <div id="custOrderStatus" class="ok-text" style="font-size:13px; font-weight:700;"></div>
       </div>
@@ -1121,7 +1190,7 @@
 
       <!-- COMPACT MINI ICON NAV BAR (ADMIN ONLY) -->
       <nav id="compactAdminNav" class="compact-nav">
-        <button id="navPosBtn" class="mini-nav-btn active" onclick="switchSection('POS')" title="POS Billing & Live Table Orders">
+        <button id="navPosBtn" class="mini-nav-btn active" onclick="switchSection('POS')" title="POS Billing & Live QR Orders">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           <span>POS</span>
         </button>
@@ -1133,7 +1202,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>Staff</span>
         </button>
-        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Table QR, Quick Price Update, Printers & Reports">
+        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Counter & Table QR, Quick Price Update, Printers & Reports">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Settings</span>
         </button>
@@ -1174,10 +1243,10 @@
           </div>
         </div>
 
-        <!-- LIVE INCOMING TABLE QR ORDERS QUEUE (DIRECT FROM CUSTOMER TABLES) -->
+        <!-- LIVE INCOMING COUNTER & TABLE QR ORDERS QUEUE -->
         <div id="liveTableOrdersBox" class="box" style="border-color: var(--accent); display:none;">
           <div class="box-head">
-            <h2>Live Incoming Table QR Orders (Direct From Tables)</h2>
+            <h2>Live Incoming QR Orders (Counter Direct & Tables)</h2>
             <span id="liveTableOrderCount" class="live-badge-pulse">0 New Orders</span>
           </div>
           <div id="liveTableOrdersList"></div>
@@ -1258,9 +1327,9 @@
                   </select>
                 </div>
                 <div>
-                  <label for="tableNumber">Table Number</label>
+                  <label for="tableNumber">Table / Counter</label>
                   <select id="tableNumber">
-                    <option value="No Table">No Table (Delivery/Takeaway)</option>
+                    <option value="No Table">No Table (Counter / Delivery / Takeaway)</option>
                     <option value="Table 1">Table 1</option>
                     <option value="Table 2">Table 2</option>
                     <option value="Table 3">Table 3</option>
@@ -1575,18 +1644,19 @@
         <div class="settings-grid">
           <!-- LEFT COLUMN OF SETTINGS -->
           <div>
-            <!-- TABLE PRO QR CODE GENERATOR (DIRECT TABLE MENU & ORDERING) -->
+            <!-- TABLE & COUNTER PRO QR CODE GENERATOR -->
             <div class="box" style="border-color: var(--accent);">
               <div class="box-head">
-                <h2>Table Pro QR Code Generator (Table Direct Menu)</h2>
+                <h2>Counter & Table Pro QR Code Generator (Digital Menu)</h2>
               </div>
               <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-                Generate a QR code for any table. Customers scan it to open the full menu on their phone and send orders directly to the Manager's POS counter.
+                Generate a QR code for the <strong>Counter</strong> or any <strong>Table</strong>. Customers scan it to open the full menu, choose Dine-In / Takeaway / Delivery, pick Cash / Card / Online payment, and send orders directly to your Counter POS.
               </p>
               <div class="row-2">
                 <div>
-                  <label for="qrTableSelect">Select Table</label>
+                  <label for="qrTableSelect">Select Counter or Table</label>
                   <select id="qrTableSelect" onchange="generateTableQrCode()">
+                    <option value="Counter Direct">Counter Direct (Walk-In Counter QR)</option>
                     <option value="Table 1">Table 1</option>
                     <option value="Table 2">Table 2</option>
                     <option value="Table 3">Table 3</option>
@@ -1608,15 +1678,15 @@
               </div>
 
               <div class="btn-group">
-                <button class="btn-amber" onclick="generateTableQrCode()">Generate Table QR</button>
-                <button class="btn-sky" onclick="printTableQrPoster()">Print Table QR</button>
+                <button class="btn-amber" onclick="generateTableQrCode()">Generate QR Code</button>
+                <button class="btn-sky" onclick="printTableQrPoster()">Print QR Poster</button>
                 <button class="btn-outline" onclick="openTablePreviewPortal()">Test Customer Menu</button>
               </div>
 
               <div id="tableQrPrintArea" class="qr-poster-card">
                 <h3>ARHAM HUNGER BOX</h3>
-                <div id="qrPosterTableTitle" class="qr-poster-table-tag">TABLE 1</div><br />
-                <img id="tableQrImg" src="" alt="Table Menu QR Code" />
+                <div id="qrPosterTableTitle" class="qr-poster-table-tag">COUNTER DIRECT</div><br />
+                <img id="tableQrImg" src="" alt="Digital Menu QR Code" />
                 <p>Scan QR Code with Mobile Camera<br />to View Menu & Order Directly</p>
               </div>
             </div>
@@ -1674,10 +1744,10 @@
             <!-- CLOUD SYNC CONFIGURATION -->
             <div class="box" style="border-color: var(--info);">
               <div class="box-head">
-                <h2>Cloud Sync (Same Orders on Laptop, Mobile & Table QR)</h2>
+                <h2>Cloud Sync (Same Orders on Laptop, Mobile & QR Menu)</h2>
               </div>
               <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-                Paste your free <strong>Firebase Realtime Database URL</strong> below so Table QR orders, Laptop, and Mobile sync live.
+                Paste your free <strong>Firebase Realtime Database URL</strong> below so Counter/Table QR orders, Laptop, and Mobile sync live.
               </p>
               <label for="firebaseUrlInput">Firebase Database URL</label>
               <input id="firebaseUrlInput" type="url" placeholder="https://your-project-id-default-rtdb.firebaseio.com" />
@@ -2052,7 +2122,9 @@
     let custActiveCat = "All";
     let bill = [];
     let custCart = [];
-    let activeCustomerTable = "Table 1";
+    let activeCustomerTable = "Counter Direct";
+    let custSelectedOrderType = "Dine-In";
+    let custSelectedPaymentMethod = "Cash";
     let activeMemberCard = null;
     let latestReceiptText = "";
     let latestOrderNo = null;
@@ -2218,10 +2290,11 @@
       localStorage.setItem(DB.THEME, document.body.classList.contains("light-theme") ? "light" : "dark");
     }
 
-    /* CHECK URL PARAMETERS FOR DIRECT TABLE QR SCAN */
+    /* CHECK URL PARAMETERS FOR DIRECT COUNTER OR TABLE QR SCAN */
     function initPageMode() {
       const params = new URLSearchParams(window.location.search);
       const tableParam = params.get("table");
+      const modeParam = params.get("mode");
       const cloudParam = params.get("cloud");
 
       if (cloudParam && cloudParam.startsWith("https://")) {
@@ -2231,19 +2304,27 @@
 
       if (tableParam) {
         openCustomerPortal(tableParam);
+      } else if (modeParam === "counter" || modeParam === "menu") {
+        openCustomerPortal("Counter Direct");
       }
     }
 
-    /* CUSTOMER PUBLIC TABLE ORDERING PORTAL */
-    async function openCustomerPortal(tableName) {
-      activeCustomerTable = tableName || "Table 1";
+    /* CUSTOMER PUBLIC DIGITAL MENU & QR ORDERING PORTAL */
+    async function openCustomerPortal(sourceLabel) {
+      activeCustomerTable = sourceLabel || "Counter Direct";
       custCart = [];
       document.getElementById("loginScreen").style.display = "none";
       document.getElementById("dashboardShell").style.display = "none";
       document.getElementById("customerQrPortal").style.display = "block";
 
-      document.getElementById("custTableBanner").textContent = `Ordering for: ${activeCustomerTable} • Direct to Manager Counter`;
+      const isCounter = activeCustomerTable === "Counter Direct";
+      document.getElementById("custTableBanner").textContent = isCounter
+        ? "Counter Walk-In Digital Menu • Direct Order to Counter"
+        : `Ordering for: ${activeCustomerTable} • Direct to Counter`;
       document.getElementById("custTablePill").textContent = activeCustomerTable;
+
+      selectCustOrderType(isCounter ? "Takeaway" : "Dine-In");
+      selectCustPaymentMethod("Cash");
 
       if (cloudBaseUrl) {
         await pullFromCloud(true);
@@ -2253,8 +2334,31 @@
       renderCustomerCart();
     }
 
+    function selectCustOrderType(typeVal) {
+      custSelectedOrderType = typeVal;
+      document.getElementById("optDineIn").classList.toggle("active", typeVal === "Dine-In");
+      document.getElementById("optTakeaway").classList.toggle("active", typeVal === "Takeaway");
+      document.getElementById("optDelivery").classList.toggle("active", typeVal.startsWith("Delivery"));
+
+      const addrWrap = document.getElementById("custDeliveryAddressWrap");
+      addrWrap.style.display = typeVal.startsWith("Delivery") ? "block" : "none";
+
+      const summaryEl = document.getElementById("custSummaryService");
+      if (summaryEl) summaryEl.textContent = typeVal;
+    }
+
+    function selectCustPaymentMethod(payVal) {
+      custSelectedPaymentMethod = payVal;
+      document.getElementById("payCashBtn").classList.toggle("pay-active", payVal === "Cash");
+      document.getElementById("payOnlineBtn").classList.toggle("pay-active", payVal === "Online");
+      document.getElementById("payCardBtn").classList.toggle("pay-active", payVal === "Card");
+
+      const summaryEl = document.getElementById("custSummaryPayment");
+      if (summaryEl) summaryEl.textContent = payVal + " Payment";
+    }
+
     function openTablePreviewPortal() {
-      const selectedTbl = document.getElementById("qrTableSelect").value || "Table 1";
+      const selectedTbl = document.getElementById("qrTableSelect").value || "Counter Direct";
       openCustomerPortal(selectedTbl);
     }
 
@@ -2394,6 +2498,13 @@
         return;
       }
 
+      const deliveryAddress = (document.getElementById("custDeliveryAddress").value || "").trim();
+      if (custSelectedOrderType.startsWith("Delivery") && !deliveryAddress) {
+        alert("Please enter your Delivery Address (مکمل پتہ لکھیں) for home delivery.");
+        document.getElementById("custDeliveryAddress").focus();
+        return;
+      }
+
       if (cloudBaseUrl) {
         await pullFromCloud(true);
       }
@@ -2401,14 +2512,22 @@
       const custName = document.getElementById("custOrderName").value.trim() || `${activeCustomerTable} Guest`;
       const custPhone = document.getElementById("custOrderPhone").value.trim() || "N/A";
       const custNote = document.getElementById("custOrderNote").value.trim() || "";
+      const combinedNote = [
+        custSelectedOrderType.startsWith("Delivery") ? `Address: ${deliveryAddress}` : "",
+        custNote
+      ].filter(Boolean).join(" | ");
+
       const totalAmt = custCart.reduce((s, c) => s + c.price * c.qty, 0);
 
       const newTableOrder = {
-        id: "TQ-" + Date.now(),
+        id: "QR-" + Date.now(),
         tableNumber: activeCustomerTable,
+        orderType: custSelectedOrderType,
+        paymentMethod: custSelectedPaymentMethod,
+        deliveryAddress,
         customerName: custName,
         customerPhone: custPhone,
-        note: custNote,
+        note: combinedNote,
         items: custCart.map(c => ({ ...c })),
         total: totalAmt,
         createdAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
@@ -2420,14 +2539,15 @@
 
       custCart = [];
       document.getElementById("custOrderNote").value = "";
+      document.getElementById("custDeliveryAddress").value = "";
       renderCustomerCart();
 
       const statusEl = document.getElementById("custOrderStatus");
       statusEl.style.color = "var(--brand)";
-      statusEl.textContent = `Order sent directly to Manager Counter for ${activeCustomerTable}! Your food & bill are being prepared.`;
+      statusEl.textContent = `Order sent directly to Counter (${custSelectedOrderType} • ${custSelectedPaymentMethod} Payment)! Your food & bill are being prepared.`;
     }
 
-    /* MANAGER LIVE TABLE ORDER QUEUE HANDLING */
+    /* MANAGER LIVE COUNTER & TABLE ORDER QUEUE HANDLING */
     function renderLiveTableOrders() {
       const box = document.getElementById("liveTableOrdersBox");
       const listEl = document.getElementById("liveTableOrdersList");
@@ -2440,19 +2560,25 @@
       }
 
       box.style.display = "block";
-      countBadge.textContent = `${tableOrderQueue.length} Pending Table Order${tableOrderQueue.length > 1 ? "s" : ""}`;
+      countBadge.textContent = `${tableOrderQueue.length} Pending QR Order${tableOrderQueue.length > 1 ? "s" : ""}`;
       listEl.innerHTML = "";
 
       tableOrderQueue.forEach(tq => {
         const itemsSummary = tq.items.map(i => `[${i.code}] ${i.name} x${i.qty}`).join(", ");
+        const serviceTag = tq.orderType || "Dine-In";
+        const payTag = tq.paymentMethod || "Cash";
+        const payClass = payTag === "Card" ? "pill-card" : (payTag === "Online" ? "pill-online" : "pill-paid");
+
         const div = document.createElement("div");
         div.className = "qr-queue-item";
         div.innerHTML = `
-          <div style="flex:1; min-width:220px;">
+          <div style="flex:1; min-width:230px;">
             <strong style="color:var(--accent); font-size:14px;">${tq.tableNumber}</strong> •
+            <span class="status-pill pill-unpaid">${serviceTag}</span>
+            <span class="status-pill ${payClass}">${payTag.toUpperCase()}</span> •
             <b>${tq.customerName}</b> (${tq.customerPhone}) • <small>${tq.createdAt}</small><br />
             <span style="font-size:12.5px; color:var(--text);">${itemsSummary}</span>
-            ${tq.note ? `<br /><small style="color:var(--info);">Note: ${tq.note}</small>` : ""}
+            ${tq.note ? `<br /><small style="color:var(--info);">Details: ${tq.note}</small>` : ""}
           </div>
           <div style="text-align:right;">
             <div style="font-weight:800; color:var(--brand); margin-bottom:6px;">PKR ${Number(tq.total).toFixed(2)}</div>
@@ -2472,12 +2598,28 @@
       if (idx === -1) return;
       const tq = tableOrderQueue[idx];
 
-      document.getElementById("orderType").value = "Dine-In";
+      const orderTypeSelect = document.getElementById("orderType");
+      if (tq.orderType && [...orderTypeSelect.options].some(o => o.value === tq.orderType)) {
+        orderTypeSelect.value = tq.orderType;
+      } else {
+        orderTypeSelect.value = tq.tableNumber === "Counter Direct" ? "Takeaway" : "Dine-In";
+      }
+
       const tblSelect = document.getElementById("tableNumber");
       if ([...tblSelect.options].some(o => o.value === tq.tableNumber)) {
         tblSelect.value = tq.tableNumber;
+      } else {
+        tblSelect.value = "No Table";
       }
-      document.getElementById("cName").value = tq.customerName;
+
+      const paySelect = document.getElementById("paymentMethod");
+      if (tq.paymentMethod && [...paySelect.options].some(o => o.value === tq.paymentMethod)) {
+        paySelect.value = tq.paymentMethod;
+      }
+
+      document.getElementById("cName").value = tq.note
+        ? `${tq.customerName} (${tq.note})`
+        : tq.customerName;
       document.getElementById("cMobile").value = tq.customerPhone === "N/A" ? "" : tq.customerPhone;
 
       bill = tq.items.map(i => ({ ...i }));
@@ -2496,15 +2638,15 @@
     }
 
     function dismissTableOrder(queueId) {
-      if (!confirm("Remove this table order from queue?")) return;
+      if (!confirm("Remove this QR order from queue?")) return;
       tableOrderQueue = tableOrderQueue.filter(t => t.id !== queueId);
       renderLiveTableOrders();
       syncStore();
     }
 
-    /* TABLE PRO QR CODE GENERATOR */
+    /* COUNTER & TABLE PRO QR CODE GENERATOR */
     function generateTableQrCode() {
-      const tableVal = document.getElementById("qrTableSelect").value || "Table 1";
+      const tableVal = document.getElementById("qrTableSelect").value || "Counter Direct";
       const customBase = (document.getElementById("qrBaseUrlInput").value || "").trim();
       const baseLocation = customBase || window.location.href.split("?")[0];
 
