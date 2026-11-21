@@ -343,6 +343,16 @@
       font-weight: 800;
     }
 
+    .live-badge-pulse {
+      background: rgba(239, 68, 68, 0.18);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
     .status-pill {
       display: inline-block;
       padding: 3px 8px;
@@ -526,6 +536,7 @@
     .btn-brand:hover { background: var(--brand-hover); color: #fff; }
     .btn-amber { background: var(--accent); color: #140d02; }
     .btn-sky { background: var(--info); color: #06131d; }
+    .btn-purple { background: var(--purple); color: #ffffff; }
     .btn-red { background: var(--danger); color: #fff; }
     .btn-outline {
       background: var(--panel-2);
@@ -558,6 +569,105 @@
     }
 
     .btn-group { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    /* TABLE QR ORDER CARD IN MANAGER QUEUE */
+    .qr-queue-item {
+      background: var(--panel-2);
+      border: 1px solid var(--accent);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* TABLE PRO QR CODE CARD */
+    .qr-poster-card {
+      background: #ffffff;
+      color: #0f172a;
+      border: 3px solid #f59e0b;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      max-width: 280px;
+      margin: 12px auto 0;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .qr-poster-card h3 {
+      margin: 0 0 4px;
+      font-size: 16px;
+      font-weight: 900;
+      color: #064e3b;
+    }
+
+    .qr-poster-table-tag {
+      display: inline-block;
+      background: #f59e0b;
+      color: #000000;
+      font-weight: 900;
+      font-size: 14px;
+      padding: 3px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .qr-poster-card img {
+      width: 190px;
+      height: 190px;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 4px;
+      background: #fff;
+    }
+
+    .qr-poster-card p {
+      margin: 8px 0 0;
+      font-size: 11px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    /* CUSTOMER PUBLIC TABLE ORDERING PORTAL */
+    #customerQrPortal {
+      display: none;
+      min-height: 100vh;
+      background: var(--bg);
+      padding-bottom: 90px;
+    }
+
+    .cust-header {
+      background: var(--panel);
+      border-bottom: 2px solid var(--accent);
+      padding: 14px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .cust-floating-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--panel);
+      border-top: 2px solid var(--brand);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 40;
+      box-shadow: 0 -8px 24px rgba(0,0,0,0.4);
+    }
 
     .loyalty-card-box {
       background: linear-gradient(135deg, #064e3b 0%, #0f172a 65%, #78350f 100%);
@@ -798,11 +908,27 @@
       body.print-card-mode #loyaltyCardPrintArea * {
         color: #000000 !important;
       }
-      body:not(.print-period-mode):not(.print-card-mode) #printableReceipt,
-      body:not(.print-period-mode):not(.print-card-mode) #printableReceipt * {
+      body.print-qr-mode #tableQrPrintArea,
+      body.print-qr-mode #tableQrPrintArea * {
         visibility: visible;
       }
-      body:not(.print-period-mode):not(.print-card-mode) #printableReceipt {
+      body.print-qr-mode #tableQrPrintArea {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 58mm !important;
+        max-width: 58mm !important;
+        border: 1px solid #000 !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 3mm !important;
+        box-shadow: none !important;
+      }
+      body:not(.print-period-mode):not(.print-card-mode):not(.print-qr-mode) #printableReceipt,
+      body:not(.print-period-mode):not(.print-card-mode):not(.print-qr-mode) #printableReceipt * {
+        visibility: visible;
+      }
+      body:not(.print-period-mode):not(.print-card-mode):not(.print-qr-mode) #printableReceipt {
         position: fixed;
         left: 0;
         top: 0;
@@ -836,6 +962,97 @@
   </style>
 </head>
 <body>
+
+  <!-- PUBLIC CUSTOMER TABLE QR ORDERING PORTAL (OPENS WHEN TABLE QR IS SCANNED) -->
+  <div id="customerQrPortal">
+    <div class="cust-header">
+      <div class="brand-title">
+        <div class="logo-wrap">
+          <img src="ahb_logo.png" alt="AHB Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;color:#ea580c;font-size:13px;&quot;>AHB</span>';" />
+        </div>
+        <div>
+          <h1>Arham Hunger Box — Digital Menu</h1>
+          <p id="custTableBanner" style="color:var(--accent); font-weight:800; font-size:12px;">Table Ordering Mode</p>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn-outline btn-sm" onclick="switchTheme()">Theme</button>
+        <button class="btn-sky btn-sm" onclick="exitCustomerPortal()">Manager Login</button>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="box">
+        <div class="box-head">
+          <h2>Select Your Food & Drinks</h2>
+          <input id="custSearchInput" placeholder="Search pizza, burger, deal..." style="width:220px; margin:0;" oninput="renderCustomerMenu()" />
+        </div>
+        <div id="custCategoryBar" class="filter-bar"></div>
+
+        <div id="custVariantBox" class="variant-picker" style="display:none;">
+          <div class="variant-picker-head">
+            <span id="custVariantTitle">Select Size</span>
+            <button class="btn-outline btn-sm" onclick="document.getElementById('custVariantBox').style.display='none'">Close</button>
+          </div>
+          <div id="custVariantOptions" class="variant-options"></div>
+        </div>
+
+        <div id="custMenuCards" class="menu-grid"></div>
+      </div>
+
+      <div class="box" id="custCartSection">
+        <div class="box-head">
+          <h2>Your Table Order Summary</h2>
+          <span id="custTablePill" class="order-tag">Table 1</span>
+        </div>
+        <div class="row-3">
+          <div>
+            <label for="custOrderName">Your Name (Optional)</label>
+            <input id="custOrderName" placeholder="e.g. Ali" />
+          </div>
+          <div>
+            <label for="custOrderPhone">Mobile Number (Optional)</label>
+            <input id="custOrderPhone" type="tel" placeholder="03XXXXXXXXX" />
+          </div>
+          <div>
+            <label for="custOrderNote">Special Instructions</label>
+            <input id="custOrderNote" placeholder="e.g. Extra spicy, less mayo" />
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="custCartRows"></tbody>
+        </table>
+
+        <div class="totals-box">
+          <div class="grand"><span>Estimated Total</span><span id="custGrandTotal">PKR 0.00</span></div>
+        </div>
+
+        <button class="btn-brand" style="width:100%; padding:12px; font-size:15px;" onclick="submitCustomerTableOrder()">
+          Send Order Directly to Manager Counter
+        </button>
+        <div id="custOrderStatus" class="ok-text" style="font-size:13px; font-weight:700;"></div>
+      </div>
+    </div>
+
+    <div class="cust-floating-bar">
+      <div>
+        <strong id="custFloatCount" style="color:var(--brand);">0 Items</strong> •
+        <strong id="custFloatTotal">PKR 0</strong>
+      </div>
+      <button class="btn-amber" onclick="document.getElementById('custCartSection').scrollIntoView({behavior:'smooth'})">
+        View Cart & Order
+      </button>
+    </div>
+  </div>
 
   <!-- LOGIN SCREEN -->
   <div id="loginScreen">
@@ -872,10 +1089,10 @@
       <div id="forgotBox" class="forgot-panel">
         <h4>Reset Password</h4>
         <p class="sub" style="margin-bottom:8px;">Enter Recovery PIN to reset Admin or Cashier password.</p>
-        <label for="resetRole">Account Username</label>
+        <label for="resetRole">Account Role</label>
         <select id="resetRole">
-          <option value="ADMIN">admin</option>
-          <option value="CASHIER">cashier</option>
+          <option value="ADMIN">Admin Account</option>
+          <option value="CASHIER">Cashier Account</option>
         </select>
         <label for="recoveryPinInput">Recovery PIN</label>
         <input id="recoveryPinInput" type="password" placeholder="Enter Recovery PIN" />
@@ -905,7 +1122,7 @@
 
       <!-- COMPACT MINI ICON NAV BAR (ADMIN ONLY) -->
       <nav id="compactAdminNav" class="compact-nav">
-        <button id="navPosBtn" class="mini-nav-btn active" onclick="switchSection('POS')" title="POS Billing">
+        <button id="navPosBtn" class="mini-nav-btn active" onclick="switchSection('POS')" title="POS Billing & Live Table Orders">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           <span>POS</span>
         </button>
@@ -917,13 +1134,14 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>Staff</span>
         </button>
-        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Cloud Sync, Menu, Reports & Loyalty Cards">
+        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Table QR, Quick Price Update, Printers & Reports">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Settings</span>
         </button>
       </nav>
 
       <div class="top-actions">
+        <span id="printerStatusBadge" class="sync-chip">Print: Manual</span>
         <span id="cloudSyncBadge" class="sync-chip offline">Local Mode</span>
         <span id="roleBadge" class="role-chip">ADMIN</span>
         <button class="btn-outline btn-sm" onclick="switchTheme()">Theme</button>
@@ -958,6 +1176,15 @@
           </div>
         </div>
 
+        <!-- LIVE INCOMING TABLE QR ORDERS QUEUE (DIRECT FROM CUSTOMER TABLES) -->
+        <div id="liveTableOrdersBox" class="box" style="border-color: var(--accent); display:none;">
+          <div class="box-head">
+            <h2>Live Incoming Table QR Orders (Direct From Tables)</h2>
+            <span id="liveTableOrderCount" class="live-badge-pulse">0 New Orders</span>
+          </div>
+          <div id="liveTableOrdersList"></div>
+        </div>
+
         <div class="dash-grid">
           <div>
             <div class="box">
@@ -979,7 +1206,7 @@
               <div id="menuCards" class="menu-grid"></div>
             </div>
 
-            <!-- TODAY'S PAYMENT LOG (WHO PAID BY CASH, CARD, OR ONLINE) -->
+            <!-- TODAY'S PAYMENT LOG -->
             <div class="box">
               <div class="box-head">
                 <h2>Today's Payment Log (Cash / Card / Online)</h2>
@@ -1350,13 +1577,109 @@
         <div class="settings-grid">
           <!-- LEFT COLUMN OF SETTINGS -->
           <div>
+            <!-- TABLE PRO QR CODE GENERATOR (DIRECT TABLE MENU & ORDERING) -->
+            <div class="box" style="border-color: var(--accent);">
+              <div class="box-head">
+                <h2>Table Pro QR Code Generator (Table Direct Menu)</h2>
+              </div>
+              <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
+                Generate a QR code for any table. Customers scan it to open the full menu on their phone and send orders directly to the Manager's POS counter.
+              </p>
+              <div class="row-2">
+                <div>
+                  <label for="qrTableSelect">Select Table</label>
+                  <select id="qrTableSelect" onchange="generateTableQrCode()">
+                    <option value="Table 1">Table 1</option>
+                    <option value="Table 2">Table 2</option>
+                    <option value="Table 3">Table 3</option>
+                    <option value="Table 4">Table 4</option>
+                    <option value="Table 5">Table 5</option>
+                    <option value="Table 6">Table 6</option>
+                    <option value="Table 7">Table 7</option>
+                    <option value="Table 8">Table 8</option>
+                    <option value="Table 9">Table 9</option>
+                    <option value="Table 10">Table 10</option>
+                    <option value="Table 11">Table 11</option>
+                    <option value="Table 12">Table 12</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="qrBaseUrlInput">Hosted POS Web Link (Optional)</label>
+                  <input id="qrBaseUrlInput" type="url" placeholder="Auto-detects current URL" oninput="generateTableQrCode()" />
+                </div>
+              </div>
+
+              <div class="btn-group">
+                <button class="btn-amber" onclick="generateTableQrCode()">Generate Table QR</button>
+                <button class="btn-sky" onclick="printTableQrPoster()">Print Table QR</button>
+                <button class="btn-outline" onclick="openTablePreviewPortal()">Test Customer Menu</button>
+              </div>
+
+              <div id="tableQrPrintArea" class="qr-poster-card">
+                <h3>ARHAM HUNGER BOX</h3>
+                <div id="qrPosterTableTitle" class="qr-poster-table-tag">TABLE 1</div><br />
+                <img id="tableQrImg" src="" alt="Table Menu QR Code" />
+                <p>Scan QR Code with Mobile Camera<br />to View Menu & Order Directly</p>
+              </div>
+            </div>
+
+            <!-- PERIPHERAL CONNECTIVITY, PRINTERS & DISPLAYS -->
+            <div class="box" style="border-color: var(--brand);">
+              <div class="box-head">
+                <h2>Peripheral Connectivity, Printers & Displays</h2>
+              </div>
+              <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
+                Configure thermal receipt printer connection (58mm / 80mm USB or Bluetooth), Customer Display screen, and choose between <strong>Auto Print</strong> or <strong>Manual Print</strong>.
+              </p>
+
+              <div class="row-2">
+                <div>
+                  <label for="printModeSelect" style="color:var(--brand); font-weight:700;">Receipt Printing Mode</label>
+                  <select id="printModeSelect" onchange="savePeripheralSettings()">
+                    <option value="MANUAL">Manual Print (Click Print Button)</option>
+                    <option value="AUTO">Auto Print (Print Automatically on Bill)</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="printerPaperSelect">Thermal Printer Paper Size</label>
+                  <select id="printerPaperSelect" onchange="savePeripheralSettings()">
+                    <option value="58mm">58mm Thermal Printer</option>
+                    <option value="80mm">80mm (3-Inch) Thermal Printer</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row-2">
+                <div>
+                  <label for="printerConnType">Printer Connection Type</label>
+                  <select id="printerConnType" onchange="savePeripheralSettings()">
+                    <option value="SYSTEM">System Default / Bluetooth / USB Spooler</option>
+                    <option value="SERIAL">Direct USB / Serial Thermal Port</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="displayModeSelect">Customer / Kitchen Display</label>
+                  <select id="displayModeSelect" onchange="savePeripheralSettings()">
+                    <option value="SINGLE">Single POS Screen</option>
+                    <option value="DUAL">Dual Screen / Live Queue Alert</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="btn-group">
+                <button class="btn-brand" onclick="connectThermalPrinter()">Connect Thermal Printer</button>
+                <button class="btn-sky" onclick="testThermalPrint()">Test Thermal Print</button>
+              </div>
+              <div id="peripheralStatusMsg" class="ok-text"></div>
+            </div>
+
             <!-- CLOUD SYNC CONFIGURATION -->
             <div class="box" style="border-color: var(--info);">
               <div class="box-head">
-                <h2>Cloud Sync (Same Orders on Laptop & Mobile)</h2>
+                <h2>Cloud Sync (Same Orders on Laptop, Mobile & Table QR)</h2>
               </div>
               <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-                Paste your free <strong>Firebase Realtime Database URL</strong> below on both Laptop and Mobile so orders, expenses, and staff sync automatically across all devices.
+                Paste your free <strong>Firebase Realtime Database URL</strong> below so Table QR orders, Laptop, and Mobile sync live.
               </p>
               <label for="firebaseUrlInput">Firebase Database URL</label>
               <input id="firebaseUrlInput" type="url" placeholder="https://your-project-id-default-rtdb.firebaseio.com" />
@@ -1367,15 +1690,102 @@
               <div id="cloudMsg" class="ok-text"></div>
             </div>
 
+            <!-- USERNAME, PASSWORDS & RECOVERY PIN -->
+            <div class="box">
+              <div class="box-head">
+                <h2>Change Username, Passwords & Recovery PIN</h2>
+              </div>
+              <div class="row-2">
+                <div>
+                  <label for="updAdminUser">Admin Username</label>
+                  <input id="updAdminUser" type="text" placeholder="Current: admin" />
+                </div>
+                <div>
+                  <label for="updCashierUser">Cashier Username</label>
+                  <input id="updCashierUser" type="text" placeholder="Current: cashier" />
+                </div>
+              </div>
+              <div class="row-3">
+                <div>
+                  <label for="updAdmin">New Admin Password</label>
+                  <input id="updAdmin" type="password" placeholder="Optional" />
+                </div>
+                <div>
+                  <label for="updCashier">New Cashier Password</label>
+                  <input id="updCashier" type="password" placeholder="Optional" />
+                </div>
+                <div>
+                  <label for="updPin">Recovery PIN</label>
+                  <input id="updPin" type="text" placeholder="Optional" />
+                </div>
+              </div>
+              <button class="btn-brand" onclick="savePasswords()">Save Username & Passwords</button>
+              <div id="passMsg" class="ok-text"></div>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN OF SETTINGS -->
+          <div>
+            <!-- QUICK ITEM PRICE UPDATER BY CODE OR NAME -->
+            <div class="box" style="border-color: var(--brand);">
+              <div class="box-head">
+                <h2>Quick Item Price Updater (By Code or Name)</h2>
+              </div>
+              <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
+                Enter item <strong>Code</strong> (e.g. 001) or <strong>Name</strong> (e.g. Zinger Burger), type the new price, and update immediately.
+              </p>
+              <div class="row-2">
+                <div>
+                  <label for="qpLookup">Item Code or Item Name</label>
+                  <input id="qpLookup" placeholder="e.g. 015 or Zinger Burger" oninput="lookupQuickPriceItem()" />
+                </div>
+                <div>
+                  <label for="qpVariantSelect">Size / Variant (If Applicable)</label>
+                  <select id="qpVariantSelect" onchange="onQuickVariantChange()">
+                    <option value="BASE">Standard Price</option>
+                  </select>
+                </div>
+              </div>
+              <div id="qpFoundInfo" style="font-size:12px; color:var(--info); margin-bottom:8px; min-height:18px;"></div>
+              <div class="row-2">
+                <div>
+                  <label for="qpNewPrice">New Price (PKR)</label>
+                  <input id="qpNewPrice" type="number" min="1" placeholder="Enter new price" />
+                </div>
+                <div style="display:flex; align-items:flex-end;">
+                  <button class="btn-brand" style="width:100%; margin-bottom:10px;" onclick="applyQuickPriceUpdate()">Update Price Now</button>
+                </div>
+              </div>
+              <div id="qpStatusMsg" class="ok-text"></div>
+            </div>
+
+            <!-- ADD NEW MENU ITEM -->
+            <div class="box" id="adminPanel">
+              <div class="box-head">
+                <h2>Add New Menu Item (Admin)</h2>
+              </div>
+              <div class="row-3">
+                <div>
+                  <label for="mName">Item Name</label>
+                  <input id="mName" placeholder="e.g. Zinger Burger" />
+                </div>
+                <div>
+                  <label for="mCat">Category</label>
+                  <input id="mCat" placeholder="e.g. Special Pizzas, Burgers" />
+                </div>
+                <div>
+                  <label for="mPrice">Price (PKR)</label>
+                  <input id="mPrice" type="number" min="1" placeholder="400" />
+                </div>
+              </div>
+              <button class="btn-amber" onclick="upsertMenuItem()">Save Menu Item</button>
+            </div>
+
             <!-- MEMBERSHIP / LOYALTY CARD GENERATOR -->
             <div class="box">
               <div class="box-head">
                 <h2>Membership / Loyalty Card System</h2>
               </div>
-              <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-                Register regular customers to generate a Loyalty Card Number (e.g. AHB-001) with automatic bill discount.
-              </p>
-
               <div class="row-3">
                 <div>
                   <label for="memName">Customer Name</label>
@@ -1421,62 +1831,11 @@
               </div>
             </div>
 
-            <!-- PASSWORDS & RECOVERY PIN -->
-            <div class="box">
-              <div class="box-head">
-                <h2>Passwords & Recovery PIN</h2>
-              </div>
-              <div class="row-3">
-                <div>
-                  <label for="updAdmin">New Admin Password</label>
-                  <input id="updAdmin" type="password" placeholder="Optional" />
-                </div>
-                <div>
-                  <label for="updCashier">New Cashier Password</label>
-                  <input id="updCashier" type="password" placeholder="Optional" />
-                </div>
-                <div>
-                  <label for="updPin">Recovery PIN</label>
-                  <input id="updPin" type="text" placeholder="Optional" />
-                </div>
-              </div>
-              <button class="btn-brand" onclick="savePasswords()">Save Passwords</button>
-              <div id="passMsg" class="ok-text"></div>
-            </div>
-          </div>
-
-          <!-- RIGHT COLUMN OF SETTINGS -->
-          <div>
-            <!-- ADD / UPDATE MENU ITEM (NO STOCK) -->
-            <div class="box" id="adminPanel">
-              <div class="box-head">
-                <h2>Add / Update Menu Item (Admin)</h2>
-              </div>
-              <div class="row-3">
-                <div>
-                  <label for="mName">Item Name</label>
-                  <input id="mName" placeholder="e.g. Zinger Burger" />
-                </div>
-                <div>
-                  <label for="mCat">Category</label>
-                  <input id="mCat" placeholder="e.g. Special Pizzas, Burgers" />
-                </div>
-                <div>
-                  <label for="mPrice">Price (PKR)</label>
-                  <input id="mPrice" type="number" min="1" placeholder="400" />
-                </div>
-              </div>
-              <button class="btn-amber" onclick="upsertMenuItem()">Save Menu Item</button>
-            </div>
-
-            <!-- WEEKLY & MONTHLY SALES BILL (CASH / CARD / ONLINE + SALARY & EXPENSE DEDUCTION) -->
+            <!-- WEEKLY & MONTHLY SALES BILL -->
             <div class="box">
               <div class="box-head">
                 <h2>Weekly & Monthly Sales Settlement Bill</h2>
               </div>
-              <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-                Complete financial settlement showing <strong>Cash</strong>, <strong>Card</strong>, and <strong>Online</strong> sales separately, combined total sales, minus <strong>Staff Salaries</strong> and <strong>Expenses</strong>, showing exact <strong>Net Profit Remaining</strong>.
-              </p>
               <div class="btn-group">
                 <button class="btn-amber" onclick="generatePeriodSettlement('WEEKLY')">Weekly Settlement (7 Days)</button>
                 <button class="btn-brand" onclick="generatePeriodSettlement('MONTHLY')">Monthly Settlement (Month)</button>
@@ -1527,7 +1886,9 @@
       STAFF_LOGS: "ahb_pos_staff_logs_v3",
       MEMBERS: "ahb_pos_members_v3",
       EXPENSES: "ahb_pos_expenses_v3",
-      CLOUD_URL: "ahb_pos_cloud_url_v3"
+      CLOUD_URL: "ahb_pos_cloud_url_v3",
+      TABLE_QUEUE: "ahb_pos_table_queue_v3",
+      PERIPHERALS: "ahb_pos_peripherals_v3"
     };
 
     const DEFAULT_CLOUD_URL = "";
@@ -1662,10 +2023,14 @@
     }));
 
     let auth = JSON.parse(localStorage.getItem(DB.PASS)) || {
+      ADMIN_USER: "admin",
+      CASHIER_USER: "cashier",
       ADMIN: "admin123",
       CASHIER: "cashier123",
       RECOVERY_PIN: "7860"
     };
+    if (!auth.ADMIN_USER) auth.ADMIN_USER = "admin";
+    if (!auth.CASHIER_USER) auth.CASHIER_USER = "cashier";
     if (!auth.RECOVERY_PIN) auth.RECOVERY_PIN = "7860";
 
     let items = JSON.parse(localStorage.getItem(DB.MENU)) || starterMenu;
@@ -1675,17 +2040,28 @@
     let staffMessageLogs = JSON.parse(localStorage.getItem(DB.STAFF_LOGS)) || [];
     let loyaltyMembers = JSON.parse(localStorage.getItem(DB.MEMBERS)) || [];
     let expensesList = JSON.parse(localStorage.getItem(DB.EXPENSES)) || [];
+    let tableOrderQueue = JSON.parse(localStorage.getItem(DB.TABLE_QUEUE)) || [];
+    let peripheralSettings = JSON.parse(localStorage.getItem(DB.PERIPHERALS)) || {
+      printMode: "MANUAL",
+      paperSize: "58mm",
+      connType: "SYSTEM",
+      displayMode: "SINGLE"
+    };
     let cloudBaseUrl = (localStorage.getItem(DB.CLOUD_URL) || DEFAULT_CLOUD_URL).replace(/\/+$/, "");
 
     let role = null;
     let activeCat = "All";
+    let custActiveCat = "All";
     let bill = [];
+    let custCart = [];
+    let activeCustomerTable = "Table 1";
     let activeMemberCard = null;
     let latestReceiptText = "";
     let latestOrderNo = null;
     let latestPeriodText = "";
     let latestPeriodType = "summary";
     let cloudPollTimer = null;
+    let serialPrinterPort = null;
 
     if (localStorage.getItem(DB.THEME) === "light") {
       document.body.classList.add("light-theme");
@@ -1707,6 +2083,14 @@
       badge.classList.toggle("offline", !isOnline);
     }
 
+    function updatePrinterTopBadge() {
+      const pBadge = document.getElementById("printerStatusBadge");
+      if (!pBadge) return;
+      const modeLabel = peripheralSettings.printMode === "AUTO" ? "Auto Print ON" : "Manual Print";
+      pBadge.textContent = `${modeLabel} (${peripheralSettings.paperSize})`;
+      pBadge.classList.toggle("offline", peripheralSettings.printMode !== "AUTO");
+    }
+
     function saveLocalCache() {
       localStorage.setItem(DB.MENU, JSON.stringify(items));
       localStorage.setItem(DB.SALES, JSON.stringify(orders));
@@ -1716,7 +2100,10 @@
       localStorage.setItem(DB.STAFF_LOGS, JSON.stringify(staffMessageLogs));
       localStorage.setItem(DB.MEMBERS, JSON.stringify(loyaltyMembers));
       localStorage.setItem(DB.EXPENSES, JSON.stringify(expensesList));
+      localStorage.setItem(DB.TABLE_QUEUE, JSON.stringify(tableOrderQueue));
+      localStorage.setItem(DB.PERIPHERALS, JSON.stringify(peripheralSettings));
       updateOrderBadge();
+      updatePrinterTopBadge();
     }
 
     async function pushToCloud() {
@@ -1735,6 +2122,7 @@
           staffMessageLogs,
           loyaltyMembers,
           expensesList,
+          tableOrderQueue,
           updatedAt: Date.now()
         };
         const res = await fetch(`${cloudBaseUrl}/ahb_pos_data.json`, {
@@ -1771,17 +2159,27 @@
         if (Array.isArray(data.items) && data.items.length) items = data.items;
         if (Array.isArray(data.orders)) orders = data.orders;
         if (typeof data.orderCounter === "number") orderCounter = data.orderCounter;
-        if (data.auth) auth = data.auth;
+        if (data.auth) {
+          auth = {
+            ADMIN_USER: data.auth.ADMIN_USER || "admin",
+            CASHIER_USER: data.auth.CASHIER_USER || "cashier",
+            ADMIN: data.auth.ADMIN || "admin123",
+            CASHIER: data.auth.CASHIER || "cashier123",
+            RECOVERY_PIN: data.auth.RECOVERY_PIN || "7860"
+          };
+        }
         if (Array.isArray(data.staffList)) staffList = data.staffList;
         if (Array.isArray(data.staffMessageLogs)) staffMessageLogs = data.staffMessageLogs;
         if (Array.isArray(data.loyaltyMembers)) loyaltyMembers = data.loyaltyMembers;
         if (Array.isArray(data.expensesList)) expensesList = data.expensesList;
+        if (Array.isArray(data.tableOrderQueue)) tableOrderQueue = data.tableOrderQueue;
 
         saveLocalCache();
         updateOrderBadge();
         renderCategories();
         renderMenu();
         renderMetrics();
+        renderLiveTableOrders();
         if (role === "ADMIN") {
           renderExpenses();
           renderStaff();
@@ -1831,6 +2229,472 @@
       localStorage.setItem(DB.THEME, document.body.classList.contains("light-theme") ? "light" : "dark");
     }
 
+    /* CHECK URL PARAMETERS FOR DIRECT TABLE QR SCAN */
+    function initPageMode() {
+      const params = new URLSearchParams(window.location.search);
+      const tableParam = params.get("table");
+      const cloudParam = params.get("cloud");
+
+      if (cloudParam && cloudParam.startsWith("https://")) {
+        cloudBaseUrl = cloudParam.replace(/\/+$/, "");
+        localStorage.setItem(DB.CLOUD_URL, cloudBaseUrl);
+      }
+
+      if (tableParam) {
+        openCustomerPortal(tableParam);
+      }
+    }
+
+    /* CUSTOMER PUBLIC TABLE ORDERING PORTAL */
+    async function openCustomerPortal(tableName) {
+      activeCustomerTable = tableName || "Table 1";
+      custCart = [];
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("dashboardShell").style.display = "none";
+      document.getElementById("customerQrPortal").style.display = "block";
+
+      document.getElementById("custTableBanner").textContent = `Ordering for: ${activeCustomerTable} • Direct to Manager Counter`;
+      document.getElementById("custTablePill").textContent = activeCustomerTable;
+
+      if (cloudBaseUrl) {
+        await pullFromCloud(true);
+      }
+      renderCustomerCategories();
+      renderCustomerMenu();
+      renderCustomerCart();
+    }
+
+    function exitCustomerPortal() {
+      document.getElementById("customerQrPortal").style.display = "none";
+      document.getElementById("loginScreen").style.display = "flex";
+    }
+
+    function openTablePreviewPortal() {
+      const selectedTbl = document.getElementById("qrTableSelect").value || "Table 1";
+      openCustomerPortal(selectedTbl);
+    }
+
+    function renderCustomerCategories() {
+      const cats = ["All", ...new Set(items.map(i => i.category))];
+      const bar = document.getElementById("custCategoryBar");
+      bar.innerHTML = "";
+      cats.forEach(cat => {
+        const btn = document.createElement("button");
+        btn.className = "cat-btn" + (cat === custActiveCat ? " active" : "");
+        btn.textContent = cat;
+        btn.onclick = () => {
+          custActiveCat = cat;
+          renderCustomerCategories();
+          renderCustomerMenu();
+        };
+        bar.appendChild(btn);
+      });
+    }
+
+    function renderCustomerMenu() {
+      const q = (document.getElementById("custSearchInput").value || "").toLowerCase().trim();
+      const grid = document.getElementById("custMenuCards");
+      grid.innerHTML = "";
+
+      const filtered = items.filter(it => {
+        const matchCat = custActiveCat === "All" || it.category === custActiveCat;
+        const matchText = !q || it.name.toLowerCase().includes(q) || it.category.toLowerCase().includes(q) || String(it.code || "").includes(q);
+        return matchCat && matchText;
+      });
+
+      filtered.forEach(it => {
+        const card = document.createElement("div");
+        card.className = "pos-card";
+        const hasVar = Array.isArray(it.variants) && it.variants.length > 0;
+        const priceLabel = hasVar ? `From PKR ${Number(it.variants[0].price).toFixed(0)}` : `PKR ${Number(it.price).toFixed(0)}`;
+        const btnAction = hasVar ? `openCustVariant(${it.id})` : `addCustCartItem(${it.id})`;
+        const btnText = hasVar ? "Choose Size" : "+ Add";
+
+        card.innerHTML = `
+          <div>
+            <span class="code-badge">${it.code || formatCode(it.id)}</span>
+            <div class="title">${it.name}</div>
+            <div class="subcat">${it.category}</div>
+          </div>
+          <div>
+            <div class="amt">${priceLabel}</div>
+          </div>
+          <button class="btn-brand" onclick="${btnAction}">${btnText}</button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function openCustVariant(itemId) {
+      const item = items.find(i => i.id === itemId);
+      if (!item || !item.variants) return;
+      document.getElementById("custVariantTitle").textContent = `${item.name} — Choose Size`;
+      const grid = document.getElementById("custVariantOptions");
+      grid.innerHTML = "";
+      item.variants.forEach(v => {
+        const btn = document.createElement("button");
+        btn.className = "btn-amber";
+        btn.innerHTML = `${v.label}<br><small>PKR ${v.price}</small>`;
+        btn.onclick = () => {
+          const lineKey = `${itemId}_${v.label}`;
+          const existing = custCart.find(c => c.lineKey === lineKey);
+          if (existing) existing.qty += 1;
+          else custCart.push({
+            lineKey,
+            parentId: itemId,
+            code: item.code || formatCode(item.id),
+            name: `${item.name} (${v.label})`,
+            price: v.price,
+            qty: 1
+          });
+          renderCustomerCart();
+        };
+        grid.appendChild(btn);
+      });
+      document.getElementById("custVariantBox").style.display = "block";
+    }
+
+    function addCustCartItem(id) {
+      const it = items.find(i => i.id === id);
+      if (!it) return;
+      const lineKey = `item_${id}`;
+      const existing = custCart.find(c => c.lineKey === lineKey);
+      if (existing) existing.qty += 1;
+      else custCart.push({
+        lineKey,
+        parentId: it.id,
+        code: it.code || formatCode(it.id),
+        name: it.name,
+        price: it.price,
+        qty: 1
+      });
+      renderCustomerCart();
+    }
+
+    function dropCustCartItem(lineKey) {
+      custCart = custCart.filter(c => c.lineKey !== lineKey);
+      renderCustomerCart();
+    }
+
+    function renderCustomerCart() {
+      const tbody = document.getElementById("custCartRows");
+      tbody.innerHTML = "";
+      let totalQty = 0;
+      let totalAmt = 0;
+
+      if (custCart.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--muted);">Your order list is empty. Tap + Add on any item above.</td></tr>`;
+      } else {
+        custCart.forEach(c => {
+          totalQty += c.qty;
+          totalAmt += c.price * c.qty;
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td><b>[${c.code}]</b> ${c.name}</td>
+            <td>${c.qty}</td>
+            <td>PKR ${(c.price * c.qty).toFixed(0)}</td>
+            <td><button class="btn-red btn-sm" onclick="dropCustCartItem('${c.lineKey}')">X</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      document.getElementById("custGrandTotal").textContent = "PKR " + totalAmt.toFixed(2);
+      document.getElementById("custFloatCount").textContent = `${totalQty} Item${totalQty === 1 ? "" : "s"}`;
+      document.getElementById("custFloatTotal").textContent = "PKR " + totalAmt.toFixed(0);
+    }
+
+    async function submitCustomerTableOrder() {
+      if (custCart.length === 0) {
+        alert("Please add at least one item from the menu first.");
+        return;
+      }
+
+      if (cloudBaseUrl) {
+        await pullFromCloud(true);
+      }
+
+      const custName = document.getElementById("custOrderName").value.trim() || `${activeCustomerTable} Guest`;
+      const custPhone = document.getElementById("custOrderPhone").value.trim() || "N/A";
+      const custNote = document.getElementById("custOrderNote").value.trim() || "";
+      const totalAmt = custCart.reduce((s, c) => s + c.price * c.qty, 0);
+
+      const newTableOrder = {
+        id: "TQ-" + Date.now(),
+        tableNumber: activeCustomerTable,
+        customerName: custName,
+        customerPhone: custPhone,
+        note: custNote,
+        items: custCart.map(c => ({ ...c })),
+        total: totalAmt,
+        createdAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      };
+
+      tableOrderQueue.unshift(newTableOrder);
+      saveLocalCache();
+      await pushToCloud();
+
+      custCart = [];
+      document.getElementById("custOrderNote").value = "";
+      renderCustomerCart();
+
+      const statusEl = document.getElementById("custOrderStatus");
+      statusEl.style.color = "var(--brand)";
+      statusEl.textContent = `Order sent directly to Manager Counter for ${activeCustomerTable}! Your food & bill are being prepared.`;
+    }
+
+    /* MANAGER LIVE TABLE ORDER QUEUE HANDLING */
+    function renderLiveTableOrders() {
+      const box = document.getElementById("liveTableOrdersBox");
+      const listEl = document.getElementById("liveTableOrdersList");
+      const countBadge = document.getElementById("liveTableOrderCount");
+      if (!box || !listEl) return;
+
+      if (!tableOrderQueue || tableOrderQueue.length === 0) {
+        box.style.display = "none";
+        return;
+      }
+
+      box.style.display = "block";
+      countBadge.textContent = `${tableOrderQueue.length} Pending Table Order${tableOrderQueue.length > 1 ? "s" : ""}`;
+      listEl.innerHTML = "";
+
+      tableOrderQueue.forEach(tq => {
+        const itemsSummary = tq.items.map(i => `[${i.code}] ${i.name} x${i.qty}`).join(", ");
+        const div = document.createElement("div");
+        div.className = "qr-queue-item";
+        div.innerHTML = `
+          <div style="flex:1; min-width:220px;">
+            <strong style="color:var(--accent); font-size:14px;">${tq.tableNumber}</strong> •
+            <b>${tq.customerName}</b> (${tq.customerPhone}) • <small>${tq.createdAt}</small><br />
+            <span style="font-size:12.5px; color:var(--text);">${itemsSummary}</span>
+            ${tq.note ? `<br /><small style="color:var(--info);">Note: ${tq.note}</small>` : ""}
+          </div>
+          <div style="text-align:right;">
+            <div style="font-weight:800; color:var(--brand); margin-bottom:6px;">PKR ${Number(tq.total).toFixed(2)}</div>
+            <div class="btn-group">
+              <button class="btn-brand btn-sm" onclick="acceptTableOrderToBill('${tq.id}', false)">Load to Bill</button>
+              <button class="btn-sky btn-sm" onclick="acceptTableOrderToBill('${tq.id}', true)">Make Bill & Print</button>
+              <button class="btn-red btn-sm" onclick="dismissTableOrder('${tq.id}')">Dismiss</button>
+            </div>
+          </div>
+        `;
+        listEl.appendChild(div);
+      });
+    }
+
+    async function acceptTableOrderToBill(queueId, autoMakeAndPrint) {
+      const idx = tableOrderQueue.findIndex(t => t.id === queueId);
+      if (idx === -1) return;
+      const tq = tableOrderQueue[idx];
+
+      document.getElementById("orderType").value = "Dine-In";
+      const tblSelect = document.getElementById("tableNumber");
+      if ([...tblSelect.options].some(o => o.value === tq.tableNumber)) {
+        tblSelect.value = tq.tableNumber;
+      }
+      document.getElementById("cName").value = tq.customerName;
+      document.getElementById("cMobile").value = tq.customerPhone === "N/A" ? "" : tq.customerPhone;
+
+      bill = tq.items.map(i => ({ ...i }));
+      tableOrderQueue.splice(idx, 1);
+
+      renderBill();
+      renderLiveTableOrders();
+      syncStore();
+
+      if (autoMakeAndPrint) {
+        await generateBill();
+        if (peripheralSettings.printMode !== "AUTO") {
+          printSingleBill();
+        }
+      }
+    }
+
+    function dismissTableOrder(queueId) {
+      if (!confirm("Remove this table order from queue?")) return;
+      tableOrderQueue = tableOrderQueue.filter(t => t.id !== queueId);
+      renderLiveTableOrders();
+      syncStore();
+    }
+
+    /* TABLE PRO QR CODE GENERATOR */
+    function generateTableQrCode() {
+      const tableVal = document.getElementById("qrTableSelect").value || "Table 1";
+      const customBase = (document.getElementById("qrBaseUrlInput").value || "").trim();
+      const baseLocation = customBase || window.location.href.split("?")[0];
+
+      const urlObj = new URL(baseLocation, window.location.origin);
+      urlObj.searchParams.set("table", tableVal);
+      if (cloudBaseUrl) {
+        urlObj.searchParams.set("cloud", cloudBaseUrl);
+      }
+      const targetScanUrl = urlObj.toString();
+
+      document.getElementById("qrPosterTableTitle").textContent = tableVal.toUpperCase();
+      document.getElementById("tableQrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(targetScanUrl)}`;
+    }
+
+    function printTableQrPoster() {
+      document.body.classList.remove("print-period-mode", "print-card-mode");
+      document.body.classList.add("print-qr-mode");
+      window.print();
+      setTimeout(() => document.body.classList.remove("print-qr-mode"), 400);
+    }
+
+    /* PERIPHERAL CONNECTIVITY, THERMAL PRINTER & AUTO/MANUAL PRINT */
+    function loadPeripheralUi() {
+      const pm = document.getElementById("printModeSelect");
+      const pp = document.getElementById("printerPaperSelect");
+      const pc = document.getElementById("printerConnType");
+      const dm = document.getElementById("displayModeSelect");
+      if (pm) pm.value = peripheralSettings.printMode || "MANUAL";
+      if (pp) pp.value = peripheralSettings.paperSize || "58mm";
+      if (pc) pc.value = peripheralSettings.connType || "SYSTEM";
+      if (dm) dm.value = peripheralSettings.displayMode || "SINGLE";
+      updatePrinterTopBadge();
+    }
+
+    function savePeripheralSettings() {
+      if (role !== "ADMIN") return;
+      peripheralSettings.printMode = document.getElementById("printModeSelect").value;
+      peripheralSettings.paperSize = document.getElementById("printerPaperSelect").value;
+      peripheralSettings.connType = document.getElementById("printerConnType").value;
+      peripheralSettings.displayMode = document.getElementById("displayModeSelect").value;
+      saveLocalCache();
+
+      const msg = document.getElementById("peripheralStatusMsg");
+      if (msg) {
+        msg.style.color = "var(--brand)";
+        msg.textContent = `Saved! Print Mode: ${peripheralSettings.printMode} | Paper: ${peripheralSettings.paperSize}`;
+      }
+    }
+
+    async function connectThermalPrinter() {
+      const msg = document.getElementById("peripheralStatusMsg");
+      if (peripheralSettings.connType === "SERIAL" && "serial" in navigator) {
+        try {
+          serialPrinterPort = await navigator.serial.requestPort();
+          await serialPrinterPort.open({ baudRate: 9600 });
+          msg.style.color = "var(--brand)";
+          msg.textContent = "Direct USB/Serial Thermal Printer Connected!";
+        } catch (err) {
+          msg.style.color = "var(--danger)";
+          msg.textContent = "Serial port selection cancelled or unavailable.";
+        }
+      } else {
+        msg.style.color = "var(--brand)";
+        msg.textContent = `Thermal Printer Ready (${peripheralSettings.paperSize} System/Bluetooth/USB Spooler Active).`;
+      }
+    }
+
+    function testThermalPrint() {
+      document.getElementById("invoiceContainer").innerHTML = `
+        <div class="invoice-banner">
+          <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
+          <div class="invoice-sub">PRINTER CONNECTION TEST</div>
+        </div>
+        <div class="invoice-meta-grid">
+          <div><strong>Paper Size:</strong> ${peripheralSettings.paperSize}</div>
+          <div><strong>Print Mode:</strong> ${peripheralSettings.printMode}</div>
+          <div><strong>Time:</strong> ${new Date().toLocaleString()}</div>
+        </div>
+        <div class="invoice-footer">
+          Thermal Printer Working Perfectly!<br />
+          <div class="invoice-dev-credit">${RESTAURANT_INFO.devCredit}</div>
+        </div>
+      `;
+      printSingleBill();
+    }
+
+    /* QUICK ITEM PRICE UPDATER BY CODE OR NAME */
+    let quickMatchedItem = null;
+
+    function lookupQuickPriceItem() {
+      const q = (document.getElementById("qpLookup").value || "").trim().toLowerCase();
+      const infoEl = document.getElementById("qpFoundInfo");
+      const varSelect = document.getElementById("qpVariantSelect");
+      const priceInput = document.getElementById("qpNewPrice");
+      document.getElementById("qpStatusMsg").textContent = "";
+
+      if (!q) {
+        quickMatchedItem = null;
+        infoEl.textContent = "";
+        varSelect.innerHTML = `<option value="BASE">Standard Price</option>`;
+        return;
+      }
+
+      const found = items.find(
+        it => String(it.code || "").toLowerCase() === q || it.name.toLowerCase() === q
+      ) || items.find(
+        it => it.name.toLowerCase().includes(q)
+      );
+
+      if (!found) {
+        quickMatchedItem = null;
+        infoEl.style.color = "var(--danger)";
+        infoEl.textContent = "No item found with this code or name.";
+        varSelect.innerHTML = `<option value="BASE">Standard Price</option>`;
+        return;
+      }
+
+      quickMatchedItem = found;
+      infoEl.style.color = "var(--info)";
+
+      if (Array.isArray(found.variants) && found.variants.length > 0) {
+        varSelect.innerHTML = found.variants.map((v, idx) => `<option value="${idx}">${v.label} (Current: PKR ${v.price})</option>`).join("");
+        priceInput.value = found.variants[0].price;
+        infoEl.textContent = `Found: [${found.code}] ${found.name} (${found.category}) — Select size & enter new price.`;
+      } else {
+        varSelect.innerHTML = `<option value="BASE">Standard Price (Current: PKR ${found.price})</option>`;
+        priceInput.value = found.price;
+        infoEl.textContent = `Found: [${found.code}] ${found.name} (${found.category}) — Current Price: PKR ${found.price}`;
+      }
+    }
+
+    function onQuickVariantChange() {
+      if (!quickMatchedItem || !Array.isArray(quickMatchedItem.variants)) return;
+      const idx = Number(document.getElementById("qpVariantSelect").value);
+      if (quickMatchedItem.variants[idx]) {
+        document.getElementById("qpNewPrice").value = quickMatchedItem.variants[idx].price;
+      }
+    }
+
+    function applyQuickPriceUpdate() {
+      if (role !== "ADMIN") return;
+      const statusEl = document.getElementById("qpStatusMsg");
+      const newPrice = Number(document.getElementById("qpNewPrice").value);
+
+      if (!quickMatchedItem) {
+        statusEl.style.color = "var(--danger)";
+        statusEl.textContent = "Please search a valid item code or name first.";
+        return;
+      }
+
+      if (isNaN(newPrice) || newPrice <= 0) {
+        statusEl.style.color = "var(--danger)";
+        statusEl.textContent = "Enter a valid price greater than 0.";
+        return;
+      }
+
+      const varVal = document.getElementById("qpVariantSelect").value;
+      if (varVal !== "BASE" && Array.isArray(quickMatchedItem.variants)) {
+        const vIdx = Number(varVal);
+        quickMatchedItem.variants[vIdx].price = newPrice;
+        if (vIdx === 0) quickMatchedItem.price = newPrice;
+        statusEl.style.color = "var(--brand)";
+        statusEl.textContent = `Updated [${quickMatchedItem.code}] ${quickMatchedItem.name} (${quickMatchedItem.variants[vIdx].label}) to PKR ${newPrice}!`;
+      } else {
+        quickMatchedItem.price = newPrice;
+        statusEl.style.color = "var(--brand)";
+        statusEl.textContent = `Updated [${quickMatchedItem.code}] ${quickMatchedItem.name} price to PKR ${newPrice}!`;
+      }
+
+      syncStore();
+      renderMenu();
+      lookupQuickPriceItem();
+    }
+
     /* LOGIN & FORGOT PASSWORD */
     function toggleLoginPassword(show) {
       document.getElementById("passInput").type = show ? "text" : "password";
@@ -1873,7 +2737,7 @@
       if (cloudBaseUrl) {
         await pullFromCloud(true);
       }
-      const rawUser = (document.getElementById("usernameInput").value || "").trim().toUpperCase();
+      const rawUser = (document.getElementById("usernameInput").value || "").trim().toLowerCase();
       const p = document.getElementById("passInput").value;
       const err = document.getElementById("loginErr");
 
@@ -1882,12 +2746,19 @@
         return;
       }
 
-      if (rawUser !== "ADMIN" && rawUser !== "CASHIER") {
+      const adminUserLower = String(auth.ADMIN_USER || "admin").toLowerCase();
+      const cashierUserLower = String(auth.CASHIER_USER || "cashier").toLowerCase();
+
+      let matchedRole = null;
+      if (rawUser === adminUserLower) matchedRole = "ADMIN";
+      else if (rawUser === cashierUserLower) matchedRole = "CASHIER";
+
+      if (!matchedRole) {
         err.textContent = "Invalid username.";
         return;
       }
 
-      if (p !== auth[rawUser]) {
+      if (p !== auth[matchedRole]) {
         err.textContent = "Invalid username or password.";
         return;
       }
@@ -1895,11 +2766,11 @@
       err.textContent = "";
       document.getElementById("usernameInput").value = "";
       document.getElementById("passInput").value = "";
-      role = rawUser;
+      role = matchedRole;
 
       document.getElementById("loginScreen").style.display = "none";
       document.getElementById("dashboardShell").style.display = "block";
-      document.getElementById("roleBadge").textContent = role;
+      document.getElementById("roleBadge").textContent = `${role} (${rawUser})`;
 
       const isAdmin = role === "ADMIN";
       document.getElementById("compactAdminNav").style.display = isAdmin ? "flex" : "none";
@@ -1909,12 +2780,15 @@
       const expDateEl = document.getElementById("expDate");
       if (expDateEl) expDateEl.value = getTodayIso();
 
+      loadPeripheralUi();
+      generateTableQrCode();
       switchSection("POS");
       updateOrderBadge();
       renderCategories();
       renderMenu();
       renderBill();
       renderMetrics();
+      renderLiveTableOrders();
       if (isAdmin) {
         renderExpenses();
         renderStaff();
@@ -1924,7 +2798,7 @@
 
       if (cloudPollTimer) clearInterval(cloudPollTimer);
       if (cloudBaseUrl) {
-        cloudPollTimer = setInterval(() => pullFromCloud(true), 8000);
+        cloudPollTimer = setInterval(() => pullFromCloud(true), 6000);
       }
     }
 
@@ -1959,6 +2833,10 @@
       }
       if (sec === "SETTINGS") {
         renderMembers();
+        generateTableQrCode();
+        loadPeripheralUi();
+        document.getElementById("updAdminUser").placeholder = `Current: ${auth.ADMIN_USER}`;
+        document.getElementById("updCashierUser").placeholder = `Current: ${auth.CASHIER_USER}`;
       }
     }
 
@@ -2112,6 +2990,7 @@
     }
 
     function printLoyaltyCard() {
+      document.body.classList.remove("print-period-mode", "print-qr-mode");
       document.body.classList.add("print-card-mode");
       window.print();
       setTimeout(() => document.body.classList.remove("print-card-mode"), 400);
@@ -2183,29 +3062,42 @@
       renderBill();
     }
 
-    /* SETTINGS: PASSWORDS & RECOVERY PIN */
+    /* SETTINGS: USERNAME, PASSWORDS & RECOVERY PIN */
     function savePasswords() {
       if (role !== "ADMIN") return;
+      const au = document.getElementById("updAdminUser").value.trim();
+      const cu = document.getElementById("updCashierUser").value.trim();
       const a = document.getElementById("updAdmin").value.trim();
       const c = document.getElementById("updCashier").value.trim();
       const pin = document.getElementById("updPin").value.trim();
       const msg = document.getElementById("passMsg");
 
-      if (!a && !c && !pin) {
+      if (!au && !cu && !a && !c && !pin) {
         msg.style.color = "var(--danger)";
-        msg.textContent = "Enter at least one new password or PIN.";
+        msg.textContent = "Enter at least one new username, password, or PIN.";
         return;
       }
+      if (au && cu && au.toLowerCase() === cu.toLowerCase()) {
+        msg.style.color = "var(--danger)";
+        msg.textContent = "Admin and Cashier usernames must be different.";
+        return;
+      }
+      if (au) auth.ADMIN_USER = au;
+      if (cu) auth.CASHIER_USER = cu;
       if (a) auth.ADMIN = a;
       if (c) auth.CASHIER = c;
       if (pin) auth.RECOVERY_PIN = pin;
       syncStore();
 
+      document.getElementById("updAdminUser").value = "";
+      document.getElementById("updCashierUser").value = "";
       document.getElementById("updAdmin").value = "";
       document.getElementById("updCashier").value = "";
       document.getElementById("updPin").value = "";
+      document.getElementById("updAdminUser").placeholder = `Current: ${auth.ADMIN_USER}`;
+      document.getElementById("updCashierUser").placeholder = `Current: ${auth.CASHIER_USER}`;
       msg.style.color = "var(--brand)";
-      msg.textContent = "Settings saved & synced across devices.";
+      msg.textContent = "Username & Password settings saved and synced!";
     }
 
     /* STAFF MANAGEMENT */
@@ -2454,7 +3346,7 @@
       });
     }
 
-    /* MENU & BILLING (NO STOCK RESTRICTIONS) */
+    /* MENU & BILLING */
     function renderCategories() {
       const cats = ["All", ...new Set(items.map(i => i.category))];
       const bar = document.getElementById("categoryBar");
@@ -2799,6 +3691,11 @@
         renderMembers();
         renderExpenses();
       }
+
+      /* AUTO PRINT IF ENABLED IN SETTINGS */
+      if (peripheralSettings.printMode === "AUTO") {
+        setTimeout(() => printSingleBill(), 250);
+      }
     }
 
     function generatePeriodSettlement(periodMode) {
@@ -2896,7 +3793,7 @@
     }
 
     function printSingleBill() {
-      document.body.classList.remove("print-period-mode", "print-card-mode");
+      document.body.classList.remove("print-period-mode", "print-card-mode", "print-qr-mode");
       window.print();
     }
 
@@ -2905,7 +3802,7 @@
         alert("Generate Weekly or Monthly Settlement first.");
         return;
       }
-      document.body.classList.remove("print-card-mode");
+      document.body.classList.remove("print-card-mode", "print-qr-mode");
       document.body.classList.add("print-period-mode");
       window.print();
       setTimeout(() => document.body.classList.remove("print-period-mode"), 400);
@@ -3004,9 +3901,11 @@
       localStorage.removeItem(DB.SALES);
       localStorage.removeItem(DB.ORDER_SEQ);
       localStorage.removeItem(DB.EXPENSES);
+      localStorage.removeItem(DB.TABLE_QUEUE);
       items = [...starterMenu];
       orders = [];
       expensesList = [];
+      tableOrderQueue = [];
       orderCounter = 0;
       bill = [];
       activeMemberCard = null;
@@ -3029,7 +3928,10 @@
       renderBill();
       renderMetrics();
       renderExpenses();
+      renderLiveTableOrders();
     }
+
+    initPageMode();
   </script>
 </body>
 </html>
