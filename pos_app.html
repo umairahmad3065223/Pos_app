@@ -701,7 +701,7 @@
       box-shadow: 0 -8px 24px rgba(0,0,0,0.4);
     }
 
-    /* 58MM / 3-INCH THERMAL RECEIPT PREVIEW & PRINT DESIGN */
+    /* 58MM / 80MM THERMAL RECEIPT PREVIEW & PRINT DESIGN */
     .thermal-preview-wrap {
       display: flex;
       justify-content: center;
@@ -840,15 +840,15 @@
     .err-text { color: var(--danger); font-size: 12px; min-height: 18px; margin-bottom: 8px; }
     .ok-text { color: var(--brand); font-size: 12px; min-height: 18px; margin-top: 6px; }
 
-    /* THERMAL PRINTER 58MM / 3-INCH PRINT RULES */
+    /* THERMAL PRINTER PRINT RULES */
     @page {
-      size: 58mm auto;
+      size: 80mm auto;
       margin: 0;
     }
 
     @media print {
       html, body {
-        width: 58mm !important;
+        width: 80mm !important;
         margin: 0 !important;
         padding: 0 !important;
         background: #ffffff !important;
@@ -865,7 +865,7 @@
         position: fixed;
         left: 0;
         top: 0;
-        width: 58mm !important;
+        width: 80mm !important;
         background: #ffffff !important;
         color: #000000 !important;
         padding: 2mm !important;
@@ -881,8 +881,8 @@
         position: fixed;
         left: 0;
         top: 0;
-        width: 58mm !important;
-        max-width: 58mm !important;
+        width: 80mm !important;
+        max-width: 80mm !important;
         border: 1px solid #000 !important;
         background: #ffffff !important;
         color: #000000 !important;
@@ -897,8 +897,8 @@
         position: fixed;
         left: 0;
         top: 0;
-        width: 58mm !important;
-        max-width: 58mm !important;
+        width: 80mm !important;
+        max-width: 80mm !important;
         border: none !important;
         border-radius: 0 !important;
         background: #ffffff !important;
@@ -918,9 +918,9 @@
         border-radius: 0 !important;
         padding: 1.5mm 2mm !important;
         margin: 0 !important;
-        width: 58mm !important;
-        max-width: 58mm !important;
-        font-size: 10px !important;
+        width: 100% !important;
+        max-width: 80mm !important;
+        font-size: 10.5px !important;
         color: #000000 !important;
       }
     }
@@ -928,7 +928,7 @@
 </head>
 <body>
 
-  <!-- PUBLIC CUSTOMER DIGITAL MENU & QR ORDERING PORTAL (OPENS WHEN TABLE OR COUNTER QR IS SCANNED) -->
+  <!-- PUBLIC CUSTOMER DIGITAL MENU & QR ORDERING PORTAL -->
   <div id="customerQrPortal">
     <div class="cust-header">
       <div class="brand-title">
@@ -970,7 +970,6 @@
           <span id="custTablePill" class="order-tag">Counter Direct</span>
         </div>
 
-        <!-- 1. ORDER SERVICE OPTION (DINE-IN / TAKEAWAY / DELIVERY) -->
         <label style="color:var(--brand); font-weight:800; font-size:12.5px;">1. Select Order Option (یہاں کھانا ہے / لے جانا ہے / ڈیلیوری):</label>
         <div class="cust-option-group">
           <button type="button" id="optDineIn" class="cust-choice-btn active" onclick="selectCustOrderType('Dine-In')">
@@ -984,13 +983,11 @@
           </button>
         </div>
 
-        <!-- DELIVERY ADDRESS FIELD (AUTO SHOWS WHEN DELIVERY IS SELECTED) -->
         <div id="custDeliveryAddressWrap" style="display:none;">
           <label for="custDeliveryAddress" style="color:var(--accent); font-weight:700;">Delivery Address (مکمل پتہ لکھیں) *</label>
           <input id="custDeliveryAddress" placeholder="e.g. House #, Street / Mohalla, Kheshgi Payan..." />
         </div>
 
-        <!-- 2. PAYMENT METHOD SELECTION (CASH / ONLINE / CARD) -->
         <label style="color:var(--info); font-weight:800; font-size:12.5px;">2. Select Payment Method (ادائیگی کا طریقہ):</label>
         <div class="cust-option-group">
           <button type="button" id="payCashBtn" class="cust-choice-btn pay-active" onclick="selectCustPaymentMethod('Cash')">
@@ -1135,13 +1132,14 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>Staff</span>
         </button>
-        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Counter & Table QR, Quick Price Update, Printers, Login Log & Reports">
+        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Dual Printers, Counter & Table QR, Quick Price Update, Login Log & Reports">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Settings</span>
         </button>
       </nav>
 
       <div class="top-actions">
+        <span id="dualPrintBadge" class="sync-chip">Dual Print Ready</span>
         <span id="cloudSyncBadge" class="sync-chip offline">Local Mode</span>
         <span id="roleBadge" class="role-chip">ADMIN</span>
         <button class="btn-outline btn-sm" onclick="switchTheme()">Theme</button>
@@ -1332,7 +1330,7 @@
 
             <div class="box" id="printableReceipt">
               <div class="box-head no-print">
-                <h2>Thermal Receipt (58mm / 3-Inch)</h2>
+                <h2>Thermal Receipt (Counter + Kitchen KOT)</h2>
               </div>
 
               <div class="thermal-preview-wrap">
@@ -1349,10 +1347,11 @@
               </div>
 
               <div class="btn-group no-print">
-                <button class="btn-sky" onclick="printSingleBill()">Print Thermal Bill</button>
+                <button class="btn-sky" onclick="printDualBillAndKot()">Print Counter + Kitchen KOT</button>
                 <button class="btn-outline" onclick="saveReceiptTxt()">Save .TXT</button>
                 <button class="btn-amber" onclick="mailReceipt()">Email</button>
               </div>
+              <div id="dualPrintStatusMsg" class="ok-text no-print"></div>
             </div>
           </div>
         </div>
@@ -1539,6 +1538,57 @@
         <div class="settings-grid">
           <!-- LEFT COLUMN OF SETTINGS -->
           <div>
+            <!-- DUAL THERMAL PRINTER & KITCHEN KOT SETTINGS -->
+            <div class="box" style="border-color: var(--brand);">
+              <div class="box-head">
+                <h2>Dual Thermal Printers (Counter Bill + Kitchen KOT)</h2>
+              </div>
+              <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
+                Set exact Windows printer names (e.g. <strong>Counter_Printer</strong> &amp; <strong>Kitchen_Printer</strong>). In Electron Desktop App, one click silently prints Customer Receipt at Counter and KOT in Kitchen simultaneously.
+              </p>
+
+              <div class="row-2">
+                <div>
+                  <label for="counterPrinterInput" style="color:var(--brand); font-weight:700;">Counter Printer Name (Windows)</label>
+                  <input id="counterPrinterInput" type="text" placeholder="Counter_Printer" onchange="savePeripheralSettings()" />
+                </div>
+                <div>
+                  <label for="kitchenPrinterInput" style="color:var(--accent); font-weight:700;">Kitchen Printer Name (Windows)</label>
+                  <input id="kitchenPrinterInput" type="text" placeholder="Kitchen_Printer" onchange="savePeripheralSettings()" />
+                </div>
+              </div>
+
+              <div class="row-3">
+                <div>
+                  <label for="printModeSelect" style="color:var(--brand); font-weight:700;">Receipt Printing Mode</label>
+                  <select id="printModeSelect" onchange="savePeripheralSettings()">
+                    <option value="AUTO">Auto Print (On Bill Generate)</option>
+                    <option value="MANUAL">Manual Print (Click Button)</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="kotEnabledSelect">Kitchen KOT Print</label>
+                  <select id="kotEnabledSelect" onchange="savePeripheralSettings()">
+                    <option value="YES">Enabled (Counter + Kitchen)</option>
+                    <option value="NO">Disabled (Counter Only)</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="printerPaperSelect">Thermal Paper Size</label>
+                  <select id="printerPaperSelect" onchange="savePeripheralSettings()">
+                    <option value="80mm">80mm (3-Inch) Thermal</option>
+                    <option value="58mm">58mm Thermal</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="btn-group">
+                <button class="btn-brand" onclick="savePeripheralSettings()">Save Printer Names</button>
+                <button class="btn-sky" onclick="testDualThermalPrint()">Test Both Printers (Counter + KOT)</button>
+              </div>
+              <div id="peripheralStatusMsg" class="ok-text"></div>
+            </div>
+
             <!-- ADMIN & CASHIER LOGIN TIME HISTORY LOG -->
             <div class="box" style="border-color: var(--accent);">
               <div class="box-head">
@@ -1608,56 +1658,6 @@
                 <img id="tableQrImg" src="" alt="Digital Menu QR Code" />
                 <p>Scan QR Code with Mobile Camera<br />to View Menu & Order Directly</p>
               </div>
-            </div>
-
-            <!-- PERIPHERAL CONNECTIVITY, PRINTERS & DISPLAYS -->
-            <div class="box" style="border-color: var(--brand);">
-              <div class="box-head">
-                <h2>Peripheral Connectivity, Printers & Displays</h2>
-              </div>
-              <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-                Configure thermal receipt printer connection (58mm / 80mm USB or Bluetooth), Customer Display screen, and choose between <strong>Auto Print</strong> or <strong>Manual Print</strong>.
-              </p>
-
-              <div class="row-2">
-                <div>
-                  <label for="printModeSelect" style="color:var(--brand); font-weight:700;">Receipt Printing Mode</label>
-                  <select id="printModeSelect" onchange="savePeripheralSettings()">
-                    <option value="MANUAL">Manual Print (Click Print Button)</option>
-                    <option value="AUTO">Auto Print (Print Automatically on Bill)</option>
-                  </select>
-                </div>
-                <div>
-                  <label for="printerPaperSelect">Thermal Printer Paper Size</label>
-                  <select id="printerPaperSelect" onchange="savePeripheralSettings()">
-                    <option value="58mm">58mm Thermal Printer</option>
-                    <option value="80mm">80mm (3-Inch) Thermal Printer</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="row-2">
-                <div>
-                  <label for="printerConnType">Printer Connection Type</label>
-                  <select id="printerConnType" onchange="savePeripheralSettings()">
-                    <option value="SYSTEM">System Default / Bluetooth / USB Spooler</option>
-                    <option value="SERIAL">Direct USB / Serial Thermal Port</option>
-                  </select>
-                </div>
-                <div>
-                  <label for="displayModeSelect">Customer / Kitchen Display</label>
-                  <select id="displayModeSelect" onchange="savePeripheralSettings()">
-                    <option value="SINGLE">Single POS Screen</option>
-                    <option value="DUAL">Dual Screen / Live Queue Alert</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="btn-group">
-                <button class="btn-brand" onclick="connectThermalPrinter()">Connect Thermal Printer</button>
-                <button class="btn-sky" onclick="testThermalPrint()">Test Thermal Print</button>
-              </div>
-              <div id="peripheralStatusMsg" class="ok-text"></div>
             </div>
 
             <!-- CLOUD SYNC CONFIGURATION -->
@@ -1978,11 +1978,16 @@
     let expensesList = JSON.parse(localStorage.getItem(DB.EXPENSES)) || [];
     let tableOrderQueue = JSON.parse(localStorage.getItem(DB.TABLE_QUEUE)) || [];
     let peripheralSettings = JSON.parse(localStorage.getItem(DB.PERIPHERALS)) || {
-      printMode: "MANUAL",
-      paperSize: "58mm",
-      connType: "SYSTEM",
-      displayMode: "SINGLE"
+      counterPrinter: "Counter_Printer",
+      kitchenPrinter: "Kitchen_Printer",
+      kotEnabled: "YES",
+      printMode: "AUTO",
+      paperSize: "80mm"
     };
+    if (!peripheralSettings.counterPrinter) peripheralSettings.counterPrinter = "Counter_Printer";
+    if (!peripheralSettings.kitchenPrinter) peripheralSettings.kitchenPrinter = "Kitchen_Printer";
+    if (!peripheralSettings.kotEnabled) peripheralSettings.kotEnabled = "YES";
+
     let cloudBaseUrl = (localStorage.getItem(DB.CLOUD_URL) || DEFAULT_CLOUD_URL).replace(/\/+$/, "");
 
     let role = null;
@@ -1994,11 +1999,12 @@
     let custSelectedOrderType = "Dine-In";
     let custSelectedPaymentMethod = "Cash";
     let latestReceiptText = "";
+    let latestCounterHtml = "";
+    let latestKitchenKotHtml = "";
     let latestOrderNo = null;
     let latestPeriodText = "";
     let latestPeriodType = "summary";
     let cloudPollTimer = null;
-    let serialPrinterPort = null;
 
     if (localStorage.getItem(DB.THEME) === "light") {
       document.body.classList.add("light-theme");
@@ -2020,6 +2026,21 @@
       badge.classList.toggle("offline", !isOnline);
     }
 
+    function updateDualPrintBadge() {
+      const badge = document.getElementById("dualPrintBadge");
+      if (!badge) return;
+      const isElectron = !!(window.electronPOS && typeof window.electronPOS.printDualReceipts === "function");
+      if (isElectron) {
+        badge.textContent = peripheralSettings.kotEnabled === "YES"
+          ? `Silent Dual Print (${peripheralSettings.counterPrinter} + ${peripheralSettings.kitchenPrinter})`
+          : `Silent Print (${peripheralSettings.counterPrinter})`;
+        badge.classList.remove("offline");
+      } else {
+        badge.textContent = "Browser Print Mode";
+        badge.classList.add("offline");
+      }
+    }
+
     function saveLocalCache() {
       localStorage.setItem(DB.MENU, JSON.stringify(items));
       localStorage.setItem(DB.SALES, JSON.stringify(orders));
@@ -2031,6 +2052,7 @@
       localStorage.setItem(DB.TABLE_QUEUE, JSON.stringify(tableOrderQueue));
       localStorage.setItem(DB.PERIPHERALS, JSON.stringify(peripheralSettings));
       updateOrderBadge();
+      updateDualPrintBadge();
     }
 
     async function pushToCloud() {
@@ -2495,7 +2517,7 @@
       if (autoMakeAndPrint) {
         await generateBill();
         if (peripheralSettings.printMode !== "AUTO") {
-          printSingleBill();
+          printDualBillAndKot();
         }
       }
     }
@@ -2531,71 +2553,175 @@
       setTimeout(() => document.body.classList.remove("print-qr-mode"), 400);
     }
 
-    /* PERIPHERAL CONNECTIVITY, THERMAL PRINTER & AUTO/MANUAL PRINT */
+    /* DUAL THERMAL PRINTER (COUNTER + KITCHEN KOT) SETTINGS & EXECUTION */
     function loadPeripheralUi() {
+      const cp = document.getElementById("counterPrinterInput");
+      const kp = document.getElementById("kitchenPrinterInput");
       const pm = document.getElementById("printModeSelect");
+      const ke = document.getElementById("kotEnabledSelect");
       const pp = document.getElementById("printerPaperSelect");
-      const pc = document.getElementById("printerConnType");
-      const dm = document.getElementById("displayModeSelect");
-      if (pm) pm.value = peripheralSettings.printMode || "MANUAL";
-      if (pp) pp.value = peripheralSettings.paperSize || "58mm";
-      if (pc) pc.value = peripheralSettings.connType || "SYSTEM";
-      if (dm) dm.value = peripheralSettings.displayMode || "SINGLE";
+
+      if (cp) cp.value = peripheralSettings.counterPrinter || "Counter_Printer";
+      if (kp) kp.value = peripheralSettings.kitchenPrinter || "Kitchen_Printer";
+      if (pm) pm.value = peripheralSettings.printMode || "AUTO";
+      if (ke) ke.value = peripheralSettings.kotEnabled || "YES";
+      if (pp) pp.value = peripheralSettings.paperSize || "80mm";
+      updateDualPrintBadge();
     }
 
     function savePeripheralSettings() {
       if (role !== "ADMIN") return;
-      peripheralSettings.printMode = document.getElementById("printModeSelect").value;
-      peripheralSettings.paperSize = document.getElementById("printerPaperSelect").value;
-      peripheralSettings.connType = document.getElementById("printerConnType").value;
-      peripheralSettings.displayMode = document.getElementById("displayModeSelect").value;
+      const cp = document.getElementById("counterPrinterInput");
+      const kp = document.getElementById("kitchenPrinterInput");
+      const pm = document.getElementById("printModeSelect");
+      const ke = document.getElementById("kotEnabledSelect");
+      const pp = document.getElementById("printerPaperSelect");
+
+      if (cp) peripheralSettings.counterPrinter = cp.value.trim() || "Counter_Printer";
+      if (kp) peripheralSettings.kitchenPrinter = kp.value.trim() || "Kitchen_Printer";
+      if (pm) peripheralSettings.printMode = pm.value;
+      if (ke) peripheralSettings.kotEnabled = ke.value;
+      if (pp) peripheralSettings.paperSize = pp.value;
+
       saveLocalCache();
 
       const msg = document.getElementById("peripheralStatusMsg");
       if (msg) {
         msg.style.color = "var(--brand)";
-        msg.textContent = `Saved! Print Mode: ${peripheralSettings.printMode} | Paper: ${peripheralSettings.paperSize}`;
+        msg.textContent = `Saved! Counter: "${peripheralSettings.counterPrinter}" | Kitchen: "${peripheralSettings.kitchenPrinter}" | Mode: ${peripheralSettings.printMode}`;
       }
     }
 
-    async function connectThermalPrinter() {
-      const msg = document.getElementById("peripheralStatusMsg");
-      if (peripheralSettings.connType === "SERIAL" && "serial" in navigator) {
+    function buildThermalDocumentHtml(innerBodyHtml) {
+      const widthCss = peripheralSettings.paperSize === "58mm" ? "58mm" : "80mm";
+      return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    @page { size: ${widthCss} auto; margin: 0; }
+    * { box-sizing: border-box; }
+    body {
+      width: ${widthCss};
+      margin: 0;
+      padding: 2mm;
+      background: #ffffff;
+      color: #000000;
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 11px;
+      line-height: 1.3;
+    }
+    .center { text-align: center; }
+    .bold { font-weight: 900; }
+    .line-dash { border-bottom: 1px dashed #000; margin: 4px 0; padding-bottom: 4px; }
+    .line-solid { border-top: 1px solid #000; border-bottom: 1px solid #000; margin: 4px 0; padding: 3px 0; }
+    table { width: 100%; border-collapse: collapse; margin: 4px 0; }
+    th { border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 3px 1px; text-align: left; font-size: 10px; }
+    td { border-bottom: 1px dotted #999; padding: 3px 1px; vertical-align: top; }
+    .num { text-align: right; white-space: nowrap; }
+    .row-flex { display: flex; justify-content: space-between; padding: 1.5px 0; }
+    .kot-header { font-size: 15px; font-weight: 900; text-align: center; border: 2px solid #000; padding: 3px; margin-bottom: 5px; }
+    .kot-meta { font-size: 12px; font-weight: 900; line-height: 1.4; }
+    .kot-item td { font-size: 12.5px; font-weight: 900; padding: 5px 2px; border-bottom: 1px dashed #000; }
+  </style>
+</head>
+<body>${innerBodyHtml}</body>
+</html>`;
+    }
+
+    async function dispatchDualSilentPrint(counterHtml, kitchenKotHtml) {
+      const statusEl = document.getElementById("dualPrintStatusMsg");
+      if (window.electronPOS && typeof window.electronPOS.printDualReceipts === "function") {
         try {
-          serialPrinterPort = await navigator.serial.requestPort();
-          await serialPrinterPort.open({ baudRate: 9600 });
-          msg.style.color = "var(--brand)";
-          msg.textContent = "Direct USB/Serial Thermal Printer Connected!";
+          if (statusEl) {
+            statusEl.style.color = "var(--info)";
+            statusEl.textContent = "Sending silent print to Counter & Kitchen printers...";
+          }
+          const result = await window.electronPOS.printDualReceipts({
+            counterPrinter: peripheralSettings.counterPrinter || "Counter_Printer",
+            kitchenPrinter: peripheralSettings.kitchenPrinter || "Kitchen_Printer",
+            kotEnabled: peripheralSettings.kotEnabled === "YES",
+            counterHtml: buildThermalDocumentHtml(counterHtml),
+            kitchenHtml: buildThermalDocumentHtml(kitchenKotHtml)
+          });
+
+          if (statusEl) {
+            if (result && result.success) {
+              statusEl.style.color = "var(--brand)";
+              statusEl.textContent = peripheralSettings.kotEnabled === "YES"
+                ? `Printed! Counter (${peripheralSettings.counterPrinter}) + Kitchen KOT (${peripheralSettings.kitchenPrinter})`
+                : `Printed on Counter (${peripheralSettings.counterPrinter})!`;
+            } else {
+              statusEl.style.color = "var(--danger)";
+              statusEl.textContent = "Printer Alert: " + ((result && result.error) || "Check printer names in Settings.");
+            }
+          }
         } catch (err) {
-          msg.style.color = "var(--danger)";
-          msg.textContent = "Serial port selection cancelled or unavailable.";
+          if (statusEl) {
+            statusEl.style.color = "var(--danger)";
+            statusEl.textContent = "Print Error: " + err.message;
+          }
         }
       } else {
-        msg.style.color = "var(--brand)";
-        msg.textContent = `Thermal Printer Ready (${peripheralSettings.paperSize} System/Bluetooth/USB Spooler Active).`;
+        /* FALLBACK FOR STANDARD WEB BROWSER */
+        document.body.classList.remove("print-period-mode", "print-qr-mode");
+        window.print();
       }
     }
 
-    function testThermalPrint() {
+    function printDualBillAndKot() {
+      if (!latestCounterHtml) {
+        alert("Generate a bill first.");
+        return;
+      }
+      dispatchDualSilentPrint(latestCounterHtml, latestKitchenKotHtml);
+    }
+
+    async function testDualThermalPrint() {
+      const nowStr = new Date().toLocaleString();
+      const testCounter = `
+        <div class="center line-dash">
+          <div class="bold" style="font-size:14px;">${RESTAURANT_INFO.name}</div>
+          <div style="font-size:10px;">COUNTER PRINTER TEST</div>
+        </div>
+        <div class="line-dash">
+          <div><strong>Printer:</strong> ${peripheralSettings.counterPrinter}</div>
+          <div><strong>Paper:</strong> ${peripheralSettings.paperSize}</div>
+          <div><strong>Time:</strong> ${nowStr}</div>
+        </div>
+        <div class="center">Counter Printer Working!</div>
+      `;
+
+      const testKitchen = `
+        <div class="kot-header">*** KITCHEN KOT TEST ***</div>
+        <div class="kot-meta line-dash">
+          <div>Printer: ${peripheralSettings.kitchenPrinter}</div>
+          <div>Table: Table 1 (Dine-In)</div>
+          <div>Time: ${nowStr}</div>
+        </div>
+        <table>
+          <thead><tr><th>Item</th><th class="num">Qty</th></tr></thead>
+          <tbody>
+            <tr class="kot-item"><td>[001] Hunger Box Special Pizza (L)</td><td class="num">x1</td></tr>
+            <tr class="kot-item"><td>[015] Zinger Burger</td><td class="num">x2</td></tr>
+          </tbody>
+        </table>
+        <div class="center bold">Kitchen Printer Working!</div>
+      `;
+
       document.getElementById("invoiceContainer").innerHTML = `
         <div class="invoice-banner">
           <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
-          <div class="invoice-sub">PRINTER CONNECTION TEST</div>
+          <div class="invoice-sub">DUAL PRINTER TEST (COUNTER + KITCHEN)</div>
         </div>
         <div class="invoice-meta-grid">
-          <div><strong>Paper Size:</strong> ${peripheralSettings.paperSize}</div>
-          <div><strong>Print Mode:</strong> ${peripheralSettings.printMode}</div>
-          <div><strong>Time:</strong> ${new Date().toLocaleString()}</div>
-        </div>
-        <div class="invoice-footer">
-          Thermal Printer Working Perfectly!<br />
-          <div class="invoice-dev-credit">
-            ${RESTAURANT_INFO.devCredit}<br />
-            ${RESTAURANT_INFO.devContact}
-          </div>
+          <div><strong>Counter:</strong> ${peripheralSettings.counterPrinter}</div>
+          <div><strong>Kitchen:</strong> ${peripheralSettings.kitchenPrinter}</div>
+          <div><strong>Time:</strong> ${nowStr}</div>
         </div>
       `;
-      printSingleBill();
+
+      await dispatchDualSilentPrint(testCounter, testKitchen);
     }
 
     /* QUICK ITEM PRICE UPDATER BY CODE OR NAME */
@@ -2790,7 +2916,6 @@
       document.getElementById("passInput").value = "";
       role = matchedRole;
 
-      // RECORD ADMIN OR CASHIER LOGIN DATE & TIME
       const loginNow = new Date();
       loginHistoryLogs.unshift({
         role: matchedRole,
@@ -3356,6 +3481,7 @@
       const now = new Date();
       const dateIso = now.toISOString().slice(0, 10);
       const timeStr = now.toLocaleString();
+      const timeOnlyStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
       const formattedOrderNo = formatCode(orderCounter);
       orderCounter += 1;
 
@@ -3393,6 +3519,86 @@
 
       const tableLineHtml = tableNumber !== "No Table" ? `<div><strong>Table:</strong> ${tableNumber}</div>` : "";
 
+      /* 1. COUNTER CUSTOMER RECEIPT HTML */
+      latestCounterHtml = `
+        <div class="center line-dash">
+          <div class="bold" style="font-size:14px;">${RESTAURANT_INFO.name}</div>
+          <div style="font-size:9.5px;">
+            ${RESTAURANT_INFO.addressLine1}<br />
+            ${RESTAURANT_INFO.addressLine2}
+          </div>
+        </div>
+
+        <div class="line-dash" style="font-size:10px;">
+          <div><strong>Order #:</strong> ${formattedOrderNo}</div>
+          <div><strong>Date:</strong> ${timeStr}</div>
+          <div><strong>Service:</strong> ${orderType}</div>
+          ${tableLineHtml}
+          <div><strong>Payment:</strong> ${paymentMethod}</div>
+          <div><strong>Customer:</strong> ${cust}</div>
+          <div><strong>Mobile:</strong> ${mobile}</div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th class="num">Qty</th>
+              <th class="num">Amt</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+
+        <div style="border-top:1px dashed #000; padding-top:4px;">
+          <div class="row-flex"><span>Subtotal:</span><span>PKR ${c.subtotal.toFixed(2)}</span></div>
+          <div class="row-flex"><span>Discount:</span><span>PKR ${c.discount.toFixed(2)}</span></div>
+          <div class="row-flex"><span>Tax:</span><span>PKR ${c.tax.toFixed(2)}</span></div>
+          <div class="row-flex bold line-solid" style="font-size:12px;"><span>TOTAL (${paymentMethod.toUpperCase()}):</span><span>PKR ${c.total.toFixed(2)}</span></div>
+        </div>
+
+        <div class="center" style="margin-top:6px; font-size:9.5px;">
+          Thank you for your order!<br />
+          <strong>${RESTAURANT_INFO.deliveryNote}</strong><br />
+          Ph: <strong>${RESTAURANT_INFO.phone}</strong>
+          <div style="margin-top:4px; padding-top:3px; border-top:1px dotted #000; font-size:8.5px; font-weight:700;">
+            ${RESTAURANT_INFO.devCredit}<br />
+            ${RESTAURANT_INFO.devContact}
+          </div>
+        </div>
+      `;
+
+      /* 2. KITCHEN KOT (KITCHEN ORDER TICKET - NO PRICES, LARGE ITEM NAMES & QTY) */
+      const kotRowsHtml = billedLines.map(item => `
+        <tr class="kot-item">
+          <td>[${item.code}] ${item.name}</td>
+          <td class="num">x${item.qty}</td>
+        </tr>
+      `).join("");
+
+      latestKitchenKotHtml = `
+        <div class="kot-header">KITCHEN KOT • #${formattedOrderNo}</div>
+        <div class="kot-meta line-dash">
+          <div>Service: ${orderType}</div>
+          <div>Table: ${tableNumber}</div>
+          <div>Customer: ${cust}</div>
+          <div>Time: ${timeOnlyStr}</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>ITEM TO PREPARE</th>
+              <th class="num">QTY</th>
+            </tr>
+          </thead>
+          <tbody>${kotRowsHtml}</tbody>
+        </table>
+        <div class="center bold" style="margin-top:6px; font-size:11px;">
+          --- ARHAM HUNGER BOX KITCHEN ---
+        </div>
+      `;
+
+      /* UPDATE ON-SCREEN THERMAL PREVIEW */
       document.getElementById("invoiceContainer").innerHTML = `
         <div class="invoice-banner">
           <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
@@ -3474,9 +3680,9 @@
         renderExpenses();
       }
 
-      /* AUTO PRINT IF ENABLED IN SETTINGS */
+      /* AUTO SILENT DUAL PRINT (COUNTER + KITCHEN KOT) */
       if (peripheralSettings.printMode === "AUTO") {
-        setTimeout(() => printSingleBill(), 250);
+        await dispatchDualSilentPrint(latestCounterHtml, latestKitchenKotHtml);
       }
     }
 
@@ -3573,11 +3779,6 @@
       latestPeriodText = statementLines.join("\n");
       latestPeriodType = periodMode.toLowerCase() + "_settlement";
       document.getElementById("periodSettlementBox").textContent = latestPeriodText;
-    }
-
-    function printSingleBill() {
-      document.body.classList.remove("print-period-mode", "print-qr-mode");
-      window.print();
     }
 
     function printPeriodStatement() {
@@ -3698,6 +3899,8 @@
       orderCounter = 0;
       bill = [];
       latestReceiptText = "";
+      latestCounterHtml = "";
+      latestKitchenKotHtml = "";
       latestPeriodText = "";
       document.getElementById("periodSettlementBox").textContent = "Select Weekly or Monthly Settlement to view full Cash/Card/Online breakdown, Total Discounts & Net Profit after Salary/Expenses.";
       document.getElementById("invoiceContainer").innerHTML = `
@@ -3719,6 +3922,7 @@
       renderLiveTableOrders();
     }
 
+    updateDualPrintBadge();
     initPageMode();
   </script>
 </body>
