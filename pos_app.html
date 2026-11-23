@@ -54,25 +54,26 @@
 
     .login-box {
       width: 100%;
-      max-width: 420px;
+      max-width: 430px;
       background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+      border-radius: 18px;
+      padding: 26px 24px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
     }
 
     .login-logo {
-      width: 66px;
-      height: 66px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       background: #ffffff;
-      border: 2px solid var(--accent);
+      border: 2.5px solid var(--accent);
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      margin: 0 auto 12px;
+      margin: 0 auto 14px;
+      box-shadow: 0 6px 18px rgba(245, 158, 11, 0.28);
     }
 
     .login-logo img {
@@ -81,20 +82,40 @@
       object-fit: cover;
     }
 
-    .tag {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      background: rgba(16, 185, 129, 0.15);
-      color: var(--brand);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      margin-bottom: 10px;
+    .login-brand-banner {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(245, 158, 11, 0.14));
+      border: 1.5px solid var(--accent);
+      border-radius: 12px;
+      padding: 11px 14px;
+      text-align: center;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
     }
 
-    .login-box h2 { margin: 0 0 4px; font-size: 22px; }
-    .login-box .sub { margin: 0 0 16px; font-size: 12px; color: var(--muted); }
+    .login-brand-banner .brand-main {
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: var(--accent);
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .login-brand-banner .brand-sub {
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      color: var(--brand);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .login-box h2 {
+      margin: 0 0 14px;
+      font-size: 21px;
+      text-align: center;
+      letter-spacing: 0.4px;
+    }
 
     .dev-credit-box {
       margin-top: 16px;
@@ -105,13 +126,21 @@
       font-weight: 700;
       color: var(--accent);
       letter-spacing: 0.3px;
+      line-height: 1.5;
+    }
+
+    .dev-credit-box span {
+      display: block;
+      font-size: 11.5px;
+      color: var(--info);
+      margin-top: 2px;
     }
 
     .login-links {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       font-size: 12px;
     }
 
@@ -428,7 +457,6 @@
       border-color: var(--brand);
     }
 
-    /* 5 ITEMS PER ROW COMPACT MENU GRID */
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -570,7 +598,6 @@
 
     .btn-group { display: flex; flex-wrap: wrap; gap: 6px; }
 
-    /* TABLE & COUNTER QR / WAITER ORDER CARD IN MANAGER QUEUE */
     .qr-queue-item {
       background: var(--panel-2);
       border: 1px solid var(--accent);
@@ -590,7 +617,6 @@
       border-left-color: var(--purple);
     }
 
-    /* TABLE / COUNTER PRO QR CODE CARD */
     .qr-poster-card {
       background: #ffffff;
       color: #0f172a;
@@ -735,6 +761,25 @@
       margin-bottom: 5px;
     }
 
+    .receipt-logo-box {
+      width: 34px;
+      height: 34px;
+      margin: 0 auto 4px;
+      border-radius: 50%;
+      border: 1.5px solid #000000;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+    }
+
+    .receipt-logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .invoice-brand-title {
       font-size: 14px;
       font-weight: 900;
@@ -845,7 +890,7 @@
     .err-text { color: var(--danger); font-size: 12px; min-height: 18px; margin-bottom: 8px; }
     .ok-text { color: var(--brand); font-size: 12px; min-height: 18px; margin-top: 6px; }
 
-    /* THERMAL PRINTER PRINT RULES */
+    /* SINGLE PAGE THERMAL PRINTER PRINT RULES */
     @page {
       size: 80mm auto;
       margin: 0;
@@ -854,22 +899,94 @@
     @media print {
       html, body {
         width: 80mm !important;
+        height: auto !important;
+        min-height: 0 !important;
         margin: 0 !important;
         padding: 0 !important;
         background: #ffffff !important;
         color: #000000 !important;
+        overflow: visible !important;
       }
-      body * {
-        visibility: hidden;
+
+      #loginScreen,
+      #customerQrPortal,
+      .topbar,
+      .no-print,
+      .summary-strip-6,
+      .summary-strip,
+      #liveTableOrdersBox,
+      #sectionEXPENSES,
+      #sectionSTAFF,
+      #sectionSETTINGS {
+        display: none !important;
       }
-      body.print-period-mode #periodPrintArea,
-      body.print-period-mode #periodPrintArea * {
-        visibility: visible;
+
+      .wrap,
+      .dash-grid,
+      .dash-grid > div {
+        display: block !important;
+        width: 100% !important;
+        max-width: 80mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Mode 1: Single Thermal Bill Print */
+      body:not(.print-period-mode):not(.print-qr-mode) .dash-grid > div:first-child,
+      body:not(.print-period-mode):not(.print-qr-mode) .dash-grid > div:last-child > .box:not(#printableReceipt) {
+        display: none !important;
+      }
+
+      body:not(.print-period-mode):not(.print-qr-mode) #printableReceipt {
+        display: block !important;
+        position: static !important;
+        width: 80mm !important;
+        max-width: 80mm !important;
+        border: none !important;
+        border-radius: 0 !important;
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      body:not(.print-period-mode):not(.print-qr-mode) .thermal-preview-wrap {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: #ffffff !important;
+      }
+
+      body:not(.print-period-mode):not(.print-qr-mode) .invoice-sheet {
+        display: block !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 2mm !important;
+        margin: 0 !important;
+        width: 76mm !important;
+        max-width: 76mm !important;
+        font-size: 10.5px !important;
+        color: #000000 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      /* Mode 2: Weekly / Monthly Settlement Print */
+      body.print-period-mode #sectionPOS {
+        display: none !important;
+      }
+      body.print-period-mode #sectionSETTINGS {
+        display: block !important;
+      }
+      body.print-period-mode .settings-grid > div:first-child,
+      body.print-period-mode .settings-grid > div:last-child > .box:not(:nth-child(4)) {
+        display: none !important;
       }
       body.print-period-mode #periodPrintArea {
-        position: fixed;
-        left: 0;
-        top: 0;
+        display: block !important;
+        position: static !important;
         width: 80mm !important;
         background: #ffffff !important;
         color: #000000 !important;
@@ -878,55 +995,29 @@
         border: none !important;
         font-size: 9px !important;
       }
-      body.print-qr-mode #tableQrPrintArea,
-      body.print-qr-mode #tableQrPrintArea * {
-        visibility: visible;
+
+      /* Mode 3: Table / Counter QR Poster Print */
+      body.print-qr-mode #sectionPOS {
+        display: none !important;
+      }
+      body.print-qr-mode #sectionSETTINGS {
+        display: block !important;
+      }
+      body.print-qr-mode .settings-grid > div:last-child,
+      body.print-qr-mode .settings-grid > div:first-child > .box:not(:nth-child(3)) {
+        display: none !important;
       }
       body.print-qr-mode #tableQrPrintArea {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 80mm !important;
-        max-width: 80mm !important;
+        display: block !important;
+        position: static !important;
+        width: 76mm !important;
+        max-width: 76mm !important;
         border: 1px solid #000 !important;
         background: #ffffff !important;
         color: #000000 !important;
         padding: 3mm !important;
+        margin: 0 auto !important;
         box-shadow: none !important;
-      }
-      body:not(.print-period-mode):not(.print-qr-mode) #printableReceipt,
-      body:not(.print-period-mode):not(.print-qr-mode) #printableReceipt * {
-        visibility: visible;
-      }
-      body:not(.print-period-mode):not(.print-qr-mode) #printableReceipt {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 80mm !important;
-        max-width: 80mm !important;
-        border: none !important;
-        border-radius: 0 !important;
-        background: #ffffff !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        box-shadow: none !important;
-      }
-      .thermal-preview-wrap {
-        padding: 0 !important;
-        margin: 0 !important;
-        background: #ffffff !important;
-        display: block !important;
-      }
-      .no-print { display: none !important; }
-      .invoice-sheet {
-        border: none !important;
-        border-radius: 0 !important;
-        padding: 1.5mm 2mm !important;
-        margin: 0 !important;
-        width: 100% !important;
-        max-width: 80mm !important;
-        font-size: 10.5px !important;
-        color: #000000 !important;
       }
     }
   </style>
@@ -977,7 +1068,6 @@
           <span id="custTablePill" class="order-tag">Counter Direct</span>
         </div>
 
-        <!-- WAITER TABLE / COUNTER SELECTOR -->
         <div id="waiterTableSelectWrap" style="display:none; margin-bottom:10px;">
           <label for="waiterTableSelect" style="color:var(--purple); font-weight:800; font-size:12.5px;">Select Table / Counter (ٹیبل منتخب کریں):</label>
           <select id="waiterTableSelect" onchange="onWaiterTableChange()">
@@ -1085,11 +1175,15 @@
       <div class="login-logo">
         <img src="ahb_logo.png" alt="AHB Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;color:#ea580c;font-size:18px;&quot;>AHB</span>';" />
       </div>
-      <span class="tag">ARHAM HUNGER BOX • CLOUD POS</span>
-      <h2>Staff Sign In</h2>
-      <p class="sub">Al Madina Market, Basement Floor, Kheshgi Payan Chowk, District Nowshera • Phone: 0301-5977178</p>
 
-      <label for="usernameInput">Username (Admin / Cashier / Waiter)</label>
+      <div class="login-brand-banner">
+        <div class="brand-main">Arham Hunger Box</div>
+        <div class="brand-sub">Point of Sale System</div>
+      </div>
+
+      <h2>Sign In</h2>
+
+      <label for="usernameInput">Username</label>
       <input id="usernameInput" type="text" placeholder="Enter username" onkeydown="if(event.key==='Enter') loginUser()" />
 
       <label for="passInput">Password</label>
@@ -1100,7 +1194,7 @@
           <input type="checkbox" style="width:auto; margin:0;" onchange="toggleLoginPassword(this.checked)" />
           Show Password
         </label>
-        <button type="button" class="link-btn" onclick="toggleForgotBox()">Forgot Password?</button>
+        <button type="button" class="link-btn" onclick="toggleForgotBox()">Forgot Username &amp; Password?</button>
       </div>
 
       <div id="loginErr" class="err-text"></div>
@@ -1108,24 +1202,23 @@
 
       <div class="dev-credit-box">
         Software Developed by Umair Ahmad
+        <span>For Software Inquiries: 03065223123</span>
       </div>
 
-      <!-- FORGOT PASSWORD PANEL -->
+      <!-- FORGOT USERNAME & PASSWORD PANEL -->
       <div id="forgotBox" class="forgot-panel">
-        <h4>Reset Password</h4>
-        <p class="sub" style="margin-bottom:8px;">Enter Recovery PIN to reset Admin, Cashier, or Waiter password.</p>
-        <label for="resetRole">Account Role</label>
-        <select id="resetRole">
-          <option value="ADMIN">Admin Account</option>
-          <option value="CASHIER">Cashier Account</option>
-          <option value="WAITER">Waiter Account</option>
-        </select>
+        <h4>Reset Username &amp; Password</h4>
+        <p style="margin:0 0 8px; font-size:12px; color:var(--muted);">Enter your Recovery PIN and Username to update credentials.</p>
         <label for="recoveryPinInput">Recovery PIN</label>
         <input id="recoveryPinInput" type="password" placeholder="Enter Recovery PIN" />
+        <label for="resetCurrentUsername">Current Username</label>
+        <input id="resetCurrentUsername" type="text" placeholder="Enter your current username" />
+        <label for="resetNewUsername">New Username (Optional)</label>
+        <input id="resetNewUsername" type="text" placeholder="Enter new username" />
         <label for="resetNewPass">New Password</label>
         <input id="resetNewPass" type="password" placeholder="Enter new password" />
         <div class="btn-group">
-          <button type="button" class="btn-amber" onclick="recoverPassword()">Reset Password</button>
+          <button type="button" class="btn-amber" onclick="recoverCredentials()">Reset Credentials</button>
           <button type="button" class="btn-outline" onclick="toggleForgotBox()">Cancel</button>
         </div>
         <div id="forgotMsg" class="ok-text"></div>
@@ -1146,7 +1239,6 @@
         </div>
       </div>
 
-      <!-- COMPACT MINI ICON NAV BAR (ADMIN ONLY) -->
       <nav id="compactAdminNav" class="compact-nav">
         <button id="navPosBtn" class="mini-nav-btn active" onclick="switchSection('POS')" title="POS Billing & Live Orders">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
@@ -1178,7 +1270,6 @@
     <div class="wrap">
       <!-- SECTION 1: POS BILLING -->
       <div id="sectionPOS">
-        <!-- LIVE PAYMENT & DISCOUNT BREAKDOWN METRICS -->
         <div class="summary-strip-6">
           <div class="metric-card">
             <span>Today's Orders</span>
@@ -1206,7 +1297,6 @@
           </div>
         </div>
 
-        <!-- LIVE INCOMING QR & WAITER ORDERS QUEUE -->
         <div id="liveTableOrdersBox" class="box" style="border-color: var(--accent); display:none;">
           <div class="box-head">
             <h2>Live Incoming Orders (Waiter & QR Menu)</h2>
@@ -1236,7 +1326,6 @@
               <div id="menuCards" class="menu-grid"></div>
             </div>
 
-            <!-- TODAY'S PAYMENT LOG -->
             <div class="box">
               <div class="box-head">
                 <h2>Today's Payment & Discount Log (Cash / Card / Online)</h2>
@@ -1364,6 +1453,9 @@
               <div class="thermal-preview-wrap">
                 <div id="invoiceContainer" class="invoice-sheet">
                   <div class="invoice-banner">
+                    <div class="receipt-logo-box">
+                      <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:10px;&quot;>AHB</span>';" />
+                    </div>
                     <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
                     <div class="invoice-sub">
                       Al Madina Market, Basement Floor,<br />
@@ -1375,7 +1467,7 @@
               </div>
 
               <div class="btn-group no-print">
-                <button class="btn-sky" onclick="printDualBillAndKot()">Print Counter + Kitchen KOT</button>
+                <button class="btn-sky" onclick="printDualBillAndKot()">Print Thermal Bill</button>
                 <button class="btn-outline" onclick="saveReceiptTxt()">Save .TXT</button>
                 <button class="btn-amber" onclick="mailReceipt()">Email</button>
               </div>
@@ -1847,7 +1939,7 @@
       phone: "0301-5977178",
       deliveryNote: "Free Delivery Upto 3km",
       devCredit: "Software Developed by Umair Ahmad",
-      devContact: "For Software Inquiries: 0306-5223123"
+      devContact: "For Software Inquiries: 03065223123"
     };
 
     const DB = {
@@ -2234,7 +2326,6 @@
       localStorage.setItem(DB.THEME, document.body.classList.contains("light-theme") ? "light" : "dark");
     }
 
-    /* CHECK URL PARAMETERS FOR DIRECT COUNTER OR TABLE QR SCAN */
     function initPageMode() {
       const params = new URLSearchParams(window.location.search);
       const tableParam = params.get("table");
@@ -2606,7 +2697,6 @@
       if (idx === -1) return;
       const tq = tableOrderQueue[idx];
 
-      /* PERMANENTLY MARK AS PROCESSED SO CLOUD POLLING NEVER RE-ADDS IT */
       if (!dismissedOrderIds.includes(queueId)) {
         dismissedOrderIds.push(queueId);
       }
@@ -2747,6 +2837,18 @@
     }
     .center { text-align: center; }
     .bold { font-weight: 900; }
+    .logo-mini {
+      width: 34px;
+      height: 34px;
+      margin: 0 auto 4px;
+      border-radius: 50%;
+      border: 1.5px solid #000;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-mini img { width: 100%; height: 100%; object-fit: cover; }
     .line-dash { border-bottom: 1px dashed #000; margin: 4px 0; padding-bottom: 4px; }
     .line-solid { border-top: 1px solid #000; border-bottom: 1px solid #000; margin: 4px 0; padding: 3px 0; }
     table { width: 100%; border-collapse: collapse; margin: 4px 0; }
@@ -2797,7 +2899,6 @@
           }
         }
       } else {
-        /* FALLBACK FOR STANDARD WEB BROWSER */
         document.body.classList.remove("print-period-mode", "print-qr-mode");
         window.print();
       }
@@ -2815,6 +2916,9 @@
       const nowStr = new Date().toLocaleString();
       const testCounter = `
         <div class="center line-dash">
+          <div class="logo-mini">
+            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:10px;&quot;>AHB</span>';" />
+          </div>
           <div class="bold" style="font-size:14px;">${RESTAURANT_INFO.name}</div>
           <div style="font-size:10px;">COUNTER PRINTER TEST</div>
         </div>
@@ -2845,6 +2949,9 @@
 
       document.getElementById("invoiceContainer").innerHTML = `
         <div class="invoice-banner">
+          <div class="receipt-logo-box">
+            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:10px;&quot;>AHB</span>';" />
+          </div>
           <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
           <div class="invoice-sub">DUAL PRINTER TEST (COUNTER + KITCHEN)</div>
         </div>
@@ -2946,7 +3053,7 @@
       lookupQuickPriceItem();
     }
 
-    /* LOGIN, LOGIN HISTORY LOG & FORGOT PASSWORD */
+    /* LOGIN, LOGIN HISTORY LOG & FORGOT USERNAME + PASSWORD */
     function toggleLoginPassword(show) {
       document.getElementById("passInput").type = show ? "text" : "password";
     }
@@ -2958,9 +3065,10 @@
       document.getElementById("forgotMsg").textContent = "";
     }
 
-    function recoverPassword() {
-      const targetRole = document.getElementById("resetRole").value;
+    function recoverCredentials() {
       const enteredPin = document.getElementById("recoveryPinInput").value.trim();
+      const currentUsername = document.getElementById("resetCurrentUsername").value.trim().toLowerCase();
+      const newUsername = document.getElementById("resetNewUsername").value.trim();
       const newPass = document.getElementById("resetNewPass").value.trim();
       const msg = document.getElementById("forgotMsg");
 
@@ -2969,19 +3077,65 @@
         msg.textContent = "Invalid Recovery PIN.";
         return;
       }
-      if (newPass.length < 4) {
+
+      if (!currentUsername) {
+        msg.style.color = "var(--danger)";
+        msg.textContent = "Please enter your current username.";
+        return;
+      }
+
+      let targetRole = null;
+      if (currentUsername === String(auth.ADMIN_USER).toLowerCase()) targetRole = "ADMIN";
+      else if (currentUsername === String(auth.CASHIER_USER).toLowerCase()) targetRole = "CASHIER";
+      else if (currentUsername === String(auth.WAITER_USER).toLowerCase()) targetRole = "WAITER";
+
+      if (!targetRole) {
+        msg.style.color = "var(--danger)";
+        msg.textContent = "Current username not found.";
+        return;
+      }
+
+      if (!newUsername && !newPass) {
+        msg.style.color = "var(--danger)";
+        msg.textContent = "Enter a new username or new password.";
+        return;
+      }
+
+      if (newPass && newPass.length < 4) {
         msg.style.color = "var(--danger)";
         msg.textContent = "New password must be at least 4 characters.";
         return;
       }
 
-      auth[targetRole] = newPass;
+      if (newUsername) {
+        const proposedLower = newUsername.toLowerCase();
+        const otherUsers = [
+          targetRole !== "ADMIN" ? String(auth.ADMIN_USER).toLowerCase() : null,
+          targetRole !== "CASHIER" ? String(auth.CASHIER_USER).toLowerCase() : null,
+          targetRole !== "WAITER" ? String(auth.WAITER_USER).toLowerCase() : null
+        ].filter(Boolean);
+
+        if (otherUsers.includes(proposedLower)) {
+          msg.style.color = "var(--danger)";
+          msg.textContent = "This username is already in use.";
+          return;
+        }
+        auth[targetRole + "_USER"] = newUsername;
+      }
+
+      if (newPass) {
+        auth[targetRole] = newPass;
+      }
+
       syncStore();
 
+      const updatedUserDisplay = auth[targetRole + "_USER"];
       document.getElementById("recoveryPinInput").value = "";
+      document.getElementById("resetCurrentUsername").value = "";
+      document.getElementById("resetNewUsername").value = "";
       document.getElementById("resetNewPass").value = "";
       msg.style.color = "var(--brand)";
-      msg.textContent = `Password reset! You can login now.`;
+      msg.textContent = `Updated! Username: "${updatedUserDisplay}" — You can login now.`;
     }
 
     function renderLoginHistory() {
@@ -3073,7 +3227,6 @@
         cloudPollTimer = setInterval(() => pullFromCloud(true), 6000);
       }
 
-      /* IF WAITER LOGGED IN -> OPEN DEDICATED WAITER MOBILE PORTAL */
       if (role === "WAITER") {
         openCustomerPortal("Table 1", true);
         return;
@@ -3683,9 +3836,12 @@
 
       const tableLineHtml = tableNumber !== "No Table" ? `<div><strong>Table:</strong> ${tableNumber}</div>` : "";
 
-      /* 1. COUNTER CUSTOMER RECEIPT HTML */
+      /* 1. COUNTER CUSTOMER RECEIPT HTML WITH LOGO */
       latestCounterHtml = `
         <div class="center line-dash">
+          <div class="logo-mini">
+            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:10px;&quot;>AHB</span>';" />
+          </div>
           <div class="bold" style="font-size:14px;">${RESTAURANT_INFO.name}</div>
           <div style="font-size:9.5px;">
             ${RESTAURANT_INFO.addressLine1}<br />
@@ -3732,7 +3888,7 @@
         </div>
       `;
 
-      /* 2. KITCHEN KOT (KITCHEN ORDER TICKET - NO PRICES, LARGE ITEM NAMES & QTY) */
+      /* 2. KITCHEN KOT */
       const kotRowsHtml = billedLines.map(item => `
         <tr class="kot-item">
           <td>[${item.code}] ${item.name}</td>
@@ -3762,9 +3918,12 @@
         </div>
       `;
 
-      /* UPDATE ON-SCREEN THERMAL PREVIEW */
+      /* UPDATE ON-SCREEN THERMAL PREVIEW WITH LOGO */
       document.getElementById("invoiceContainer").innerHTML = `
         <div class="invoice-banner">
+          <div class="receipt-logo-box">
+            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:10px;&quot;>AHB</span>';" />
+          </div>
           <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
           <div class="invoice-sub">
             ${RESTAURANT_INFO.addressLine1}<br />
@@ -3845,7 +4004,6 @@
         renderExpenses();
       }
 
-      /* AUTO SILENT DUAL PRINT (COUNTER + KITCHEN KOT) */
       if (peripheralSettings.printMode === "AUTO") {
         await dispatchDualSilentPrint(latestCounterHtml, latestKitchenKotHtml);
       }
@@ -4092,6 +4250,9 @@
       document.getElementById("periodSettlementBox").textContent = "Select Weekly or Monthly Settlement to view full Cash/Card/Online breakdown, Total Discounts & Net Profit after Salary/Expenses.";
       document.getElementById("invoiceContainer").innerHTML = `
         <div class="invoice-banner">
+          <div class="receipt-logo-box">
+            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:10px;&quot;>AHB</span>';" />
+          </div>
           <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
           <div class="invoice-sub">
             Al Madina Market, Basement Floor,<br />
