@@ -326,7 +326,7 @@
     }
 
     .wrap {
-      max-width: 1520px;
+      max-width: 1650px;
       width: 100%;
       margin: auto;
       padding: 16px;
@@ -509,10 +509,15 @@
       border-color: var(--brand);
     }
 
+    /* 6 ITEMS PER ROW MENU GRID */
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 8px;
+    }
+
+    @media (max-width: 1500px) {
+      .menu-grid { grid-template-columns: repeat(5, 1fr); }
     }
 
     @media (max-width: 1280px) {
@@ -550,9 +555,9 @@
       margin-bottom: 4px;
     }
 
-    .pos-card .title { font-weight: 700; font-size: 12.5px; line-height: 1.25; }
+    .pos-card .title { font-weight: 700; font-size: 12px; line-height: 1.25; }
     .pos-card .subcat { font-size: 10px; color: var(--muted); margin-top: 2px; }
-    .pos-card .amt { font-weight: 800; color: var(--brand); font-size: 12.5px; }
+    .pos-card .amt { font-weight: 800; color: var(--brand); font-size: 12px; }
     .pos-card button { padding: 6px 8px; font-size: 11px; border-radius: 7px; }
 
     .variant-picker {
@@ -1296,10 +1301,10 @@
       <!-- PASSWORD LOGIN FORM -->
       <div id="passwordLoginForm">
         <label for="usernameInput">Username</label>
-        <input id="usernameInput" type="text" placeholder="Enter username" onkeydown="if(event.key==='Enter') loginUser()" />
+        <input id="usernameInput" type="text" placeholder="Enter username" />
 
         <label for="passInput">Password</label>
-        <input id="passInput" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter') loginUser()" />
+        <input id="passInput" type="password" placeholder="Enter password" />
 
         <div class="login-links">
           <label style="display:flex; align-items:center; gap:6px; margin:0; cursor:pointer;">
@@ -1315,7 +1320,7 @@
       <!-- 4-DIGIT PIN LOGIN FORM -->
       <div id="pinLoginForm" style="display:none;">
         <label for="quickPinInput" style="text-align:center; font-weight:700; color:var(--accent);">Enter 4-Digit PIN</label>
-        <input id="quickPinInput" class="pin-input-large" type="password" inputmode="numeric" maxlength="4" placeholder="••••" oninput="handlePinAutoLogin(this.value)" onkeydown="if(event.key==='Enter') loginWithPin()" />
+        <input id="quickPinInput" class="pin-input-large" type="password" inputmode="numeric" maxlength="4" placeholder="••••" oninput="handlePinAutoLogin(this.value)" />
         <button class="btn-amber" style="width:100%; padding:10px;" onclick="loginWithPin()">Login</button>
         <div style="text-align:center; margin-top:8px;">
           <button type="button" class="link-btn" onclick="toggleForgotBox()">Forgot PIN?</button>
@@ -1379,7 +1384,7 @@
           <span>Staff</span>
         </button>
         <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Security PIN, Dual Printers, Counter & Table QR, Quick Price Update & Reports">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Settings</span>
         </button>
       </nav>
@@ -1549,7 +1554,7 @@
                   </select>
                 </div>
                 <div>
-                  <label for="cName">Customer Name / Address</label>
+                  <label for="cName">Customer Name</label>
                   <input id="cName" placeholder="Walk-in Customer" />
                 </div>
                 <div>
@@ -1757,8 +1762,8 @@
             <div>
               <label for="stRole">Position / Role</label>
               <select id="stRole">
+                <option value="Manager">Manager</option>
                 <option value="Chef">Chef</option>
-                <option value="Pizza Maker">Pizza Maker</option>
                 <option value="Cashier">Cashier</option>
                 <option value="Waiter">Waiter</option>
                 <option value="Delivery Rider">Delivery Rider</option>
@@ -1807,6 +1812,35 @@
         <div class="settings-grid">
           <!-- LEFT COLUMN OF SETTINGS -->
           <div>
+            <!-- ORDER TYPE & DELIVERY ANALYTICS -->
+            <div class="box" style="border-color: var(--info);">
+              <div class="box-head">
+                <h2>Order Type & Delivery Analytics (Dine-In, Takeaway, Delivery & Online)</h2>
+              </div>
+              <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
+                Complete breakdown showing how many customers chose Dine-In, Takeaway, Home Delivery, or Online payments.
+              </p>
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Order Category / Type</th>
+                      <th>Total Orders Count</th>
+                      <th>Total Revenue (PKR)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="orderAnalyticsRows">
+                    <tr><td>Dine-In</td><td id="countDineIn">0</td><td id="revDineIn">PKR 0.00</td></tr>
+                    <tr><td>Takeaway</td><td id="countTakeaway">0</td><td id="revTakeaway">PKR 0.00</td></tr>
+                    <tr><td>Home Delivery</td><td id="countDelivery">0</td><td id="revDelivery">PKR 0.00</td></tr>
+                    <tr><td>Cash Payments</td><td id="countCash">0</td><td id="revCash">PKR 0.00</td></tr>
+                    <tr><td>Card Payments</td><td id="countCard">0</td><td id="revCard">PKR 0.00</td></tr>
+                    <tr><td>Online Payments</td><td id="countOnline">0</td><td id="revOnline">PKR 0.00</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
             <!-- DUAL THERMAL PRINTER & KITCHEN KOT SETTINGS -->
             <div class="box" style="border-color: var(--brand);">
               <div class="box-head">
@@ -1964,52 +1998,55 @@
                 </select>
               </div>
 
-              <label style="color:var(--accent); font-weight:700; margin-top:4px;">4-Digit Quick Login PINs (Default: Admin 1111 | Cashier 2222 | Waiter 3333)</label>
+              <label style="color:var(--accent); font-weight:700; margin-top:4px;">4-Digit Quick Login PINs</label>
               <div class="row-3">
                 <div>
                   <label for="updAdminPin">Admin 4-Digit PIN</label>
-                  <input id="updAdminPin" type="text" inputmode="numeric" maxlength="4" placeholder="e.g. 1111" />
+                  <input id="updAdminPin" type="text" inputmode="numeric" maxlength="4" placeholder="Enter Admin PIN" />
                 </div>
                 <div>
                   <label for="updCashierPin">Cashier 4-Digit PIN</label>
-                  <input id="updCashierPin" type="text" inputmode="numeric" maxlength="4" placeholder="e.g. 2222" />
+                  <input id="updCashierPin" type="text" inputmode="numeric" maxlength="4" placeholder="Enter Cashier PIN" />
                 </div>
                 <div>
                   <label for="updWaiterPin">Waiter 4-Digit PIN</label>
-                  <input id="updWaiterPin" type="text" inputmode="numeric" maxlength="4" placeholder="e.g. 3333" />
+                  <input id="updWaiterPin" type="text" inputmode="numeric" maxlength="4" placeholder="Enter Waiter PIN" />
                 </div>
               </div>
 
+              <label style="color:var(--accent); font-weight:700; margin-top:4px;">Usernames</label>
               <div class="row-3">
                 <div>
                   <label for="updAdminUser">Admin Username</label>
-                  <input id="updAdminUser" type="text" placeholder="Current: admin" />
+                  <input id="updAdminUser" type="text" placeholder="Enter Admin username" />
                 </div>
                 <div>
                   <label for="updCashierUser">Cashier Username</label>
-                  <input id="updCashierUser" type="text" placeholder="Current: cashier" />
+                  <input id="updCashierUser" type="text" placeholder="Enter Cashier username" />
                 </div>
                 <div>
                   <label for="updWaiterUser" style="color:var(--purple); font-weight:700;">Waiter Username</label>
-                  <input id="updWaiterUser" type="text" placeholder="Current: waiter" />
+                  <input id="updWaiterUser" type="text" placeholder="Enter Waiter username" />
                 </div>
               </div>
+
+              <label style="color:var(--accent); font-weight:700; margin-top:4px;">New Passwords & Recovery PIN</label>
               <div class="row-4">
                 <div>
                   <label for="updAdmin">New Admin Pass</label>
-                  <input id="updAdmin" type="password" placeholder="Optional" />
+                  <input id="updAdmin" type="password" placeholder="New Admin Pass" />
                 </div>
                 <div>
                   <label for="updCashier">New Cashier Pass</label>
-                  <input id="updCashier" type="password" placeholder="Optional" />
+                  <input id="updCashier" type="password" placeholder="New Cashier Pass" />
                 </div>
                 <div>
                   <label for="updWaiter" style="color:var(--purple); font-weight:700;">New Waiter Pass</label>
-                  <input id="updWaiter" type="password" placeholder="Optional" />
+                  <input id="updWaiter" type="password" placeholder="New Waiter Pass" />
                 </div>
                 <div>
                   <label for="updPin">Master Recovery PIN</label>
-                  <input id="updPin" type="text" placeholder="Optional" />
+                  <input id="updPin" type="text" placeholder="Recovery PIN" />
                 </div>
               </div>
               <button class="btn-brand" onclick="savePasswords()">Save All Login &amp; PIN Settings</button>
@@ -2601,6 +2638,7 @@
         renderMetrics();
         renderLiveWaiterCalls();
         renderLiveTableOrders();
+        renderOrderAnalytics();
         if (isWaiterPortalMode) {
           renderCustomerCategories();
           renderCustomerMenu();
@@ -3814,6 +3852,7 @@
       renderMetrics();
       renderLiveWaiterCalls();
       renderLiveTableOrders();
+      renderOrderAnalytics();
       if (isAdmin) {
         renderExpenses();
         renderStaff();
@@ -3854,15 +3893,16 @@
       }
       if (sec === "SETTINGS") {
         renderLoginHistory();
+        renderOrderAnalytics();
         generateTableQrCode();
         loadPeripheralUi();
         document.getElementById("loginModeSettingSelect").value = auth.LOGIN_MODE || "BOTH";
-        document.getElementById("updAdminPin").placeholder = `Current: ${auth.ADMIN_PIN}`;
-        document.getElementById("updCashierPin").placeholder = `Current: ${auth.CASHIER_PIN}`;
-        document.getElementById("updWaiterPin").placeholder = `Current: ${auth.WAITER_PIN}`;
-        document.getElementById("updAdminUser").placeholder = `Current: ${auth.ADMIN_USER}`;
-        document.getElementById("updCashierUser").placeholder = `Current: ${auth.CASHIER_USER}`;
-        document.getElementById("updWaiterUser").placeholder = `Current: ${auth.WAITER_USER}`;
+        document.getElementById("updAdminPin").value = "";
+        document.getElementById("updCashierPin").value = "";
+        document.getElementById("updWaiterPin").value = "";
+        document.getElementById("updAdminUser").value = "";
+        document.getElementById("updCashierUser").value = "";
+        document.getElementById("updWaiterUser").value = "";
       }
     }
 
@@ -4054,12 +4094,6 @@
       document.getElementById("updWaiter").value = "";
       document.getElementById("updPin").value = "";
 
-      document.getElementById("updAdminPin").placeholder = `Current: ${auth.ADMIN_PIN}`;
-      document.getElementById("updCashierPin").placeholder = `Current: ${auth.CASHIER_PIN}`;
-      document.getElementById("updWaiterPin").placeholder = `Current: ${auth.WAITER_PIN}`;
-      document.getElementById("updAdminUser").placeholder = `Current: ${auth.ADMIN_USER}`;
-      document.getElementById("updCashierUser").placeholder = `Current: ${auth.CASHIER_USER}`;
-      document.getElementById("updWaiterUser").placeholder = `Current: ${auth.WAITER_USER}`;
       msg.style.color = "var(--brand)";
       msg.textContent = "All PINs, Usernames & Passwords saved and synced!";
     }
@@ -4191,6 +4225,62 @@
         `;
         tbody.appendChild(tr);
       });
+    }
+
+    /* ORDER TYPE & PAYMENT ANALYTICS */
+    function renderOrderAnalytics() {
+      let dineInCount = 0, dineInRev = 0;
+      let takeawayCount = 0, takeawayRev = 0;
+      let deliveryCount = 0, deliveryRev = 0;
+      let cashCount = 0, cashRev = 0;
+      let cardCount = 0, cardRev = 0;
+      let onlineCount = 0, onlineRev = 0;
+
+      orders.forEach(o => {
+        const amt = Number(o.total || 0);
+        const type = o.orderType || "Dine-In";
+        const pay = o.paymentMethod || "Cash";
+
+        if (type.includes("Dine-In")) {
+          dineInCount++;
+          dineInRev += amt;
+        } else if (type.includes("Takeaway")) {
+          takeawayCount++;
+          takeawayRev += amt;
+        } else if (type.includes("Delivery")) {
+          deliveryCount++;
+          deliveryRev += amt;
+        }
+
+        if (pay === "Cash") {
+          cashCount++;
+          cashRev += amt;
+        } else if (pay === "Card") {
+          cardCount++;
+          cardRev += amt;
+        } else if (pay === "Online") {
+          onlineCount++;
+          onlineRev += amt;
+        }
+      });
+
+      document.getElementById("countDineIn").textContent = dineInCount;
+      document.getElementById("revDineIn").textContent = "PKR " + dineInRev.toFixed(2);
+
+      document.getElementById("countTakeaway").textContent = takeawayCount;
+      document.getElementById("revTakeaway").textContent = "PKR " + takeawayRev.toFixed(2);
+
+      document.getElementById("countDelivery").textContent = deliveryCount;
+      document.getElementById("revDelivery").textContent = "PKR " + deliveryRev.toFixed(2);
+
+      document.getElementById("countCash").textContent = cashCount;
+      document.getElementById("revCash").textContent = "PKR " + cashRev.toFixed(2);
+
+      document.getElementById("countCard").textContent = cardCount;
+      document.getElementById("revCard").textContent = "PKR " + cardRev.toFixed(2);
+
+      document.getElementById("countOnline").textContent = onlineCount;
+      document.getElementById("revOnline").textContent = "PKR " + onlineRev.toFixed(2);
     }
 
     /* MENU & BILLING */
@@ -4613,6 +4703,7 @@
       await pushToCloud();
       renderBill();
       renderMetrics();
+      renderOrderAnalytics();
       if (role === "ADMIN") {
         renderExpenses();
       }
@@ -4888,6 +4979,7 @@
       renderExpenses();
       renderLiveWaiterCalls();
       renderLiveTableOrders();
+      renderOrderAnalytics();
 
       await syncStore();
 
