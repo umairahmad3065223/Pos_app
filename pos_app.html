@@ -49,31 +49,43 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
-      background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.14), transparent 55%), var(--bg);
+      background: #05080f;
     }
 
     .login-box {
       width: 100%;
-      max-width: 430px;
-      background: var(--panel);
-      border: 1px solid var(--line);
+      max-width: 440px;
+      background: linear-gradient(165deg, #091e42 0%, #06142e 100%);
+      border: 2px solid #2563eb;
       border-radius: 18px;
-      padding: 26px 24px;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+      padding: 28px 24px;
+      box-shadow: 0 0 35px rgba(37, 99, 235, 0.35), 0 22px 48px rgba(0, 0, 0, 0.75);
+      color: #f8fafc;
+    }
+
+    .login-box label {
+      color: #bfdbfe;
+    }
+
+    .login-box input,
+    .login-box select {
+      background: rgba(7, 22, 51, 0.9);
+      border-color: #1d4ed8;
+      color: #ffffff;
     }
 
     .login-logo {
-      width: 72px;
-      height: 72px;
+      width: 108px;
+      height: 108px;
       border-radius: 50%;
       background: #ffffff;
-      border: 2.5px solid var(--accent);
+      border: 3px solid var(--accent);
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
       margin: 0 auto 14px;
-      box-shadow: 0 6px 18px rgba(245, 158, 11, 0.28);
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.35);
     }
 
     .login-logo img {
@@ -82,45 +94,102 @@
       object-fit: cover;
     }
 
-    .login-brand-banner {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(245, 158, 11, 0.14));
-      border: 1.5px solid var(--accent);
-      border-radius: 12px;
+    .ahb-title-box {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.28), rgba(245, 158, 11, 0.16));
+      border: 1.5px solid #38bdf8;
+      border-radius: 13px;
       padding: 11px 14px;
+      margin: 0 auto 14px;
       text-align: center;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+      box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.18), 0 4px 14px rgba(0, 0, 0, 0.35);
     }
 
-    .login-brand-banner .brand-main {
-      font-size: 19px;
+    .login-brand-heading {
+      text-align: center;
+      font-size: 24px;
       font-weight: 900;
       letter-spacing: 1px;
       color: var(--accent);
       text-transform: uppercase;
       line-height: 1.2;
-    }
-
-    .login-brand-banner .brand-sub {
-      font-size: 11.5px;
-      font-weight: 800;
-      letter-spacing: 1.4px;
-      color: var(--brand);
-      text-transform: uppercase;
-      margin-top: 4px;
+      margin: 0;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
     }
 
     .login-box h2 {
       margin: 0 0 14px;
-      font-size: 21px;
+      font-size: 18px;
       text-align: center;
+      color: #93c5fd;
       letter-spacing: 0.4px;
+    }
+
+    .login-mode-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+      background: #06132b;
+      padding: 4px;
+      border-radius: 11px;
+      border: 1px solid #1d4ed8;
+    }
+
+    .login-tab-btn {
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: transparent;
+      color: #93c5fd;
+      font-size: 12.5px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .login-tab-btn.active {
+      background: var(--brand);
+      color: #05160e;
+    }
+
+    .pin-input-large {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 12px;
+      padding: 12px;
+      border: 2px solid var(--accent) !important;
+      background: #06132b !important;
+      color: #ffffff !important;
+    }
+
+    .biometric-login-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(37, 99, 235, 0.32));
+      border: 1.5px solid var(--info);
+      color: #e0f2fe;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .biometric-login-btn:hover {
+      background: rgba(56, 189, 248, 0.32);
+      color: #ffffff;
     }
 
     .dev-credit-box {
       margin-top: 16px;
       padding-top: 12px;
-      border-top: 1px dashed var(--line);
+      border-top: 1px dashed #1e40af;
       text-align: center;
       font-size: 12px;
       font-weight: 700;
@@ -156,7 +225,7 @@
     }
 
     .forgot-panel {
-      background: var(--panel-2);
+      background: #06132b;
       border: 1px solid var(--accent);
       border-radius: 12px;
       padding: 14px;
@@ -914,7 +983,7 @@
       color: var(--text);
     }
 
-    .err-text { color: var(--danger); font-size: 12px; min-height: 18px; margin-bottom: 8px; }
+    .err-text { color: #fca5a5; font-size: 12px; min-height: 18px; margin-bottom: 8px; font-weight: 600; }
     .ok-text { color: var(--brand); font-size: 12px; min-height: 18px; margin-top: 6px; }
 
     /* SINGLE PAGE THERMAL PRINTER PRINT RULES */
@@ -1232,50 +1301,79 @@
   <div id="loginScreen">
     <div class="login-box">
       <div class="login-logo">
-        <img src="ahb_logo.png" alt="AHB Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;color:#ea580c;font-size:18px;&quot;>AHB</span>';" />
+        <img src="ahb_logo.png" alt="AHB Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;color:#ea580c;font-size:24px;&quot;>AHB</span>';" />
       </div>
 
-      <div class="login-brand-banner">
-        <div class="brand-main">Arham Hunger Box</div>
-        <div class="brand-sub">Point of Sale System</div>
+      <div class="ahb-title-box">
+        <h1 class="login-brand-heading">Arham Hunger Box</h1>
       </div>
 
       <h2>Sign In</h2>
 
-      <label for="usernameInput">Username</label>
-      <input id="usernameInput" type="text" placeholder="Enter username" onkeydown="if(event.key==='Enter') loginUser()" />
-
-      <label for="passInput">Password</label>
-      <input id="passInput" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter') loginUser()" />
-
-      <div class="login-links">
-        <label style="display:flex; align-items:center; gap:6px; margin:0; cursor:pointer;">
-          <input type="checkbox" style="width:auto; margin:0;" onchange="toggleLoginPassword(this.checked)" />
-          Show Password
-        </label>
-        <button type="button" class="link-btn" onclick="toggleForgotBox()">Forgot Username &amp; Password?</button>
+      <!-- LOGIN MODE SWITCHER (PASSWORD vs 4-DIGIT PIN) -->
+      <div id="loginModeTabs" class="login-mode-tabs">
+        <button type="button" id="tabPasswordBtn" class="login-tab-btn active" onclick="switchLoginMethod('PASSWORD')">Password Login</button>
+        <button type="button" id="tabPinBtn" class="login-tab-btn" onclick="switchLoginMethod('PIN')">4-Digit PIN</button>
       </div>
 
-      <div id="loginErr" class="err-text"></div>
-      <button class="btn-brand" style="width:100%;" onclick="loginUser()">Login</button>
+      <!-- PASSWORD LOGIN FORM -->
+      <div id="passwordLoginForm">
+        <label for="usernameInput">Username</label>
+        <input id="usernameInput" type="text" placeholder="Enter username" onkeydown="if(event.key==='Enter') loginUser()" />
+
+        <label for="passInput">Password</label>
+        <input id="passInput" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter') loginUser()" />
+
+        <div class="login-links">
+          <label style="display:flex; align-items:center; gap:6px; margin:0; cursor:pointer;">
+            <input type="checkbox" style="width:auto; margin:0;" onchange="toggleLoginPassword(this.checked)" />
+            Show Password
+          </label>
+          <button type="button" class="link-btn" onclick="toggleForgotBox()">Forgot Username &amp; Password?</button>
+        </div>
+
+        <button class="btn-brand" style="width:100%; padding:10px;" onclick="loginUser()">Login</button>
+      </div>
+
+      <!-- 4-DIGIT PIN LOGIN FORM -->
+      <div id="pinLoginForm" style="display:none;">
+        <label for="quickPinInput" style="text-align:center; font-weight:700; color:var(--accent);">Enter 4-Digit PIN</label>
+        <input id="quickPinInput" class="pin-input-large" type="password" inputmode="numeric" maxlength="4" placeholder="••••" oninput="handlePinAutoLogin(this.value)" onkeydown="if(event.key==='Enter') loginWithPin()" />
+        <button class="btn-amber" style="width:100%; padding:10px;" onclick="loginWithPin()">Login</button>
+        <div style="text-align:center; margin-top:8px;">
+          <button type="button" class="link-btn" onclick="toggleForgotBox()">Forgot PIN?</button>
+        </div>
+      </div>
+
+      <!-- FINGERPRINT & FACE UNLOCK BUTTON -->
+      <button type="button" id="biometricLoginBtn" class="biometric-login-btn" onclick="loginWithBiometric()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+        </svg>
+        <span>Fingerprint / Face Unlock Login</span>
+      </button>
+
+      <div id="loginErr" class="err-text" style="margin-top:8px; text-align:center;"></div>
 
       <div class="dev-credit-box">
         Software Developed by Umair Ahmad
         <span>For Software Inquiries: 03065223123</span>
       </div>
 
-      <!-- FORGOT USERNAME & PASSWORD PANEL -->
+      <!-- FORGOT USERNAME, PASSWORD & PIN PANEL -->
       <div id="forgotBox" class="forgot-panel">
-        <h4>Reset Username &amp; Password</h4>
-        <p style="margin:0 0 8px; font-size:12px; color:var(--muted);">Enter your Recovery PIN and Username to update credentials.</p>
-        <label for="recoveryPinInput">Recovery PIN</label>
+        <h4>Reset Credentials &amp; PIN</h4>
+        <p style="margin:0 0 8px; font-size:12px; color:var(--muted);">Enter your Master Recovery PIN and Username to update Password or 4-Digit PIN.</p>
+        <label for="recoveryPinInput">Master Recovery PIN</label>
         <input id="recoveryPinInput" type="password" placeholder="Enter Recovery PIN" />
         <label for="resetCurrentUsername">Current Username</label>
         <input id="resetCurrentUsername" type="text" placeholder="Enter your current username" />
         <label for="resetNewUsername">New Username (Optional)</label>
         <input id="resetNewUsername" type="text" placeholder="Enter new username" />
-        <label for="resetNewPass">New Password</label>
+        <label for="resetNewPass">New Password (Optional)</label>
         <input id="resetNewPass" type="password" placeholder="Enter new password" />
+        <label for="resetNewQuickPin">New 4-Digit Login PIN (Optional)</label>
+        <input id="resetNewQuickPin" type="text" inputmode="numeric" maxlength="4" placeholder="e.g. 1234" />
         <div class="btn-group">
           <button type="button" class="btn-amber" onclick="recoverCredentials()">Reset Credentials</button>
           <button type="button" class="btn-outline" onclick="toggleForgotBox()">Cancel</button>
@@ -1311,8 +1409,8 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>Staff</span>
         </button>
-        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Dual Printers, Counter & Table QR, Quick Price Update, Login Log & Reports">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Security PIN/Biometric, Dual Printers, Counter & Table QR, Quick Price Update & Reports">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Settings</span>
         </button>
       </nav>
@@ -1882,11 +1980,51 @@
 
           <!-- RIGHT COLUMN OF SETTINGS -->
           <div>
-            <!-- USERNAME, PASSWORDS & RECOVERY PIN (ADMIN, CASHIER & WAITER) -->
-            <div class="box">
+            <!-- LOGIN SECURITY: 4-DIGIT PIN, BIOMETRIC (FINGERPRINT / FACE) & PASSWORDS -->
+            <div class="box" style="border-color: var(--accent);">
               <div class="box-head">
-                <h2>Change Usernames, Passwords & Recovery PIN</h2>
+                <h2>Login Security: 4-Digit PIN, Fingerprint/Face &amp; Passwords</h2>
               </div>
+
+              <div class="row-2">
+                <div>
+                  <label for="loginModeSettingSelect" style="color:var(--brand); font-weight:700;">Active Login System Mode</label>
+                  <select id="loginModeSettingSelect" onchange="saveLoginSecurityMode()">
+                    <option value="BOTH">Both (Password &amp; 4-Digit PIN)</option>
+                    <option value="PIN_ONLY">4-Digit PIN Only (Direct Unlock)</option>
+                    <option value="PASSWORD_ONLY">Username &amp; Password Only</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="biometricRoleSelect" style="color:var(--info); font-weight:700;">Fingerprint / Face Unlock Device Setup</label>
+                  <div class="btn-group">
+                    <select id="biometricRoleSelect" style="width:auto; flex:1; margin:0;">
+                      <option value="ADMIN">Admin</option>
+                      <option value="CASHIER">Cashier</option>
+                      <option value="WAITER">Waiter</option>
+                    </select>
+                    <button type="button" class="btn-sky" onclick="registerBiometricDevice()">Register Finger / Face</button>
+                  </div>
+                </div>
+              </div>
+              <div id="biometricStatusMsg" class="ok-text" style="margin-bottom:8px;"></div>
+
+              <label style="color:var(--accent); font-weight:700; margin-top:4px;">4-Digit Quick Login PINs (Default: Admin 1111 | Cashier 2222 | Waiter 3333)</label>
+              <div class="row-3">
+                <div>
+                  <label for="updAdminPin">Admin 4-Digit PIN</label>
+                  <input id="updAdminPin" type="text" inputmode="numeric" maxlength="4" placeholder="e.g. 1111" />
+                </div>
+                <div>
+                  <label for="updCashierPin">Cashier 4-Digit PIN</label>
+                  <input id="updCashierPin" type="text" inputmode="numeric" maxlength="4" placeholder="e.g. 2222" />
+                </div>
+                <div>
+                  <label for="updWaiterPin">Waiter 4-Digit PIN</label>
+                  <input id="updWaiterPin" type="text" inputmode="numeric" maxlength="4" placeholder="e.g. 3333" />
+                </div>
+              </div>
+
               <div class="row-3">
                 <div>
                   <label for="updAdminUser">Admin Username</label>
@@ -1915,11 +2053,11 @@
                   <input id="updWaiter" type="password" placeholder="Optional" />
                 </div>
                 <div>
-                  <label for="updPin">Recovery PIN</label>
+                  <label for="updPin">Master Recovery PIN</label>
                   <input id="updPin" type="text" placeholder="Optional" />
                 </div>
               </div>
-              <button class="btn-brand" onclick="savePasswords()">Save Usernames & Passwords</button>
+              <button class="btn-brand" onclick="savePasswords()">Save All Login &amp; PIN Settings</button>
               <div id="passMsg" class="ok-text"></div>
             </div>
 
@@ -2042,7 +2180,8 @@
       TABLE_QUEUE: "ahb_pos_table_queue_v4",
       WAITER_CALLS: "ahb_pos_waiter_calls_v4",
       DISMISSED_IDS: "ahb_pos_dismissed_ids_v4",
-      PERIPHERALS: "ahb_pos_peripherals_v4"
+      PERIPHERALS: "ahb_pos_peripherals_v4",
+      BIOMETRIC: "ahb_pos_biometric_v4"
     };
 
     const DEFAULT_CLOUD_URL = "";
@@ -2183,13 +2322,23 @@
       ADMIN: "admin123",
       CASHIER: "cashier123",
       WAITER: "waiter123",
+      ADMIN_PIN: "1111",
+      CASHIER_PIN: "2222",
+      WAITER_PIN: "3333",
+      LOGIN_MODE: "BOTH",
       RECOVERY_PIN: "7860"
     };
     if (!auth.ADMIN_USER) auth.ADMIN_USER = "admin";
     if (!auth.CASHIER_USER) auth.CASHIER_USER = "cashier";
     if (!auth.WAITER_USER) auth.WAITER_USER = "waiter";
     if (!auth.WAITER) auth.WAITER = "waiter123";
+    if (!auth.ADMIN_PIN) auth.ADMIN_PIN = "1111";
+    if (!auth.CASHIER_PIN) auth.CASHIER_PIN = "2222";
+    if (!auth.WAITER_PIN) auth.WAITER_PIN = "3333";
+    if (!auth.LOGIN_MODE) auth.LOGIN_MODE = "BOTH";
     if (!auth.RECOVERY_PIN) auth.RECOVERY_PIN = "7860";
+
+    let biometricData = JSON.parse(localStorage.getItem(DB.BIOMETRIC)) || null;
 
     let items = JSON.parse(localStorage.getItem(DB.MENU)) || starterMenu;
     let orders = JSON.parse(localStorage.getItem(DB.SALES)) || [];
@@ -2235,6 +2384,202 @@
 
     if (localStorage.getItem(DB.THEME) === "light") {
       document.body.classList.add("light-theme");
+    }
+
+    function applyLoginScreenModeUI() {
+      const mode = auth.LOGIN_MODE || "BOTH";
+      const tabs = document.getElementById("loginModeTabs");
+      const passForm = document.getElementById("passwordLoginForm");
+      const pinForm = document.getElementById("pinLoginForm");
+      const tabPass = document.getElementById("tabPasswordBtn");
+      const tabPin = document.getElementById("tabPinBtn");
+
+      if (!tabs || !passForm || !pinForm) return;
+
+      if (mode === "PIN_ONLY") {
+        tabs.style.display = "none";
+        passForm.style.display = "none";
+        pinForm.style.display = "block";
+      } else if (mode === "PASSWORD_ONLY") {
+        tabs.style.display = "none";
+        passForm.style.display = "block";
+        pinForm.style.display = "none";
+      } else {
+        tabs.style.display = "grid";
+        if (pinForm.style.display === "block") {
+          tabPass.classList.remove("active");
+          tabPin.classList.add("active");
+        } else {
+          passForm.style.display = "block";
+          pinForm.style.display = "none";
+          tabPass.classList.add("active");
+          tabPin.classList.remove("active");
+        }
+      }
+    }
+
+    function switchLoginMethod(method) {
+      const passForm = document.getElementById("passwordLoginForm");
+      const pinForm = document.getElementById("pinLoginForm");
+      const tabPass = document.getElementById("tabPasswordBtn");
+      const tabPin = document.getElementById("tabPinBtn");
+      document.getElementById("loginErr").textContent = "";
+
+      if (method === "PIN") {
+        passForm.style.display = "none";
+        pinForm.style.display = "block";
+        tabPass.classList.remove("active");
+        tabPin.classList.add("active");
+        const pinInput = document.getElementById("quickPinInput");
+        if (pinInput) {
+          pinInput.value = "";
+          pinInput.focus();
+        }
+      } else {
+        passForm.style.display = "block";
+        pinForm.style.display = "none";
+        tabPass.classList.add("active");
+        tabPin.classList.remove("active");
+      }
+    }
+
+    function handlePinAutoLogin(val) {
+      const cleaned = val.replace(/\D/g, "").slice(0, 4);
+      document.getElementById("quickPinInput").value = cleaned;
+      if (cleaned.length === 4) {
+        loginWithPin();
+      }
+    }
+
+    async function loginWithPin() {
+      if (cloudBaseUrl) {
+        await pullFromCloud(true);
+      }
+      const enteredPin = (document.getElementById("quickPinInput").value || "").trim();
+      const err = document.getElementById("loginErr");
+
+      if (enteredPin.length !== 4) {
+        err.textContent = "Please enter a 4-digit PIN.";
+        return;
+      }
+
+      let matchedRole = null;
+      if (enteredPin === String(auth.ADMIN_PIN)) matchedRole = "ADMIN";
+      else if (enteredPin === String(auth.CASHIER_PIN)) matchedRole = "CASHIER";
+      else if (enteredPin === String(auth.WAITER_PIN)) matchedRole = "WAITER";
+
+      if (!matchedRole) {
+        err.textContent = "Invalid 4-Digit PIN.";
+        document.getElementById("quickPinInput").value = "";
+        return;
+      }
+
+      const usernameForRole = auth[matchedRole + "_USER"] || matchedRole.toLowerCase();
+      document.getElementById("quickPinInput").value = "";
+      await completeUserSessionLogin(matchedRole, usernameForRole, "4-Digit PIN");
+    }
+
+    /* BIOMETRIC (FINGERPRINT / FACE UNLOCK) REGISTRATION & LOGIN */
+    function bufferToBase64(buf) {
+      return btoa(String.fromCharCode(...new Uint8Array(buf)));
+    }
+
+    function base64ToBuffer(b64) {
+      const bin = atob(b64);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return bytes.buffer;
+    }
+
+    async function registerBiometricDevice() {
+      if (role !== "ADMIN") return;
+      const msg = document.getElementById("biometricStatusMsg");
+      const targetRole = document.getElementById("biometricRoleSelect").value || "ADMIN";
+
+      if (!window.PublicKeyCredential) {
+        msg.style.color = "var(--danger)";
+        msg.textContent = "Biometric sensor / Passkey API is not supported in this browser or requires HTTPS/localhost.";
+        return;
+      }
+
+      try {
+        const challenge = new Uint8Array(32);
+        window.crypto.getRandomValues(challenge);
+        const userId = new Uint8Array(16);
+        window.crypto.getRandomValues(userId);
+
+        const cred = await navigator.credentials.create({
+          publicKey: {
+            challenge,
+            rp: { name: "Arham Hunger Box POS" },
+            user: {
+              id: userId,
+              name: auth[targetRole + "_USER"] || targetRole.toLowerCase(),
+              displayName: `AHB ${targetRole}`
+            },
+            pubKeyCredParams: [
+              { type: "public-key", alg: -7 },
+              { type: "public-key", alg: -257 }
+            ],
+            authenticatorSelection: {
+              authenticatorAttachment: "platform",
+              userVerification: "required"
+            },
+            timeout: 60000
+          }
+        });
+
+        biometricData = {
+          credentialId: bufferToBase64(cred.rawId),
+          role: targetRole,
+          username: auth[targetRole + "_USER"] || targetRole.toLowerCase()
+        };
+        localStorage.setItem(DB.BIOMETRIC, JSON.stringify(biometricData));
+
+        msg.style.color = "var(--brand)";
+        msg.textContent = `Fingerprint / Face Unlock registered on this device for ${targetRole} (${biometricData.username})!`;
+      } catch (err) {
+        msg.style.color = "var(--danger)";
+        msg.textContent = "Biometric setup cancelled or unavailable (" + err.message + ").";
+      }
+    }
+
+    async function loginWithBiometric() {
+      const err = document.getElementById("loginErr");
+      if (!window.PublicKeyCredential) {
+        err.textContent = "Fingerprint / Face sensor not supported in this browser.";
+        return;
+      }
+      if (!biometricData || !biometricData.credentialId) {
+        err.textContent = "No Fingerprint/Face registered on this device yet. Login & register in Settings.";
+        return;
+      }
+
+      try {
+        const challenge = new Uint8Array(32);
+        window.crypto.getRandomValues(challenge);
+
+        await navigator.credentials.get({
+          publicKey: {
+            challenge,
+            allowCredentials: [{
+              type: "public-key",
+              id: base64ToBuffer(biometricData.credentialId)
+            }],
+            userVerification: "required",
+            timeout: 60000
+          }
+        });
+
+        if (cloudBaseUrl) {
+          await pullFromCloud(true);
+        }
+        const targetRole = biometricData.role || "ADMIN";
+        const targetUser = auth[targetRole + "_USER"] || biometricData.username || "admin";
+        await completeUserSessionLogin(targetRole, targetUser, "Fingerprint / Face");
+      } catch (e) {
+        err.textContent = "Fingerprint / Face verification failed or cancelled.";
+      }
     }
 
     function playNotificationBeep() {
@@ -2371,8 +2716,13 @@
             ADMIN: data.auth.ADMIN || "admin123",
             CASHIER: data.auth.CASHIER || "cashier123",
             WAITER: data.auth.WAITER || "waiter123",
+            ADMIN_PIN: data.auth.ADMIN_PIN || "1111",
+            CASHIER_PIN: data.auth.CASHIER_PIN || "2222",
+            WAITER_PIN: data.auth.WAITER_PIN || "3333",
+            LOGIN_MODE: data.auth.LOGIN_MODE || "BOTH",
             RECOVERY_PIN: data.auth.RECOVERY_PIN || "7860"
           };
+          applyLoginScreenModeUI();
         }
         staffList = Array.isArray(data.staffList) ? data.staffList : [];
         loginHistoryLogs = Array.isArray(data.loginHistoryLogs) ? data.loginHistoryLogs : [];
@@ -2457,6 +2807,7 @@
     }
 
     function initPageMode() {
+      applyLoginScreenModeUI();
       const params = new URLSearchParams(window.location.search);
       const tableParam = params.get("table");
       const modeParam = params.get("mode");
@@ -2640,6 +2991,7 @@
       if (cloudPollTimer) clearInterval(cloudPollTimer);
       document.getElementById("customerQrPortal").style.display = "none";
       document.getElementById("loginScreen").style.display = "flex";
+      applyLoginScreenModeUI();
     }
 
     function selectCustOrderType(typeVal) {
@@ -3384,7 +3736,7 @@
       lookupQuickPriceItem();
     }
 
-    /* LOGIN, LOGIN HISTORY LOG & FORGOT USERNAME + PASSWORD */
+    /* LOGIN, LOGIN HISTORY LOG & FORGOT USERNAME + PASSWORD + PIN */
     function toggleLoginPassword(show) {
       document.getElementById("passInput").type = show ? "text" : "password";
     }
@@ -3401,11 +3753,12 @@
       const currentUsername = document.getElementById("resetCurrentUsername").value.trim().toLowerCase();
       const newUsername = document.getElementById("resetNewUsername").value.trim();
       const newPass = document.getElementById("resetNewPass").value.trim();
+      const newQuickPin = document.getElementById("resetNewQuickPin").value.trim();
       const msg = document.getElementById("forgotMsg");
 
       if (enteredPin !== String(auth.RECOVERY_PIN)) {
         msg.style.color = "var(--danger)";
-        msg.textContent = "Invalid Recovery PIN.";
+        msg.textContent = "Invalid Master Recovery PIN.";
         return;
       }
 
@@ -3426,15 +3779,21 @@
         return;
       }
 
-      if (!newUsername && !newPass) {
+      if (!newUsername && !newPass && !newQuickPin) {
         msg.style.color = "var(--danger)";
-        msg.textContent = "Enter a new username or new password.";
+        msg.textContent = "Enter a new username, new password, or new 4-digit PIN.";
         return;
       }
 
       if (newPass && newPass.length < 4) {
         msg.style.color = "var(--danger)";
         msg.textContent = "New password must be at least 4 characters.";
+        return;
+      }
+
+      if (newQuickPin && !/^\d{4}$/.test(newQuickPin)) {
+        msg.style.color = "var(--danger)";
+        msg.textContent = "Login PIN must be exactly 4 digits.";
         return;
       }
 
@@ -3458,6 +3817,20 @@
         auth[targetRole] = newPass;
       }
 
+      if (newQuickPin) {
+        const otherPins = [
+          targetRole !== "ADMIN" ? String(auth.ADMIN_PIN) : null,
+          targetRole !== "CASHIER" ? String(auth.CASHIER_PIN) : null,
+          targetRole !== "WAITER" ? String(auth.WAITER_PIN) : null
+        ].filter(Boolean);
+        if (otherPins.includes(newQuickPin)) {
+          msg.style.color = "var(--danger)";
+          msg.textContent = "This 4-digit PIN is already assigned to another role.";
+          return;
+        }
+        auth[targetRole + "_PIN"] = newQuickPin;
+      }
+
       await syncStore();
 
       const updatedUserDisplay = auth[targetRole + "_USER"];
@@ -3465,6 +3838,7 @@
       document.getElementById("resetCurrentUsername").value = "";
       document.getElementById("resetNewUsername").value = "";
       document.getElementById("resetNewPass").value = "";
+      document.getElementById("resetNewQuickPin").value = "";
       msg.style.color = "var(--brand)";
       msg.textContent = `Updated! Username: "${updatedUserDisplay}" — You can login now.`;
     }
@@ -3487,7 +3861,7 @@
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td><span class="status-pill ${pillClass}">${log.role}</span></td>
-          <td><b>${log.username}</b></td>
+          <td><b>${log.username}</b> ${log.method ? `<small style="color:var(--muted);">(${log.method})</small>` : ""}</td>
           <td>${log.date}</td>
           <td>${log.time}</td>
         `;
@@ -3535,9 +3909,13 @@
         return;
       }
 
-      err.textContent = "";
       document.getElementById("usernameInput").value = "";
       document.getElementById("passInput").value = "";
+      await completeUserSessionLogin(matchedRole, rawUser, "Password");
+    }
+
+    async function completeUserSessionLogin(matchedRole, rawUser, methodLabel) {
+      document.getElementById("loginErr").textContent = "";
       role = matchedRole;
       loggedInUsername = rawUser;
 
@@ -3545,6 +3923,7 @@
       loginHistoryLogs.unshift({
         role: matchedRole,
         username: rawUser,
+        method: methodLabel,
         date: loginNow.toLocaleDateString(),
         time: loginNow.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })
       });
@@ -3603,6 +3982,7 @@
       document.getElementById("dashboardShell").style.display = "none";
       document.getElementById("customerQrPortal").style.display = "none";
       document.getElementById("loginScreen").style.display = "flex";
+      applyLoginScreenModeUI();
     }
 
     function switchSection(sec) {
@@ -3627,6 +4007,10 @@
         renderLoginHistory();
         generateTableQrCode();
         loadPeripheralUi();
+        document.getElementById("loginModeSettingSelect").value = auth.LOGIN_MODE || "BOTH";
+        document.getElementById("updAdminPin").placeholder = `Current: ${auth.ADMIN_PIN}`;
+        document.getElementById("updCashierPin").placeholder = `Current: ${auth.CASHIER_PIN}`;
+        document.getElementById("updWaiterPin").placeholder = `Current: ${auth.WAITER_PIN}`;
         document.getElementById("updAdminUser").placeholder = `Current: ${auth.ADMIN_USER}`;
         document.getElementById("updCashierUser").placeholder = `Current: ${auth.CASHIER_USER}`;
         document.getElementById("updWaiterUser").placeholder = `Current: ${auth.WAITER_USER}`;
@@ -3737,9 +4121,26 @@
       });
     }
 
-    /* SETTINGS: USERNAMES, PASSWORDS & RECOVERY PIN */
+    /* SETTINGS: LOGIN MODE, 4-DIGIT PIN, USERNAMES & PASSWORDS */
+    async function saveLoginSecurityMode() {
+      if (role !== "ADMIN") return;
+      const sel = document.getElementById("loginModeSettingSelect");
+      if (!sel) return;
+      auth.LOGIN_MODE = sel.value || "BOTH";
+      applyLoginScreenModeUI();
+      await syncStore();
+      const msg = document.getElementById("passMsg");
+      if (msg) {
+        msg.style.color = "var(--brand)";
+        msg.textContent = "Login Mode updated (" + sel.options[sel.selectedIndex].text + ")!";
+      }
+    }
+
     async function savePasswords() {
       if (role !== "ADMIN") return;
+      const aPin = document.getElementById("updAdminPin").value.trim();
+      const cPin = document.getElementById("updCashierPin").value.trim();
+      const wPin = document.getElementById("updWaiterPin").value.trim();
       const au = document.getElementById("updAdminUser").value.trim();
       const cu = document.getElementById("updCashierUser").value.trim();
       const wu = document.getElementById("updWaiterUser").value.trim();
@@ -3749,9 +4150,25 @@
       const pin = document.getElementById("updPin").value.trim();
       const msg = document.getElementById("passMsg");
 
-      if (!au && !cu && !wu && !a && !c && !w && !pin) {
+      if (!aPin && !cPin && !wPin && !au && !cu && !wu && !a && !c && !w && !pin) {
         msg.style.color = "var(--danger)";
-        msg.textContent = "Enter at least one new username, password, or PIN.";
+        msg.textContent = "Enter at least one new PIN, username, or password.";
+        return;
+      }
+
+      if ((aPin && !/^\d{4}$/.test(aPin)) || (cPin && !/^\d{4}$/.test(cPin)) || (wPin && !/^\d{4}$/.test(wPin))) {
+        msg.style.color = "var(--danger)";
+        msg.textContent = "4-Digit Login PINs must be exactly 4 numbers (e.g. 1111).";
+        return;
+      }
+
+      const finalAdminPin = aPin || auth.ADMIN_PIN;
+      const finalCashierPin = cPin || auth.CASHIER_PIN;
+      const finalWaiterPin = wPin || auth.WAITER_PIN;
+
+      if (new Set([finalAdminPin, finalCashierPin, finalWaiterPin]).size < 3) {
+        msg.style.color = "var(--danger)";
+        msg.textContent = "Admin, Cashier, and Waiter 4-digit PINs must all be different.";
         return;
       }
 
@@ -3765,6 +4182,9 @@
         return;
       }
 
+      if (aPin) auth.ADMIN_PIN = aPin;
+      if (cPin) auth.CASHIER_PIN = cPin;
+      if (wPin) auth.WAITER_PIN = wPin;
       if (au) auth.ADMIN_USER = au;
       if (cu) auth.CASHIER_USER = cu;
       if (wu) auth.WAITER_USER = wu;
@@ -3774,6 +4194,9 @@
       if (pin) auth.RECOVERY_PIN = pin;
       await syncStore();
 
+      document.getElementById("updAdminPin").value = "";
+      document.getElementById("updCashierPin").value = "";
+      document.getElementById("updWaiterPin").value = "";
       document.getElementById("updAdminUser").value = "";
       document.getElementById("updCashierUser").value = "";
       document.getElementById("updWaiterUser").value = "";
@@ -3781,11 +4204,15 @@
       document.getElementById("updCashier").value = "";
       document.getElementById("updWaiter").value = "";
       document.getElementById("updPin").value = "";
+
+      document.getElementById("updAdminPin").placeholder = `Current: ${auth.ADMIN_PIN}`;
+      document.getElementById("updCashierPin").placeholder = `Current: ${auth.CASHIER_PIN}`;
+      document.getElementById("updWaiterPin").placeholder = `Current: ${auth.WAITER_PIN}`;
       document.getElementById("updAdminUser").placeholder = `Current: ${auth.ADMIN_USER}`;
       document.getElementById("updCashierUser").placeholder = `Current: ${auth.CASHIER_USER}`;
       document.getElementById("updWaiterUser").placeholder = `Current: ${auth.WAITER_USER}`;
       msg.style.color = "var(--brand)";
-      msg.textContent = "Usernames & Password settings saved and synced!";
+      msg.textContent = "All PINs, Usernames & Passwords saved and synced!";
     }
 
     /* STAFF MANAGEMENT */
