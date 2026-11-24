@@ -380,6 +380,12 @@
       border-radius: 999px;
       font-size: 11px;
       font-weight: 800;
+      animation: pulseAlert 1.5s infinite;
+    }
+
+    @keyframes pulseAlert {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.55; }
     }
 
     .status-pill {
@@ -566,6 +572,8 @@
     .btn-sky { background: var(--info); color: #06131d; }
     .btn-purple { background: var(--purple); color: #ffffff; }
     .btn-red { background: var(--danger); color: #fff; }
+    .btn-whatsapp { background: #25D366; color: #04220f; }
+    .btn-whatsapp:hover { background: #1ebe5d; color: #fff; }
     .btn-outline {
       background: var(--panel-2);
       color: var(--text);
@@ -615,6 +623,12 @@
     .qr-queue-item.waiter-source {
       border-color: var(--purple);
       border-left-color: var(--purple);
+    }
+
+    .qr-queue-item.call-alert-source {
+      border-color: var(--danger);
+      border-left: 5px solid var(--danger);
+      background: rgba(239, 68, 68, 0.12);
     }
 
     .qr-poster-card {
@@ -683,6 +697,19 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 8px;
+    }
+
+    .waiter-call-banner {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.16), rgba(245, 158, 11, 0.16));
+      border: 1.5px solid var(--danger);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .cust-option-group {
@@ -914,6 +941,7 @@
       .no-print,
       .summary-strip-6,
       .summary-strip,
+      #liveWaiterCallsBox,
       #liveTableOrdersBox,
       #sectionEXPENSES,
       #sectionSTAFF,
@@ -1044,6 +1072,32 @@
     </div>
 
     <div class="wrap">
+      <!-- WAITER LIVE CALL ALERTS ON WAITER MOBILE -->
+      <div id="waiterMobileAlertsBox" class="box" style="border-color: var(--danger); display:none;">
+        <div class="box-head">
+          <h2 style="color:var(--danger);">Customer Table Calls (ویٹر کال الرٹ)</h2>
+          <span id="waiterCallCountBadge" class="live-badge-pulse">0 Calls</span>
+        </div>
+        <div id="waiterMobileCallsList"></div>
+      </div>
+
+      <!-- DIRECT CALL WAITER BUTTON FOR TABLE CUSTOMERS -->
+      <div id="customerCallWaiterCard" class="waiter-call-banner">
+        <div>
+          <strong style="color:var(--danger); font-size:14px;">Need Assistance at Your Table? (ویٹر کو بلائیں)</strong>
+          <div style="font-size:12px; color:var(--muted);">Tap to send an instant alert directly to the Waiter & Counter.</div>
+        </div>
+        <div class="btn-group">
+          <select id="callWaiterReason" style="width:auto; margin:0; padding:7px 10px;">
+            <option value="Call Waiter to Table">General Assistance (ویٹر کو بلائیں)</option>
+            <option value="Need Water / Glasses">Water / Glasses (پانی چاہیے)</option>
+            <option value="Need Cutlery / Napkins">Cutlery / Tissue (چمچ / ٹشو)</option>
+            <option value="Request Table Bill">Bring Bill (بل لے آئیں)</option>
+          </select>
+          <button id="callWaiterBtn" class="btn-red" onclick="triggerWaiterCallAlert()">🔔 Call Waiter Now</button>
+        </div>
+      </div>
+
       <div class="box">
         <div class="box-head">
           <h2>Select Food & Drinks</h2>
@@ -1151,9 +1205,14 @@
           <div class="grand"><span>Total Amount</span><span id="custGrandTotal">PKR 0.00</span></div>
         </div>
 
-        <button id="custSubmitOrderBtn" class="btn-brand" style="width:100%; padding:12px; font-size:15px;" onclick="submitCustomerTableOrder()">
-          Send Order Directly to Counter
-        </button>
+        <div class="row-2">
+          <button id="custSubmitOrderBtn" class="btn-brand" style="width:100%; padding:12px; font-size:14px;" onclick="submitCustomerTableOrder(false)">
+            Send Order Directly to Counter
+          </button>
+          <button id="custWhatsAppOrderBtn" class="btn-whatsapp" style="width:100%; padding:12px; font-size:14px;" onclick="submitCustomerTableOrder(true)">
+            Send Order via WhatsApp
+          </button>
+        </div>
         <div id="custOrderStatus" class="ok-text" style="font-size:13px; font-weight:700;"></div>
       </div>
     </div>
@@ -1297,9 +1356,19 @@
           </div>
         </div>
 
+        <!-- LIVE WAITER CALL ALERTS -->
+        <div id="liveWaiterCallsBox" class="box" style="border-color: var(--danger); display:none;">
+          <div class="box-head">
+            <h2 style="color:var(--danger);">🔔 Live Table Waiter Call Alerts</h2>
+            <span id="liveWaiterCallCount" class="live-badge-pulse">0 Active Calls</span>
+          </div>
+          <div id="liveWaiterCallsList"></div>
+        </div>
+
+        <!-- LIVE INCOMING ORDERS -->
         <div id="liveTableOrdersBox" class="box" style="border-color: var(--accent); display:none;">
           <div class="box-head">
-            <h2>Live Incoming Orders (Waiter & QR Menu)</h2>
+            <h2>Live Incoming Orders (Waiter, WhatsApp & QR Menu)</h2>
             <span id="liveTableOrderCount" class="live-badge-pulse">0 New Orders</span>
           </div>
           <div id="liveTableOrdersList"></div>
@@ -1310,7 +1379,20 @@
             <div class="box">
               <div class="box-head">
                 <h2>Menu Items</h2>
-                <input id="searchItem" placeholder="Search code (001) or name..." style="width:225px; margin:0;" oninput="renderMenu()" />
+                <div class="btn-group">
+                  <button class="btn-whatsapp btn-sm" onclick="toggleWhatsappImportModal()">+ Import WhatsApp Order</button>
+                  <input id="searchItem" placeholder="Search code (001) or name..." style="width:210px; margin:0;" oninput="renderMenu()" />
+                </div>
+              </div>
+
+              <!-- WHATSAPP MESSAGE QUICK IMPORTER -->
+              <div id="whatsappImportBox" class="variant-picker" style="display:none; border-color:#25D366;">
+                <div class="variant-picker-head" style="color:#25D366;">
+                  <span>Paste Customer WhatsApp Delivery Order</span>
+                  <button class="btn-outline btn-sm" onclick="toggleWhatsappImportModal()">Close</button>
+                </div>
+                <textarea id="whatsappRawPaste" placeholder="Paste customer's WhatsApp order text here (e.g. Name, Phone, Address, 001 x1, Zinger Burger x2)..."></textarea>
+                <button class="btn-whatsapp btn-sm" onclick="parseAndLoadWhatsappOrder()">Load WhatsApp Order into Bill</button>
               </div>
 
               <div id="categoryBar" class="filter-bar"></div>
@@ -1400,7 +1482,7 @@
                   </select>
                 </div>
                 <div>
-                  <label for="cName">Customer Name</label>
+                  <label for="cName">Customer Name / Address</label>
                   <input id="cName" placeholder="Walk-in Customer" />
                 </div>
                 <div>
@@ -1739,7 +1821,7 @@
                 <h2>Counter & Table Pro QR Code Generator (Digital Menu)</h2>
               </div>
               <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-                Generate a QR code for the <strong>Counter</strong> or any <strong>Table</strong>. Customers scan it to open the full menu, choose Dine-In / Takeaway / Delivery, pick Cash / Card / Online payment, and send orders directly to your Counter POS.
+                Generate a QR code for the <strong>Counter</strong> or any <strong>Table</strong>. Customers scan it to open the full menu, call a waiter, choose Dine-In / Takeaway / Delivery, and send orders directly to Counter POS or WhatsApp.
               </p>
               <div class="row-2">
                 <div>
@@ -1776,7 +1858,7 @@
                 <h3>ARHAM HUNGER BOX</h3>
                 <div id="qrPosterTableTitle" class="qr-poster-table-tag">COUNTER DIRECT</div><br />
                 <img id="tableQrImg" src="" alt="Digital Menu QR Code" />
-                <p>Scan QR Code with Mobile Camera<br />to View Menu & Order Directly</p>
+                <p>Scan QR Code with Mobile Camera<br />to View Menu, Call Waiter & Order</p>
               </div>
             </div>
 
@@ -1915,15 +1997,19 @@
               </div>
             </div>
 
-            <!-- SALES EXPORT & SYSTEM RESET -->
-            <div class="box">
+            <!-- SALES EXPORT & SYSTEM RESET (POS & EXPENSES ONLY) -->
+            <div class="box" style="border-color: var(--danger);">
               <div class="box-head">
-                <h2>Sales Export & Reset</h2>
+                <h2>Sales Export & POS/Expenses Reset</h2>
               </div>
+              <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
+                <strong>Reset POS &amp; Expenses Data</strong> clears only POS sales, order numbers (#000), and Expenses records permanently. <strong>Staff records &amp; salaries remain safe.</strong>
+              </p>
               <div class="btn-group">
                 <button class="btn-outline" onclick="downloadSalesCsv()">Export Sales CSV</button>
-                <button class="btn-red" id="wipeBtn" onclick="wipeSalesData()">Reset All Data</button>
+                <button class="btn-red" id="wipeBtn" onclick="wipeSalesData()">Reset POS &amp; Expenses Data</button>
               </div>
+              <div id="resetStatusMsg" class="ok-text"></div>
             </div>
           </div>
         </div>
@@ -1937,6 +2023,7 @@
       addressLine1: "Al Madina Market, Basement Floor,",
       addressLine2: "Kheshgi Payan Chowk, District Nowshera",
       phone: "0301-5977178",
+      whatsappNumber: "923015977178",
       deliveryNote: "Free Delivery Upto 3km",
       devCredit: "Software Developed by Umair Ahmad",
       devContact: "For Software Inquiries: 03065223123"
@@ -1953,6 +2040,7 @@
       EXPENSES: "ahb_pos_expenses_v4",
       CLOUD_URL: "ahb_pos_cloud_url_v4",
       TABLE_QUEUE: "ahb_pos_table_queue_v4",
+      WAITER_CALLS: "ahb_pos_waiter_calls_v4",
       DISMISSED_IDS: "ahb_pos_dismissed_ids_v4",
       PERIPHERALS: "ahb_pos_peripherals_v4"
     };
@@ -2110,6 +2198,7 @@
     let loginHistoryLogs = JSON.parse(localStorage.getItem(DB.LOGIN_LOGS)) || [];
     let expensesList = JSON.parse(localStorage.getItem(DB.EXPENSES)) || [];
     let tableOrderQueue = JSON.parse(localStorage.getItem(DB.TABLE_QUEUE)) || [];
+    let waiterCallQueue = JSON.parse(localStorage.getItem(DB.WAITER_CALLS)) || [];
     let dismissedOrderIds = JSON.parse(localStorage.getItem(DB.DISMISSED_IDS)) || [];
     let peripheralSettings = JSON.parse(localStorage.getItem(DB.PERIPHERALS)) || {
       counterPrinter: "Counter_Printer",
@@ -2141,9 +2230,28 @@
     let latestPeriodText = "";
     let latestPeriodType = "summary";
     let cloudPollTimer = null;
+    let isCloudSyncLocked = false;
+    let lastAlertCount = 0;
 
     if (localStorage.getItem(DB.THEME) === "light") {
       document.body.classList.add("light-theme");
+    }
+
+    function playNotificationBeep() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.25);
+      } catch (e) {}
     }
 
     function getTodayIso() {
@@ -2186,6 +2294,7 @@
       localStorage.setItem(DB.LOGIN_LOGS, JSON.stringify(loginHistoryLogs));
       localStorage.setItem(DB.EXPENSES, JSON.stringify(expensesList));
       localStorage.setItem(DB.TABLE_QUEUE, JSON.stringify(tableOrderQueue));
+      localStorage.setItem(DB.WAITER_CALLS, JSON.stringify(waiterCallQueue));
       localStorage.setItem(DB.DISMISSED_IDS, JSON.stringify(dismissedOrderIds));
       localStorage.setItem(DB.PERIPHERALS, JSON.stringify(peripheralSettings));
       updateOrderBadge();
@@ -2197,9 +2306,11 @@
         updateCloudBadge("Local Mode", false);
         return;
       }
+      isCloudSyncLocked = true;
       try {
         updateCloudBadge("Syncing...", true);
         const cleanQueue = tableOrderQueue.filter(q => !dismissedOrderIds.includes(q.id));
+        const cleanCalls = waiterCallQueue.filter(c => !dismissedOrderIds.includes(c.id));
         const payload = {
           items,
           orders,
@@ -2209,6 +2320,7 @@
           loginHistoryLogs,
           expensesList,
           tableOrderQueue: cleanQueue,
+          waiterCallQueue: cleanCalls,
           dismissedOrderIds: dismissedOrderIds.slice(-300),
           updatedAt: Date.now()
         };
@@ -2221,6 +2333,8 @@
         updateCloudBadge("Cloud Synced", true);
       } catch (err) {
         updateCloudBadge("Sync Error", false);
+      } finally {
+        setTimeout(() => { isCloudSyncLocked = false; }, 1200);
       }
     }
 
@@ -2229,10 +2343,13 @@
         updateCloudBadge("Local Mode", false);
         return;
       }
+      if (silent && isCloudSyncLocked) return;
       try {
         const res = await fetch(`${cloudBaseUrl}/ahb_pos_data.json`);
         if (!res.ok) throw new Error("Cloud read failed");
         const data = await res.json();
+
+        if (silent && isCloudSyncLocked) return;
 
         if (!data) {
           await pushToCloud();
@@ -2244,7 +2361,7 @@
         }
 
         if (Array.isArray(data.items) && data.items.length) items = data.items;
-        if (Array.isArray(data.orders)) orders = data.orders;
+        orders = Array.isArray(data.orders) ? data.orders : [];
         if (typeof data.orderCounter === "number") orderCounter = data.orderCounter;
         if (data.auth) {
           auth = {
@@ -2257,26 +2374,38 @@
             RECOVERY_PIN: data.auth.RECOVERY_PIN || "7860"
           };
         }
-        if (Array.isArray(data.staffList)) staffList = data.staffList;
-        if (Array.isArray(data.loginHistoryLogs)) loginHistoryLogs = data.loginHistoryLogs;
-        if (Array.isArray(data.expensesList)) expensesList = data.expensesList;
+        staffList = Array.isArray(data.staffList) ? data.staffList : [];
+        loginHistoryLogs = Array.isArray(data.loginHistoryLogs) ? data.loginHistoryLogs : [];
+        expensesList = Array.isArray(data.expensesList) ? data.expensesList : [];
 
         const cloudDismissed = Array.isArray(data.dismissedOrderIds) ? data.dismissedOrderIds : [];
         dismissedOrderIds = [...new Set([...dismissedOrderIds, ...cloudDismissed])].slice(-300);
 
-        if (Array.isArray(data.tableOrderQueue)) {
-          tableOrderQueue = data.tableOrderQueue.filter(q => !dismissedOrderIds.includes(q.id));
+        tableOrderQueue = Array.isArray(data.tableOrderQueue)
+          ? data.tableOrderQueue.filter(q => !dismissedOrderIds.includes(q.id))
+          : [];
+
+        waiterCallQueue = Array.isArray(data.waiterCallQueue)
+          ? data.waiterCallQueue.filter(c => !dismissedOrderIds.includes(c.id))
+          : [];
+
+        const totalIncomingAlerts = tableOrderQueue.length + waiterCallQueue.length;
+        if (totalIncomingAlerts > lastAlertCount && (role === "ADMIN" || role === "CASHIER" || isWaiterPortalMode)) {
+          playNotificationBeep();
         }
+        lastAlertCount = totalIncomingAlerts;
 
         saveLocalCache();
         updateOrderBadge();
         renderCategories();
         renderMenu();
         renderMetrics();
+        renderLiveWaiterCalls();
         renderLiveTableOrders();
         if (isWaiterPortalMode) {
           renderCustomerCategories();
           renderCustomerMenu();
+          renderWaiterMobileCalls();
         }
         if (role === "ADMIN") {
           renderExpenses();
@@ -2316,9 +2445,10 @@
       pullFromCloud(false);
     }
 
-    function syncStore() {
+    async function syncStore() {
+      isCloudSyncLocked = true;
       saveLocalCache();
-      pushToCloud();
+      await pushToCloud();
     }
 
     function switchTheme() {
@@ -2357,6 +2487,7 @@
       const waiterBadge = document.getElementById("waiterPortalBadge");
       const waiterLogoutBtn = document.getElementById("waiterLogoutBtn");
       const waiterTableWrap = document.getElementById("waiterTableSelectWrap");
+      const callWaiterCard = document.getElementById("customerCallWaiterCard");
       const mainTitle = document.getElementById("custPortalMainTitle");
 
       if (asWaiter) {
@@ -2365,6 +2496,7 @@
         waiterBadge.textContent = `WAITER: ${loggedInUsername.toUpperCase()}`;
         waiterLogoutBtn.style.display = "inline-block";
         waiterTableWrap.style.display = "block";
+        callWaiterCard.style.display = "none";
         document.getElementById("custTableBanner").textContent = `Taking Order for ${activeCustomerTable} • Sends Directly to Counter`;
         document.getElementById("custTablePill").textContent = activeCustomerTable;
         selectCustOrderType(activeCustomerTable === "Counter Direct" ? "Takeaway" : "Dine-In");
@@ -2373,6 +2505,7 @@
         waiterBadge.style.display = "none";
         waiterLogoutBtn.style.display = "none";
         waiterTableWrap.style.display = "none";
+        callWaiterCard.style.display = "flex";
         const isCounter = activeCustomerTable === "Counter Direct";
         document.getElementById("custTableBanner").textContent = isCounter
           ? "Counter Walk-In Digital Menu • Direct Order to Counter"
@@ -2389,6 +2522,102 @@
       renderCustomerCategories();
       renderCustomerMenu();
       renderCustomerCart();
+      if (asWaiter) renderWaiterMobileCalls();
+    }
+
+    async function triggerWaiterCallAlert() {
+      const btn = document.getElementById("callWaiterBtn");
+      const reason = document.getElementById("callWaiterReason").value || "Call Waiter to Table";
+      if (btn) btn.disabled = true;
+
+      try {
+        isCloudSyncLocked = true;
+        if (cloudBaseUrl) {
+          await pullFromCloud(true);
+        }
+        const newCall = {
+          id: "CALL-" + Date.now() + "-" + Math.floor(Math.random() * 1000),
+          tableNumber: activeCustomerTable,
+          reason,
+          createdAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+        };
+        waiterCallQueue.unshift(newCall);
+        saveLocalCache();
+        await pushToCloud();
+        alert(`🔔 Alert Sent! A waiter is coming to ${activeCustomerTable} (${reason}).`);
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    function renderWaiterMobileCalls() {
+      const box = document.getElementById("waiterMobileAlertsBox");
+      const list = document.getElementById("waiterMobileCallsList");
+      const badge = document.getElementById("waiterCallCountBadge");
+      if (!box || !list) return;
+
+      waiterCallQueue = (waiterCallQueue || []).filter(c => !dismissedOrderIds.includes(c.id));
+      if (waiterCallQueue.length === 0) {
+        box.style.display = "none";
+        return;
+      }
+
+      box.style.display = "block";
+      badge.textContent = `${waiterCallQueue.length} Active Call${waiterCallQueue.length > 1 ? "s" : ""}`;
+      list.innerHTML = "";
+      waiterCallQueue.forEach(c => {
+        const div = document.createElement("div");
+        div.className = "qr-queue-item call-alert-source";
+        div.innerHTML = `
+          <div>
+            <strong style="color:var(--danger); font-size:14px;">🔔 ${c.tableNumber}</strong> •
+            <b>${c.reason}</b> • <small>${c.createdAt}</small>
+          </div>
+          <button class="btn-brand btn-sm" onclick="acknowledgeWaiterCall('${c.id}')">Attend / Done</button>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function renderLiveWaiterCalls() {
+      const box = document.getElementById("liveWaiterCallsBox");
+      const list = document.getElementById("liveWaiterCallsList");
+      const badge = document.getElementById("liveWaiterCallCount");
+      if (!box || !list) return;
+
+      waiterCallQueue = (waiterCallQueue || []).filter(c => !dismissedOrderIds.includes(c.id));
+      if (waiterCallQueue.length === 0) {
+        box.style.display = "none";
+        return;
+      }
+
+      box.style.display = "block";
+      badge.textContent = `${waiterCallQueue.length} Active Call${waiterCallQueue.length > 1 ? "s" : ""}`;
+      list.innerHTML = "";
+      waiterCallQueue.forEach(c => {
+        const div = document.createElement("div");
+        div.className = "qr-queue-item call-alert-source";
+        div.innerHTML = `
+          <div>
+            <strong style="color:var(--danger); font-size:14px;">🔔 ${c.tableNumber}</strong> •
+            <b>${c.reason}</b> • <small>${c.createdAt}</small>
+          </div>
+          <button class="btn-brand btn-sm" onclick="acknowledgeWaiterCall('${c.id}')">Mark Attended</button>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    async function acknowledgeWaiterCall(callId) {
+      isCloudSyncLocked = true;
+      if (!dismissedOrderIds.includes(callId)) {
+        dismissedOrderIds.push(callId);
+      }
+      waiterCallQueue = waiterCallQueue.filter(c => c.id !== callId);
+      saveLocalCache();
+      renderLiveWaiterCalls();
+      renderWaiterMobileCalls();
+      await pushToCloud();
     }
 
     function onWaiterTableChange() {
@@ -2571,7 +2800,7 @@
       document.getElementById("custFloatTotal").textContent = "PKR " + totalAmt.toFixed(0);
     }
 
-    async function submitCustomerTableOrder() {
+    async function submitCustomerTableOrder(viaWhatsapp = false) {
       if (custCart.length === 0) {
         alert("Please add at least one item from the menu first.");
         return;
@@ -2585,9 +2814,12 @@
       }
 
       const submitBtn = document.getElementById("custSubmitOrderBtn");
+      const waBtn = document.getElementById("custWhatsAppOrderBtn");
       if (submitBtn) submitBtn.disabled = true;
+      if (waBtn) waBtn.disabled = true;
 
       try {
+        isCloudSyncLocked = true;
         if (cloudBaseUrl) {
           await pullFromCloud(true);
         }
@@ -2601,10 +2833,11 @@
         ].filter(Boolean).join(" | ");
 
         const totalAmt = custCart.reduce((s, c) => s + c.price * c.qty, 0);
+        const orderedItemsSnapshot = custCart.map(c => ({ ...c }));
 
         const newTableOrder = {
-          id: (isWaiterPortalMode ? "WTR-" : "QR-") + Date.now() + "-" + Math.floor(Math.random() * 1000),
-          sourceType: isWaiterPortalMode ? "WAITER" : "QR",
+          id: (isWaiterPortalMode ? "WTR-" : (viaWhatsapp ? "WA-" : "QR-")) + Date.now() + "-" + Math.floor(Math.random() * 1000),
+          sourceType: isWaiterPortalMode ? "WAITER" : (viaWhatsapp ? "WHATSAPP" : "QR"),
           waiterName: isWaiterPortalMode ? loggedInUsername : "",
           tableNumber: activeCustomerTable,
           orderType: custSelectedOrderType,
@@ -2613,7 +2846,7 @@
           customerName: custName,
           customerPhone: custPhone,
           note: combinedNote,
-          items: custCart.map(c => ({ ...c })),
+          items: orderedItemsSnapshot,
           total: totalAmt,
           createdAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
         };
@@ -2621,6 +2854,25 @@
         tableOrderQueue.unshift(newTableOrder);
         saveLocalCache();
         await pushToCloud();
+
+        if (viaWhatsapp) {
+          const waLines = [
+            `*NEW ORDER — ARHAM HUNGER BOX*`,
+            `*Name:* ${custName}`,
+            `*Phone:* ${custPhone}`,
+            `*Type:* ${custSelectedOrderType}`,
+            activeCustomerTable !== "Counter Direct" ? `*Table:* ${activeCustomerTable}` : "",
+            deliveryAddress ? `*Address:* ${deliveryAddress}` : "",
+            `*Payment:* ${custSelectedPaymentMethod}`,
+            `------------------------`,
+            ...orderedItemsSnapshot.map(i => `[${i.code}] ${i.name} x${i.qty} = PKR ${i.price * i.qty}`),
+            `------------------------`,
+            `*TOTAL:* PKR ${totalAmt}`,
+            custNote ? `*Note:* ${custNote}` : ""
+          ].filter(Boolean).join("\n");
+
+          window.open(`https://wa.me/${RESTAURANT_INFO.whatsappNumber}?text=${encodeURIComponent(waLines)}`, "_blank");
+        }
 
         custCart = [];
         document.getElementById("custOrderName").value = "";
@@ -2636,7 +2888,83 @@
           : `Order sent directly to Counter (${custSelectedOrderType} • ${custSelectedPaymentMethod} Payment)! Your food & bill are being prepared.`;
       } finally {
         if (submitBtn) submitBtn.disabled = false;
+        if (waBtn) waBtn.disabled = false;
       }
+    }
+
+    /* WHATSAPP TEXT ORDER PARSER FOR COUNTER POS */
+    function toggleWhatsappImportModal() {
+      const box = document.getElementById("whatsappImportBox");
+      box.style.display = box.style.display === "none" ? "block" : "none";
+      document.getElementById("whatsappRawPaste").value = "";
+    }
+
+    function parseAndLoadWhatsappOrder() {
+      const raw = (document.getElementById("whatsappRawPaste").value || "").trim();
+      if (!raw) {
+        alert("Please paste the WhatsApp order message first.");
+        return;
+      }
+
+      const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      let foundName = "";
+      let foundPhone = "";
+      let foundAddress = "";
+      let matchedItemsCount = 0;
+
+      lines.forEach(line => {
+        const lower = line.toLowerCase();
+        if (lower.includes("name:")) {
+          foundName = line.split(/name:/i)[1].replace(/\*/g, "").trim();
+        } else if (lower.includes("phone:") || /03\d{9}/.test(line.replace(/[-\s]/g, ""))) {
+          const phoneMatch = line.replace(/[-\s]/g, "").match(/03\d{9}/);
+          if (phoneMatch) foundPhone = phoneMatch[0];
+        } else if (lower.includes("address:")) {
+          foundAddress = line.split(/address:/i)[1].replace(/\*/g, "").trim();
+        }
+
+        const codeMatch = line.match(/\[(\d{3})\]/);
+        const qtyMatch = line.match(/x\s*(\d+)/i);
+        const qty = qtyMatch ? Math.max(1, Number(qtyMatch[1])) : 1;
+
+        if (codeMatch) {
+          const item = items.find(it => it.code === codeMatch[1]);
+          if (item) {
+            const sizeMatch = line.match(/\(([^)]+)\)/);
+            if (sizeMatch && Array.isArray(item.variants)) {
+              const v = item.variants.find(vr => vr.label.toLowerCase() === sizeMatch[1].toLowerCase());
+              if (v) {
+                for (let k = 0; k < qty; k++) addVariantToBill(item.id, v);
+                matchedItemsCount++;
+                return;
+              }
+            }
+            for (let k = 0; k < qty; k++) addBillItem(item.id);
+            matchedItemsCount++;
+            return;
+          }
+        }
+
+        const cleanItemText = line.replace(/x\s*\d+.*/i, "").replace(/=.*$/, "").trim().toLowerCase();
+        if (cleanItemText.length >= 3) {
+          const byName = items.find(it => cleanItemText.includes(it.name.toLowerCase()));
+          if (byName) {
+            for (let k = 0; k < qty; k++) addBillItem(byName.id);
+            matchedItemsCount++;
+          }
+        }
+      });
+
+      document.getElementById("orderType").value = "Delivery (Free Upto 3km)";
+      document.getElementById("tableNumber").value = "No Table";
+      if (foundPhone) document.getElementById("cMobile").value = foundPhone;
+      const displayCust = [foundName || "WhatsApp Customer", foundAddress ? `Address: ${foundAddress}` : ""].filter(Boolean).join(" | ");
+      document.getElementById("cName").value = displayCust;
+
+      toggleWhatsappImportModal();
+      alert(matchedItemsCount > 0
+        ? `WhatsApp Delivery Order loaded (${matchedItemsCount} item line(s)) with customer details!`
+        : "Customer details loaded! Please select any remaining menu items manually.");
     }
 
     /* MANAGER LIVE WAITER & TABLE QR ORDER QUEUE HANDLING */
@@ -2663,9 +2991,10 @@
         const payTag = tq.paymentMethod || "Cash";
         const payClass = payTag === "Card" ? "pill-card" : (payTag === "Online" ? "pill-online" : "pill-paid");
         const isWaiter = tq.sourceType === "WAITER";
+        const isWa = tq.sourceType === "WHATSAPP";
         const sourceBadge = isWaiter
           ? `<span class="status-pill pill-waiter">WAITER: ${String(tq.waiterName || "Staff").toUpperCase()}</span>`
-          : `<span class="status-pill pill-card">QR MENU</span>`;
+          : (isWa ? `<span class="status-pill pill-paid">WHATSAPP ORDER</span>` : `<span class="status-pill pill-card">QR MENU</span>`);
 
         const div = document.createElement("div");
         div.className = "qr-queue-item" + (isWaiter ? " waiter-source" : "");
@@ -2697,6 +3026,7 @@
       if (idx === -1) return;
       const tq = tableOrderQueue[idx];
 
+      isCloudSyncLocked = true;
       if (!dismissedOrderIds.includes(queueId)) {
         dismissedOrderIds.push(queueId);
       }
@@ -2744,6 +3074,7 @@
 
     async function dismissTableOrder(queueId) {
       if (!confirm("Remove this order from queue?")) return;
+      isCloudSyncLocked = true;
       if (!dismissedOrderIds.includes(queueId)) {
         dismissedOrderIds.push(queueId);
       }
@@ -3018,7 +3349,7 @@
       }
     }
 
-    function applyQuickPriceUpdate() {
+    async function applyQuickPriceUpdate() {
       if (role !== "ADMIN") return;
       const statusEl = document.getElementById("qpStatusMsg");
       const newPrice = Number(document.getElementById("qpNewPrice").value);
@@ -3048,7 +3379,7 @@
         statusEl.textContent = `Updated [${quickMatchedItem.code}] ${quickMatchedItem.name} price to PKR ${newPrice}!`;
       }
 
-      syncStore();
+      await syncStore();
       renderMenu();
       lookupQuickPriceItem();
     }
@@ -3065,7 +3396,7 @@
       document.getElementById("forgotMsg").textContent = "";
     }
 
-    function recoverCredentials() {
+    async function recoverCredentials() {
       const enteredPin = document.getElementById("recoveryPinInput").value.trim();
       const currentUsername = document.getElementById("resetCurrentUsername").value.trim().toLowerCase();
       const newUsername = document.getElementById("resetNewUsername").value.trim();
@@ -3127,7 +3458,7 @@
         auth[targetRole] = newPass;
       }
 
-      syncStore();
+      await syncStore();
 
       const updatedUserDisplay = auth[targetRole + "_USER"];
       document.getElementById("recoveryPinInput").value = "";
@@ -3164,12 +3495,12 @@
       });
     }
 
-    function clearLoginLogs() {
+    async function clearLoginLogs() {
       if (role !== "ADMIN") return;
       if (!confirm("Clear all Admin, Cashier, and Waiter login history records?")) return;
       loginHistoryLogs = [];
-      syncStore();
       renderLoginHistory();
+      await syncStore();
     }
 
     async function loginUser() {
@@ -3220,7 +3551,7 @@
       if (loginHistoryLogs.length > 120) {
         loginHistoryLogs = loginHistoryLogs.slice(0, 120);
       }
-      syncStore();
+      await syncStore();
 
       if (cloudPollTimer) clearInterval(cloudPollTimer);
       if (cloudBaseUrl) {
@@ -3253,6 +3584,7 @@
       renderMenu();
       renderBill();
       renderMetrics();
+      renderLiveWaiterCalls();
       renderLiveTableOrders();
       if (isAdmin) {
         renderExpenses();
@@ -3302,7 +3634,7 @@
     }
 
     /* EXPENSES & PURCHASES MANAGEMENT */
-    function addExpenseItem() {
+    async function addExpenseItem() {
       if (role !== "ADMIN") return;
       const title = document.getElementById("expTitle").value.trim();
       const category = document.getElementById("expCategory").value;
@@ -3315,8 +3647,9 @@
         return;
       }
 
+      isCloudSyncLocked = true;
       expensesList.unshift({
-        id: Date.now(),
+        id: "EXP-" + Date.now() + "-" + Math.floor(Math.random() * 1000),
         title,
         category,
         amount,
@@ -3328,16 +3661,18 @@
       document.getElementById("expAmount").value = "";
       document.getElementById("expNote").value = "";
 
-      syncStore();
       renderExpenses();
+      await syncStore();
     }
 
-    function removeExpenseItem(id) {
+    async function removeExpenseItem(id) {
       if (role !== "ADMIN") return;
-      if (!confirm("Delete this expense record?")) return;
-      expensesList = expensesList.filter(e => e.id !== id);
-      syncStore();
+      if (!confirm("Delete this expense record permanently?")) return;
+      isCloudSyncLocked = true;
+      const targetIdStr = String(id);
+      expensesList = expensesList.filter(e => String(e.id) !== targetIdStr);
       renderExpenses();
+      await syncStore();
     }
 
     function renderExpenses() {
@@ -3388,6 +3723,7 @@
       }
 
       expensesList.forEach(exp => {
+        const safeId = String(exp.id).replace(/'/g, "\\'");
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${exp.date}</td>
@@ -3395,14 +3731,14 @@
           <td>${exp.category}</td>
           <td>${exp.note}</td>
           <td style="color:var(--danger); font-weight:700;">PKR ${Number(exp.amount).toFixed(2)}</td>
-          <td><button class="btn-red btn-sm" onclick="removeExpenseItem(${exp.id})">Delete</button></td>
+          <td><button class="btn-red btn-sm" onclick="removeExpenseItem('${safeId}')">Delete</button></td>
         `;
         tbody.appendChild(tr);
       });
     }
 
     /* SETTINGS: USERNAMES, PASSWORDS & RECOVERY PIN */
-    function savePasswords() {
+    async function savePasswords() {
       if (role !== "ADMIN") return;
       const au = document.getElementById("updAdminUser").value.trim();
       const cu = document.getElementById("updCashierUser").value.trim();
@@ -3436,7 +3772,7 @@
       if (c) auth.CASHIER = c;
       if (w) auth.WAITER = w;
       if (pin) auth.RECOVERY_PIN = pin;
-      syncStore();
+      await syncStore();
 
       document.getElementById("updAdminUser").value = "";
       document.getElementById("updCashierUser").value = "";
@@ -3453,7 +3789,7 @@
     }
 
     /* STAFF MANAGEMENT */
-    function addStaffMember() {
+    async function addStaffMember() {
       if (role !== "ADMIN") return;
       const name = document.getElementById("stName").value.trim();
       const stRole = document.getElementById("stRole").value;
@@ -3480,48 +3816,48 @@
       document.getElementById("stPhone").value = "";
       document.getElementById("stSalary").value = "";
 
-      syncStore();
       renderStaff();
       renderExpenses();
+      await syncStore();
     }
 
-    function toggleStaffPaid(id) {
+    async function toggleStaffPaid(id) {
       if (role !== "ADMIN") return;
       const member = staffList.find(s => s.id === id);
       if (!member) return;
       member.paid = !member.paid;
-      syncStore();
       renderStaff();
       renderExpenses();
+      await syncStore();
     }
 
-    function toggleStaffSuspend(id) {
+    async function toggleStaffSuspend(id) {
       if (role !== "ADMIN") return;
       const member = staffList.find(s => s.id === id);
       if (!member) return;
       member.suspended = !member.suspended;
-      syncStore();
       renderStaff();
+      await syncStore();
     }
 
-    function removeStaffMember(id) {
+    async function removeStaffMember(id) {
       if (role !== "ADMIN") return;
       const member = staffList.find(s => s.id === id);
       if (!member) return;
       if (!confirm(`Remove ${member.name} from staff list?`)) return;
       staffList = staffList.filter(s => s.id !== id);
-      syncStore();
       renderStaff();
       renderExpenses();
+      await syncStore();
     }
 
-    function resetMonthlySalaries() {
+    async function resetMonthlySalaries() {
       if (role !== "ADMIN") return;
       if (!confirm("Mark all staff salaries as UNPAID for the new month?")) return;
       staffList.forEach(s => { s.paid = false; });
-      syncStore();
       renderStaff();
       renderExpenses();
+      await syncStore();
     }
 
     function renderStaff() {
@@ -3687,7 +4023,7 @@
       renderBill();
     }
 
-    function upsertMenuItem() {
+    async function upsertMenuItem() {
       if (role !== "ADMIN") return;
       const name = document.getElementById("mName").value.trim();
       const category = document.getElementById("mCat").value.trim() || "General";
@@ -3712,10 +4048,10 @@
       document.getElementById("mCat").value = "";
       document.getElementById("mPrice").value = "";
 
-      syncStore();
       renderCategories();
       renderMenu();
       renderMetrics();
+      await syncStore();
       alert("Menu item saved & synced!");
     }
 
@@ -3785,6 +4121,7 @@
         return;
       }
 
+      isCloudSyncLocked = true;
       if (cloudBaseUrl && !skipCloudPull) {
         await pullFromCloud(true);
       }
@@ -4224,15 +4561,19 @@
       a.click();
     }
 
-    function wipeSalesData() {
+    async function wipeSalesData() {
       if (role !== "ADMIN") return;
-      if (!confirm("Reset menu, expenses, order sequence (#000), and sales records on ALL synced devices?")) return;
+      if (!confirm("Reset POS sales, order numbers (#000), and Expenses records permanently? (Staff list & salaries will NOT be deleted)")) return;
+
+      isCloudSyncLocked = true;
       localStorage.removeItem(DB.MENU);
       localStorage.removeItem(DB.SALES);
       localStorage.removeItem(DB.ORDER_SEQ);
       localStorage.removeItem(DB.EXPENSES);
       localStorage.removeItem(DB.TABLE_QUEUE);
+      localStorage.removeItem(DB.WAITER_CALLS);
       localStorage.removeItem(DB.DISMISSED_IDS);
+
       items = starterMenu.map(item => ({
         ...item,
         variants: item.variants ? item.variants.map(v => ({ ...v })) : undefined
@@ -4240,6 +4581,7 @@
       orders = [];
       expensesList = [];
       tableOrderQueue = [];
+      waiterCallQueue = [];
       dismissedOrderIds = [];
       orderCounter = 0;
       bill = [];
@@ -4247,6 +4589,7 @@
       latestCounterHtml = "";
       latestKitchenKotHtml = "";
       latestPeriodText = "";
+
       document.getElementById("periodSettlementBox").textContent = "Select Weekly or Monthly Settlement to view full Cash/Card/Online breakdown, Total Discounts & Net Profit after Salary/Expenses.";
       document.getElementById("invoiceContainer").innerHTML = `
         <div class="invoice-banner">
@@ -4261,13 +4604,22 @@
         </div>
         <p style="text-align:center; color:#475569; margin:12px 0; font-size:10px;">No bill generated yet.</p>
       `;
-      syncStore();
+
       renderCategories();
       renderMenu();
       renderBill();
       renderMetrics();
       renderExpenses();
+      renderLiveWaiterCalls();
       renderLiveTableOrders();
+
+      await syncStore();
+
+      const resetMsg = document.getElementById("resetStatusMsg");
+      if (resetMsg) {
+        resetMsg.style.color = "var(--brand)";
+        resetMsg.textContent = "POS & Expenses data permanently cleared! (Staff records preserved)";
+      }
     }
 
     updateDualPrintBadge();
