@@ -163,29 +163,6 @@
       color: #ffffff !important;
     }
 
-    .biometric-login-btn {
-      width: 100%;
-      margin-top: 10px;
-      padding: 11px 14px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(37, 99, 235, 0.32));
-      border: 1.5px solid var(--info);
-      color: #e0f2fe;
-      font-size: 13px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .biometric-login-btn:hover {
-      background: rgba(56, 189, 248, 0.32);
-      color: #ffffff;
-    }
-
     .dev-credit-box {
       margin-top: 16px;
       padding-top: 12px;
@@ -335,7 +312,7 @@
     .sync-chip.offline {
       background: rgba(245, 158, 11, 0.15);
       color: var(--accent);
-      border-color: rgba(245, 158, 11, 0.35);
+      border: 1px solid rgba(245, 158, 11, 0.35);
     }
 
     .role-chip {
@@ -1163,7 +1140,7 @@
             <option value="Need Cutlery / Napkins">Cutlery / Tissue (چمچ / ٹشو)</option>
             <option value="Request Table Bill">Bring Bill (بل لے آئیں)</option>
           </select>
-          <button id="callWaiterBtn" class="btn-red" onclick="triggerWaiterCallAlert()">🔔 Call Waiter Now</button>
+          <button id="callWaiterBtn" class="btn-red" onclick="triggerWaiterCallAlert()">Call Waiter Now</button>
         </div>
       </div>
 
@@ -1345,14 +1322,6 @@
         </div>
       </div>
 
-      <!-- FINGERPRINT & FACE UNLOCK BUTTON -->
-      <button type="button" id="biometricLoginBtn" class="biometric-login-btn" onclick="loginWithBiometric()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <path d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
-        </svg>
-        <span>Fingerprint / Face Unlock Login</span>
-      </button>
-
       <div id="loginErr" class="err-text" style="margin-top:8px; text-align:center;"></div>
 
       <div class="dev-credit-box">
@@ -1409,7 +1378,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>Staff</span>
         </button>
-        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Security PIN/Biometric, Dual Printers, Counter & Table QR, Quick Price Update & Reports">
+        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Security PIN, Dual Printers, Counter & Table QR, Quick Price Update & Reports">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Settings</span>
         </button>
@@ -1457,7 +1426,7 @@
         <!-- LIVE WAITER CALL ALERTS -->
         <div id="liveWaiterCallsBox" class="box" style="border-color: var(--danger); display:none;">
           <div class="box-head">
-            <h2 style="color:var(--danger);">🔔 Live Table Waiter Call Alerts</h2>
+            <h2 style="color:var(--danger);">Live Table Waiter Call Alerts</h2>
             <span id="liveWaiterCallCount" class="live-badge-pulse">0 Active Calls</span>
           </div>
           <div id="liveWaiterCallsList"></div>
@@ -1980,34 +1949,20 @@
 
           <!-- RIGHT COLUMN OF SETTINGS -->
           <div>
-            <!-- LOGIN SECURITY: 4-DIGIT PIN, BIOMETRIC (FINGERPRINT / FACE) & PASSWORDS -->
+            <!-- LOGIN SECURITY: 4-DIGIT PIN & PASSWORDS -->
             <div class="box" style="border-color: var(--accent);">
               <div class="box-head">
-                <h2>Login Security: 4-Digit PIN, Fingerprint/Face &amp; Passwords</h2>
+                <h2>Login Security: 4-Digit PIN &amp; Passwords</h2>
               </div>
 
-              <div class="row-2">
-                <div>
-                  <label for="loginModeSettingSelect" style="color:var(--brand); font-weight:700;">Active Login System Mode</label>
-                  <select id="loginModeSettingSelect" onchange="saveLoginSecurityMode()">
-                    <option value="BOTH">Both (Password &amp; 4-Digit PIN)</option>
-                    <option value="PIN_ONLY">4-Digit PIN Only (Direct Unlock)</option>
-                    <option value="PASSWORD_ONLY">Username &amp; Password Only</option>
-                  </select>
-                </div>
-                <div>
-                  <label for="biometricRoleSelect" style="color:var(--info); font-weight:700;">Fingerprint / Face Unlock Device Setup</label>
-                  <div class="btn-group">
-                    <select id="biometricRoleSelect" style="width:auto; flex:1; margin:0;">
-                      <option value="ADMIN">Admin</option>
-                      <option value="CASHIER">Cashier</option>
-                      <option value="WAITER">Waiter</option>
-                    </select>
-                    <button type="button" class="btn-sky" onclick="registerBiometricDevice()">Register Finger / Face</button>
-                  </div>
-                </div>
+              <div>
+                <label for="loginModeSettingSelect" style="color:var(--brand); font-weight:700;">Active Login System Mode</label>
+                <select id="loginModeSettingSelect" onchange="saveLoginSecurityMode()">
+                  <option value="BOTH">Both (Password &amp; 4-Digit PIN)</option>
+                  <option value="PIN_ONLY">4-Digit PIN Only (Direct Unlock)</option>
+                  <option value="PASSWORD_ONLY">Username &amp; Password Only</option>
+                </select>
               </div>
-              <div id="biometricStatusMsg" class="ok-text" style="margin-bottom:8px;"></div>
 
               <label style="color:var(--accent); font-weight:700; margin-top:4px;">4-Digit Quick Login PINs (Default: Admin 1111 | Cashier 2222 | Waiter 3333)</label>
               <div class="row-3">
@@ -2180,8 +2135,7 @@
       TABLE_QUEUE: "ahb_pos_table_queue_v4",
       WAITER_CALLS: "ahb_pos_waiter_calls_v4",
       DISMISSED_IDS: "ahb_pos_dismissed_ids_v4",
-      PERIPHERALS: "ahb_pos_peripherals_v4",
-      BIOMETRIC: "ahb_pos_biometric_v4"
+      PERIPHERALS: "ahb_pos_peripherals_v4"
     };
 
     const DEFAULT_CLOUD_URL = "";
@@ -2338,8 +2292,6 @@
     if (!auth.LOGIN_MODE) auth.LOGIN_MODE = "BOTH";
     if (!auth.RECOVERY_PIN) auth.RECOVERY_PIN = "7860";
 
-    let biometricData = JSON.parse(localStorage.getItem(DB.BIOMETRIC)) || null;
-
     let items = JSON.parse(localStorage.getItem(DB.MENU)) || starterMenu;
     let orders = JSON.parse(localStorage.getItem(DB.SALES)) || [];
     let orderCounter = localStorage.getItem(DB.ORDER_SEQ) !== null ? Number(localStorage.getItem(DB.ORDER_SEQ)) : 0;
@@ -2477,109 +2429,6 @@
       const usernameForRole = auth[matchedRole + "_USER"] || matchedRole.toLowerCase();
       document.getElementById("quickPinInput").value = "";
       await completeUserSessionLogin(matchedRole, usernameForRole, "4-Digit PIN");
-    }
-
-    /* BIOMETRIC (FINGERPRINT / FACE UNLOCK) REGISTRATION & LOGIN */
-    function bufferToBase64(buf) {
-      return btoa(String.fromCharCode(...new Uint8Array(buf)));
-    }
-
-    function base64ToBuffer(b64) {
-      const bin = atob(b64);
-      const bytes = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-      return bytes.buffer;
-    }
-
-    async function registerBiometricDevice() {
-      if (role !== "ADMIN") return;
-      const msg = document.getElementById("biometricStatusMsg");
-      const targetRole = document.getElementById("biometricRoleSelect").value || "ADMIN";
-
-      if (!window.PublicKeyCredential) {
-        msg.style.color = "var(--danger)";
-        msg.textContent = "Biometric sensor / Passkey API is not supported in this browser or requires HTTPS/localhost.";
-        return;
-      }
-
-      try {
-        const challenge = new Uint8Array(32);
-        window.crypto.getRandomValues(challenge);
-        const userId = new Uint8Array(16);
-        window.crypto.getRandomValues(userId);
-
-        const cred = await navigator.credentials.create({
-          publicKey: {
-            challenge,
-            rp: { name: "Arham Hunger Box POS" },
-            user: {
-              id: userId,
-              name: auth[targetRole + "_USER"] || targetRole.toLowerCase(),
-              displayName: `AHB ${targetRole}`
-            },
-            pubKeyCredParams: [
-              { type: "public-key", alg: -7 },
-              { type: "public-key", alg: -257 }
-            ],
-            authenticatorSelection: {
-              authenticatorAttachment: "platform",
-              userVerification: "required"
-            },
-            timeout: 60000
-          }
-        });
-
-        biometricData = {
-          credentialId: bufferToBase64(cred.rawId),
-          role: targetRole,
-          username: auth[targetRole + "_USER"] || targetRole.toLowerCase()
-        };
-        localStorage.setItem(DB.BIOMETRIC, JSON.stringify(biometricData));
-
-        msg.style.color = "var(--brand)";
-        msg.textContent = `Fingerprint / Face Unlock registered on this device for ${targetRole} (${biometricData.username})!`;
-      } catch (err) {
-        msg.style.color = "var(--danger)";
-        msg.textContent = "Biometric setup cancelled or unavailable (" + err.message + ").";
-      }
-    }
-
-    async function loginWithBiometric() {
-      const err = document.getElementById("loginErr");
-      if (!window.PublicKeyCredential) {
-        err.textContent = "Fingerprint / Face sensor not supported in this browser.";
-        return;
-      }
-      if (!biometricData || !biometricData.credentialId) {
-        err.textContent = "No Fingerprint/Face registered on this device yet. Login & register in Settings.";
-        return;
-      }
-
-      try {
-        const challenge = new Uint8Array(32);
-        window.crypto.getRandomValues(challenge);
-
-        await navigator.credentials.get({
-          publicKey: {
-            challenge,
-            allowCredentials: [{
-              type: "public-key",
-              id: base64ToBuffer(biometricData.credentialId)
-            }],
-            userVerification: "required",
-            timeout: 60000
-          }
-        });
-
-        if (cloudBaseUrl) {
-          await pullFromCloud(true);
-        }
-        const targetRole = biometricData.role || "ADMIN";
-        const targetUser = auth[targetRole + "_USER"] || biometricData.username || "admin";
-        await completeUserSessionLogin(targetRole, targetUser, "Fingerprint / Face");
-      } catch (e) {
-        err.textContent = "Fingerprint / Face verification failed or cancelled.";
-      }
     }
 
     function playNotificationBeep() {
@@ -2895,7 +2744,7 @@
         waiterCallQueue.unshift(newCall);
         saveLocalCache();
         await pushToCloud();
-        alert(`🔔 Alert Sent! A waiter is coming to ${activeCustomerTable} (${reason}).`);
+        alert(`Alert Sent! A waiter is coming to ${activeCustomerTable} (${reason}).`);
       } finally {
         if (btn) btn.disabled = false;
       }
@@ -2921,7 +2770,7 @@
         div.className = "qr-queue-item call-alert-source";
         div.innerHTML = `
           <div>
-            <strong style="color:var(--danger); font-size:14px;">🔔 ${c.tableNumber}</strong> •
+            <strong style="color:var(--danger); font-size:14px;">${c.tableNumber}</strong> •
             <b>${c.reason}</b> • <small>${c.createdAt}</small>
           </div>
           <button class="btn-brand btn-sm" onclick="acknowledgeWaiterCall('${c.id}')">Attend / Done</button>
@@ -2950,7 +2799,7 @@
         div.className = "qr-queue-item call-alert-source";
         div.innerHTML = `
           <div>
-            <strong style="color:var(--danger); font-size:14px;">🔔 ${c.tableNumber}</strong> •
+            <strong style="color:var(--danger); font-size:14px;">${c.tableNumber}</strong> •
             <b>${c.reason}</b> • <small>${c.createdAt}</small>
           </div>
           <button class="btn-brand btn-sm" onclick="acknowledgeWaiterCall('${c.id}')">Mark Attended</button>
