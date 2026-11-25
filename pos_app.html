@@ -2139,11 +2139,11 @@
                 <h2>Sales Export & POS/Expenses Reset</h2>
               </div>
               <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-                <strong>Reset POS &amp; Expenses Data</strong> clears only POS sales, order numbers (#000), and Expenses records permanently. <strong>Staff records &amp; salaries remain safe.</strong>
+                <strong>Reset POS &amp; Expenses Data</strong> clears all POS sales, Today's Orders, Order Type Analytics, order numbers (#000), and Expenses records permanently. <strong>Staff records &amp; salaries remain safe.</strong>
               </p>
               <div class="btn-group">
                 <button class="btn-outline" onclick="downloadSalesCsv()">Export Sales CSV</button>
-                <button class="btn-red" id="wipeBtn" onclick="wipeSalesData()">Reset POS &amp; Expenses Data</button>
+                <button type="button" class="btn-red" id="wipeBtn" onclick="wipeSalesData()">Reset POS &amp; Expenses Data</button>
               </div>
               <div id="resetStatusMsg" class="ok-text"></div>
             </div>
@@ -2495,7 +2495,11 @@
     }
 
     function getTodayIso() {
-      return new Date().toISOString().slice(0, 10);
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
     }
 
     function updateOrderBadge() {
@@ -2551,7 +2555,7 @@
       return Array.from(map.values());
     }
 
-    async function pushToCloud() {
+    async function pushToCloud(forceOverwrite = false) {
       if (!cloudBaseUrl) {
         updateCloudBadge("Local Mode", false);
         return;
@@ -2560,28 +2564,30 @@
       try {
         updateCloudBadge("Syncing...", true);
 
-        try {
-          const checkRes = await fetch(`${cloudBaseUrl}/ahb_pos_data.json?t=${Date.now()}`, { cache: "no-store" });
-          if (checkRes.ok) {
-            const existingRemote = await checkRes.json();
-            if (existingRemote && Array.isArray(existingRemote.orders)) {
-              orders = mergeOrdersByUniqueKey(orders, existingRemote.orders);
+        if (!forceOverwrite) {
+          try {
+            const checkRes = await fetch(`${cloudBaseUrl}/ahb_pos_data.json?t=${Date.now()}`, { cache: "no-store" });
+            if (checkRes.ok) {
+              const existingRemote = await checkRes.json();
+              if (existingRemote && Array.isArray(existingRemote.orders)) {
+                orders = mergeOrdersByUniqueKey(orders, existingRemote.orders);
+              }
+              if (existingRemote && typeof existingRemote.orderCounter === "number" && existingRemote.orderCounter > orderCounter) {
+                orderCounter = existingRemote.orderCounter;
+              }
+              if (existingRemote && Array.isArray(existingRemote.tableOrderQueue)) {
+                const mergedQ = [...tableOrderQueue];
+                existingRemote.tableOrderQueue.forEach(rq => {
+                  if (!dismissedOrderIds.includes(rq.id) && !mergedQ.some(lq => lq.id === rq.id)) {
+                    mergedQ.push(rq);
+                  }
+                });
+                tableOrderQueue = mergedQ;
+              }
+              saveLocalCache();
             }
-            if (existingRemote && typeof existingRemote.orderCounter === "number" && existingRemote.orderCounter > orderCounter) {
-              orderCounter = existingRemote.orderCounter;
-            }
-            if (existingRemote && Array.isArray(existingRemote.tableOrderQueue)) {
-              const mergedQ = [...tableOrderQueue];
-              existingRemote.tableOrderQueue.forEach(rq => {
-                if (!dismissedOrderIds.includes(rq.id) && !mergedQ.some(lq => lq.id === rq.id)) {
-                  mergedQ.push(rq);
-                }
-              });
-              tableOrderQueue = mergedQ;
-            }
-            saveLocalCache();
-          }
-        } catch (e) {}
+          } catch (e) {}
+        }
 
         const cleanQueue = tableOrderQueue.filter(q => !dismissedOrderIds.includes(q.id));
         const cleanCalls = waiterCallQueue.filter(c => !dismissedOrderIds.includes(c.id));
@@ -2596,6 +2602,7 @@
           tableOrderQueue: cleanQueue,
           waiterCallQueue: cleanCalls,
           dismissedOrderIds: dismissedOrderIds.slice(-300),
+          resetEpoch: forceOverwrite ? Date.now() : undefined,
           updatedAt: Date.now()
         };
         const res = await fetch(`${cloudBaseUrl}/ahb_pos_data.json`, {
@@ -2610,7 +2617,7 @@
       } catch (err) {
         updateCloudBadge("Sync Error", false);
       } finally {
-        setTimeout(() => { isCloudSyncLocked = false; }, 600);
+        setTimeout(() => { isCloudSyncLocked = false; }, 1000);
       }
     }
 
@@ -2628,7 +2635,7 @@
         if (silent && isCloudSyncLocked) return;
 
         if (!data) {
-          await pushToCloud();
+          await pushToCloud(false);
           if (!silent) {
             const msg = document.getElementById("cloudMsg");
             if (msg) msg.textContent = "Connected! Initial data uploaded to Cloud.";
@@ -2638,10 +2645,13 @@
 
         if (Array.isArray(data.items) && data.items.length) items = data.items;
         if (Array.isArray(data.orders)) {
-          orders = mergeOrdersByUniqueKey(orders, data.orders);
+          orders = data.orders.length === 0 ? [] : mergeOrdersByUniqueKey(orders, data.orders);
+        } else if (data.resetEpoch) {
+          orders = [];
         }
-        if (typeof data.orderCounter === "number" && data.orderCounter >= orderCounter) {
-          orderCounter = data.orderCounter;
+
+        if (typeof data.orderCounter === "number") {
+          orderCounter = data.orderCounter === 0 ? 0 : Math.max(orderCounter, data.orderCounter);
         }
         if (data.auth) {
           auth = {
@@ -2661,7 +2671,7 @@
         }
         if (Array.isArray(data.staffList)) staffList = data.staffList;
         if (Array.isArray(data.loginHistoryLogs)) loginHistoryLogs = data.loginHistoryLogs;
-        if (Array.isArray(data.expensesList)) expensesList = data.expensesList;
+        expensesList = Array.isArray(data.expensesList) ? data.expensesList : [];
 
         const cloudDismissed = Array.isArray(data.dismissedOrderIds) ? data.dismissedOrderIds : [];
         dismissedOrderIds = [...new Set([...dismissedOrderIds, ...cloudDismissed])].slice(-300);
@@ -2737,10 +2747,10 @@
       pullFromCloud(false);
     }
 
-    async function syncStore() {
+    async function syncStore(forceOverwrite = false) {
       isCloudSyncLocked = true;
       saveLocalCache();
-      await pushToCloud();
+      await pushToCloud(forceOverwrite);
     }
 
     function switchTheme() {
@@ -3038,7 +3048,7 @@
         };
         waiterCallQueue.unshift(newCall);
         saveLocalCache();
-        await pushToCloud();
+        await pushToCloud(false);
         alert(`Alert Sent! A waiter is coming to ${activeCustomerTable} (${reason}).`);
       } finally {
         if (btn) btn.disabled = false;
@@ -3112,7 +3122,7 @@
       saveLocalCache();
       renderLiveWaiterCalls();
       renderWaiterMobileCalls();
-      await pushToCloud();
+      await pushToCloud(false);
     }
 
     function onWaiterTableChange() {
@@ -3349,7 +3359,7 @@
 
         tableOrderQueue.unshift(newTableOrder);
         saveLocalCache();
-        await pushToCloud();
+        await pushToCloud(false);
 
         if (viaWhatsapp) {
           const waLines = [
@@ -3564,7 +3574,7 @@
           printDualBillAndKot();
         }
       } else {
-        await pushToCloud();
+        await pushToCloud(false);
       }
     }
 
@@ -3577,7 +3587,7 @@
       tableOrderQueue = tableOrderQueue.filter(t => t.id !== queueId);
       renderLiveTableOrders();
       saveLocalCache();
-      await pushToCloud();
+      await pushToCloud(false);
     }
 
     /* COUNTER & TABLE PRO QR CODE GENERATOR */
@@ -3913,7 +3923,7 @@
         statusEl.textContent = `Updated [${quickMatchedItem.code}] ${quickMatchedItem.name} price to PKR ${newPrice}!`;
       }
 
-      await syncStore();
+      await syncStore(false);
       renderMenu();
       lookupQuickPriceItem();
     }
@@ -4013,7 +4023,7 @@
         auth[targetRole + "_PIN"] = newQuickPin;
       }
 
-      await syncStore();
+      await syncStore(false);
 
       const updatedUserDisplay = auth[targetRole + "_USER"];
       document.getElementById("recoveryPinInput").value = "";
@@ -4056,7 +4066,7 @@
       if (!confirm("Clear all Admin, Cashier, and Waiter login history records?")) return;
       loginHistoryLogs = [];
       renderLoginHistory();
-      await syncStore();
+      await syncStore(false);
     }
 
     function loginUser() {
@@ -4238,7 +4248,7 @@
       document.getElementById("expNote").value = "";
 
       renderExpenses();
-      await syncStore();
+      await syncStore(false);
     }
 
     async function removeExpenseItem(id) {
@@ -4248,7 +4258,7 @@
       const targetIdStr = String(id);
       expensesList = expensesList.filter(e => String(e.id) !== targetIdStr);
       renderExpenses();
-      await syncStore();
+      await syncStore(false);
     }
 
     function renderExpenses() {
@@ -4320,7 +4330,7 @@
       if (!sel) return;
       auth.LOGIN_MODE = sel.value || "BOTH";
       applyLoginScreenModeUI();
-      await syncStore();
+      await syncStore(false);
       const msg = document.getElementById("passMsg");
       if (msg) {
         msg.style.color = "var(--brand)";
@@ -4384,7 +4394,7 @@
       if (c) auth.CASHIER = c;
       if (w) auth.WAITER = w;
       if (pin) auth.RECOVERY_PIN = pin;
-      await syncStore();
+      await syncStore(false);
 
       document.getElementById("updAdminPin").value = "";
       document.getElementById("updCashierPin").value = "";
@@ -4431,7 +4441,7 @@
 
       renderStaff();
       renderExpenses();
-      await syncStore();
+      await syncStore(false);
     }
 
     async function toggleStaffPaid(id) {
@@ -4441,7 +4451,7 @@
       member.paid = !member.paid;
       renderStaff();
       renderExpenses();
-      await syncStore();
+      await syncStore(false);
     }
 
     async function toggleStaffSuspend(id) {
@@ -4450,7 +4460,7 @@
       if (!member) return;
       member.suspended = !member.suspended;
       renderStaff();
-      await syncStore();
+      await syncStore(false);
     }
 
     async function removeStaffMember(id) {
@@ -4461,7 +4471,7 @@
       staffList = staffList.filter(s => s.id !== id);
       renderStaff();
       renderExpenses();
-      await syncStore();
+      await syncStore(false);
     }
 
     async function resetMonthlySalaries() {
@@ -4470,7 +4480,7 @@
       staffList.forEach(s => { s.paid = false; });
       renderStaff();
       renderExpenses();
-      await syncStore();
+      await syncStore(false);
     }
 
     function renderStaff() {
@@ -4539,7 +4549,7 @@
       let cardCount = 0, cardRev = 0;
       let onlineCount = 0, onlineRev = 0;
 
-      orders.forEach(o => {
+      (orders || []).forEach(o => {
         const amt = Number(o.total || 0);
         const type = o.orderType || "Dine-In";
         const pay = o.paymentMethod || "Cash";
@@ -4567,22 +4577,22 @@
         }
       });
 
-      document.getElementById("countDineIn").textContent = dineInCount;
+      document.getElementById("countDineIn").textContent = String(dineInCount);
       document.getElementById("revDineIn").textContent = "PKR " + dineInRev.toFixed(2);
 
-      document.getElementById("countTakeaway").textContent = takeawayCount;
+      document.getElementById("countTakeaway").textContent = String(takeawayCount);
       document.getElementById("revTakeaway").textContent = "PKR " + takeawayRev.toFixed(2);
 
-      document.getElementById("countDelivery").textContent = deliveryCount;
+      document.getElementById("countDelivery").textContent = String(deliveryCount);
       document.getElementById("revDelivery").textContent = "PKR " + deliveryRev.toFixed(2);
 
-      document.getElementById("countCash").textContent = cashCount;
+      document.getElementById("countCash").textContent = String(cashCount);
       document.getElementById("revCash").textContent = "PKR " + cashRev.toFixed(2);
 
-      document.getElementById("countCard").textContent = cardCount;
+      document.getElementById("countCard").textContent = String(cardCount);
       document.getElementById("revCard").textContent = "PKR " + cardRev.toFixed(2);
 
-      document.getElementById("countOnline").textContent = onlineCount;
+      document.getElementById("countOnline").textContent = String(onlineCount);
       document.getElementById("revOnline").textContent = "PKR " + onlineRev.toFixed(2);
     }
 
@@ -4720,7 +4730,7 @@
       renderCategories();
       renderMenu();
       renderMetrics();
-      await syncStore();
+      await syncStore(false);
       alert("Menu item saved & synced!");
     }
 
@@ -4802,7 +4812,7 @@
       const mobile = document.getElementById("cMobile").value.trim() || "N/A";
       const c = calcBill();
       const now = new Date();
-      const dateIso = now.toISOString().slice(0, 10);
+      const dateIso = getTodayIso();
       const dateOnlyStr = now.toLocaleDateString();
       const timeOnlyStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
       const timeStr = `${dateOnlyStr} ${timeOnlyStr}`;
@@ -5032,7 +5042,7 @@
       if (role === "ADMIN") {
         renderExpenses();
       }
-      await pushToCloud();
+      await pushToCloud(false);
 
       if (peripheralSettings.printMode === "AUTO") {
         await dispatchDualSilentPrint(latestCounterHtml, latestKitchenKotHtml);
@@ -5057,7 +5067,7 @@
 
     function renderMetrics() {
       const today = getTodayIso();
-      const todayList = orders.filter(o => o.date === today);
+      const todayList = (orders || []).filter(o => o.date === today);
 
       const cashToday = todayList
         .filter(o => (o.paymentMethod || "Cash") === "Cash")
@@ -5140,9 +5150,11 @@
 
     async function wipeSalesData() {
       if (role !== "ADMIN") return;
-      if (!confirm("Reset POS sales, order numbers (#000), and Expenses records permanently? (Staff list & salaries will NOT be deleted)")) return;
+      if (!confirm("Reset POS sales, Today's Orders, Order Type Analytics, order numbers (#000), and Expenses records permanently? (Staff list & salaries will NOT be deleted)")) return;
 
       isCloudSyncLocked = true;
+
+      // Clear all POS, sales, analytics & expenses keys from LocalStorage
       localStorage.removeItem(DB.MENU);
       localStorage.removeItem(DB.SALES);
       localStorage.removeItem(DB.ORDER_SEQ);
@@ -5151,6 +5163,7 @@
       localStorage.removeItem(DB.WAITER_CALLS);
       localStorage.removeItem(DB.DISMISSED_IDS);
 
+      // Reset all in-memory state immediately
       items = starterMenu.map(item => ({
         ...item,
         variants: item.variants ? item.variants.map(v => ({ ...v })) : undefined
@@ -5165,9 +5178,18 @@
       latestReceiptText = "";
       latestCounterHtml = "";
       latestKitchenKotHtml = "";
+      latestOrderNo = null;
+      lastAlertCount = 0;
 
-      document.getElementById("invoiceSearchInput").value = "";
-      document.getElementById("invoiceLookupResultArea").style.display = "none";
+      // Clear Invoice search & receipt preview UI
+      const invSearch = document.getElementById("invoiceSearchInput");
+      if (invSearch) invSearch.value = "";
+      const invLookup = document.getElementById("invoiceLookupResultArea");
+      if (invLookup) {
+        invLookup.style.display = "none";
+        invLookup.innerHTML = "";
+      }
+
       document.getElementById("invoiceContainer").innerHTML = `
         <div class="invoice-banner">
           <div class="welcome-ahb-tag">${RESTAURANT_INFO.welcomeTag}</div>
@@ -5183,6 +5205,8 @@
         <p style="text-align:center; color:#475569; margin:12px 0; font-size:10px;">No bill generated yet.</p>
       `;
 
+      // Re-render all counters, analytics, expenses, and tables to 0 immediately
+      updateOrderBadge();
       renderCategories();
       renderMenu();
       renderBill();
@@ -5192,12 +5216,13 @@
       renderLiveTableOrders();
       renderOrderAnalytics();
 
-      await syncStore();
+      // Force overwrite Cloud so old orders do not come back on next sync
+      await syncStore(true);
 
       const resetMsg = document.getElementById("resetStatusMsg");
       if (resetMsg) {
         resetMsg.style.color = "var(--brand)";
-        resetMsg.textContent = "POS & Expenses data permanently cleared! (Staff records preserved)";
+        resetMsg.textContent = "All Orders, Today's Sales, Analytics & Expenses permanently deleted! (Staff records preserved)";
       }
     }
 
