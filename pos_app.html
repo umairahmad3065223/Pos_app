@@ -839,12 +839,25 @@
       margin-bottom: 5px;
     }
 
+    .welcome-ahb-tag {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      border-top: 1px dashed #000000;
+      border-bottom: 1px dashed #000000;
+      padding: 2px 0;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      color: #000000;
+    }
+
+    /* ENLARGED RECEIPT LOGO */
     .receipt-logo-box {
-      width: 34px;
-      height: 34px;
-      margin: 0 auto 4px;
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 5px;
       border-radius: 50%;
-      border: 1.5px solid #000000;
+      border: 2px solid #000000;
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -874,6 +887,17 @@
       line-height: 1.25;
     }
 
+    .order-hero-box {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 900;
+      border: 1.5px solid #000000;
+      padding: 4px 2px;
+      margin: 5px 0;
+      letter-spacing: 0.5px;
+      color: #000000;
+    }
+
     .invoice-meta-grid {
       border-bottom: 1px dashed #000000;
       padding-bottom: 5px;
@@ -893,16 +917,27 @@
       color: #000000;
       border-top: 1px dashed #000000;
       border-bottom: 1px dashed #000000;
-      padding: 3px 1px;
+      padding: 3px 2px;
       text-align: left;
       font-size: 9.5px;
+      font-weight: normal;
     }
 
     .invoice-table td {
       border-bottom: 1px dotted #cbd5e1;
-      padding: 3px 1px;
+      padding: 3px 2px;
       color: #000000;
       vertical-align: top;
+    }
+
+    /* NORMAL (UNBOLDED) QTY COLUMN */
+    .invoice-table th.qty-col,
+    .invoice-table td.qty-col {
+      text-align: center;
+      white-space: nowrap;
+      padding-left: 8px;
+      padding-right: 8px;
+      font-weight: normal;
     }
 
     .invoice-table .num { text-align: right; white-space: nowrap; }
@@ -949,20 +984,12 @@
       line-height: 1.35;
     }
 
-    .period-output {
+    .invoice-lookup-card {
       background: var(--panel-2);
       border: 1px solid var(--line);
       border-radius: 10px;
       padding: 12px;
-      margin-top: 12px;
-      font-size: 12px;
-    }
-
-    .period-output pre {
-      margin: 0 0 10px;
-      white-space: pre-wrap;
-      font-family: "Consolas", "Segoe UI", monospace;
-      color: var(--text);
+      margin-top: 10px;
     }
 
     .err-text { color: #fca5a5; font-size: 13px; min-height: 20px; margin-bottom: 8px; font-weight: 700; }
@@ -1011,12 +1038,12 @@
       }
 
       /* Mode 1: Single Thermal Bill Print */
-      body:not(.print-period-mode):not(.print-qr-mode) .dash-grid > div:first-child,
-      body:not(.print-period-mode):not(.print-qr-mode) .dash-grid > div:last-child > .box:not(#printableReceipt) {
+      body:not(.print-qr-mode) .dash-grid > div:first-child,
+      body:not(.print-qr-mode) .dash-grid > div:last-child > .box:not(#printableReceipt) {
         display: none !important;
       }
 
-      body:not(.print-period-mode):not(.print-qr-mode) #printableReceipt {
+      body:not(.print-qr-mode) #printableReceipt {
         display: block !important;
         position: static !important;
         width: 80mm !important;
@@ -1031,14 +1058,14 @@
         break-inside: avoid !important;
       }
 
-      body:not(.print-period-mode):not(.print-qr-mode) .thermal-preview-wrap {
+      body:not(.print-qr-mode) .thermal-preview-wrap {
         display: block !important;
         padding: 0 !important;
         margin: 0 !important;
         background: #ffffff !important;
       }
 
-      body:not(.print-period-mode):not(.print-qr-mode) .invoice-sheet {
+      body:not(.print-qr-mode) .invoice-sheet {
         display: block !important;
         border: none !important;
         border-radius: 0 !important;
@@ -1052,30 +1079,7 @@
         break-inside: avoid !important;
       }
 
-      /* Mode 2: Weekly / Monthly Settlement Print */
-      body.print-period-mode #sectionPOS {
-        display: none !important;
-      }
-      body.print-period-mode #sectionSETTINGS {
-        display: block !important;
-      }
-      body.print-period-mode .settings-grid > div:first-child,
-      body.print-period-mode .settings-grid > div:last-child > .box:not(:nth-child(4)) {
-        display: none !important;
-      }
-      body.print-period-mode #periodPrintArea {
-        display: block !important;
-        position: static !important;
-        width: 80mm !important;
-        background: #ffffff !important;
-        color: #000000 !important;
-        padding: 2mm !important;
-        margin: 0 !important;
-        border: none !important;
-        font-size: 9px !important;
-      }
-
-      /* Mode 3: Table / Counter QR Poster Print */
+      /* Mode 2: Table / Counter QR Poster Print */
       body.print-qr-mode #sectionPOS {
         display: none !important;
       }
@@ -1383,8 +1387,8 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>Staff</span>
         </button>
-        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Security PIN, Dual Printers, Counter & Table QR, Quick Price Update & Reports">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Invoice Lookup, Security PIN, Dual Printers & QR">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Settings</span>
         </button>
       </nav>
@@ -1567,7 +1571,7 @@
                 <thead>
                   <tr>
                     <th>Code / Item</th>
-                    <th>Qty</th>
+                    <th style="text-align:center; font-weight:normal;">Qty</th>
                     <th>Total</th>
                     <th></th>
                   </tr>
@@ -1607,8 +1611,9 @@
               <div class="thermal-preview-wrap">
                 <div id="invoiceContainer" class="invoice-sheet">
                   <div class="invoice-banner">
+                    <div class="welcome-ahb-tag">WELCOME TO AHB</div>
                     <div class="receipt-logo-box">
-                      <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:10px;&quot;>AHB</span>';" />
+                      <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;&quot;>AHB</span>';" />
                     </div>
                     <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
                     <div class="invoice-sub">
@@ -1983,6 +1988,26 @@
 
           <!-- RIGHT COLUMN OF SETTINGS -->
           <div>
+            <!-- SEARCH INVOICE BY INVOICE NUMBER (INSTANT LOOKUP) -->
+            <div class="box" style="border-color: var(--info);">
+              <div class="box-head">
+                <h2>Search Invoice by Invoice Number (انوائس نمبر تلاش کریں)</h2>
+              </div>
+              <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
+                Enter full Invoice # (e.g. <strong>INV-20261125-000</strong>) or Order # (e.g. <strong>000</strong>) — the full invoice details will appear automatically.
+              </p>
+              <div class="row-2">
+                <div>
+                  <label for="invoiceSearchInput" style="color:var(--info); font-weight:700;">Invoice Number / Order #</label>
+                  <input id="invoiceSearchInput" type="text" placeholder="Type Invoice # (e.g. INV-20261125-000 or 000)" oninput="lookupInvoiceByNumber()" />
+                </div>
+                <div style="display:flex; align-items:flex-end;">
+                  <button class="btn-sky" style="width:100%; margin-bottom:10px;" onclick="lookupInvoiceByNumber()">Find Invoice</button>
+                </div>
+              </div>
+              <div id="invoiceLookupResultArea" class="invoice-lookup-card" style="display:none;"></div>
+            </div>
+
             <!-- LOGIN SECURITY: 4-DIGIT PIN & PASSWORDS -->
             <div class="box" style="border-color: var(--accent);">
               <div class="box-head">
@@ -2108,25 +2133,6 @@
               <button class="btn-amber" onclick="upsertMenuItem()">Save Menu Item</button>
             </div>
 
-            <!-- WEEKLY & MONTHLY SALES BILL -->
-            <div class="box">
-              <div class="box-head">
-                <h2>Weekly & Monthly Sales Settlement Bill</h2>
-              </div>
-              <div class="btn-group">
-                <button class="btn-amber" onclick="generatePeriodSettlement('WEEKLY')">Weekly Settlement (7 Days)</button>
-                <button class="btn-brand" onclick="generatePeriodSettlement('MONTHLY')">Monthly Settlement (Month)</button>
-              </div>
-
-              <div id="periodPrintArea" class="period-output">
-                <pre id="periodSettlementBox">Select Weekly or Monthly Settlement to view full Cash/Card/Online breakdown, Total Discounts & Net Profit after Salary/Expenses.</pre>
-                <div class="btn-group no-print">
-                  <button class="btn-sky" onclick="printPeriodStatement()">Print Statement</button>
-                  <button class="btn-outline" onclick="savePeriodTxt()">Save Statement .TXT</button>
-                </div>
-              </div>
-            </div>
-
             <!-- SALES EXPORT & SYSTEM RESET (POS & EXPENSES ONLY) -->
             <div class="box" style="border-color: var(--danger);">
               <div class="box-head">
@@ -2150,6 +2156,7 @@
   <script>
     const RESTAURANT_INFO = {
       name: "ARHAM HUNGER BOX",
+      welcomeTag: "WELCOME TO AHB",
       addressLine1: "Al Madina Market, Basement Floor,",
       addressLine2: "Kheshgi Payan Chowk, District Nowshera",
       phone: "0301-5977178",
@@ -2300,6 +2307,13 @@
       return String(num).padStart(3, "0");
     }
 
+    function buildInvoiceNumber(nowObj, orderCode) {
+      const y = nowObj.getFullYear();
+      const m = String(nowObj.getMonth() + 1).padStart(2, "0");
+      const d = String(nowObj.getDate()).padStart(2, "0");
+      return `INV-${y}${m}${d}-${orderCode}`;
+    }
+
     const starterMenu = rawStarterMenu.map((item, idx) => ({
       ...item,
       id: idx + 1,
@@ -2365,8 +2379,6 @@
     let latestCounterHtml = "";
     let latestKitchenKotHtml = "";
     let latestOrderNo = null;
-    let latestPeriodText = "";
-    let latestPeriodType = "summary";
     let cloudPollTimer = null;
     let isCloudSyncLocked = false;
     let lastAlertCount = 0;
@@ -2431,7 +2443,6 @@
       }
     }
 
-    /* FIXED: Only digits allowed in PIN box; does NOT clear or misfire before clicking Login */
     function sanitizePinInput(inputEl) {
       inputEl.value = inputEl.value.replace(/\D/g, "").slice(0, 4);
       document.getElementById("loginErr").textContent = "";
@@ -2530,7 +2541,6 @@
       updateDualPrintBadge();
     }
 
-    /* MERGE HELPER SO MULTI-LAPTOP ORDERS NEVER OVERWRITE EACH OTHER */
     function mergeOrdersByUniqueKey(localArr, remoteArr) {
       const map = new Map();
       [...(remoteArr || []), ...(localArr || [])].forEach(o => {
@@ -2550,7 +2560,6 @@
       try {
         updateCloudBadge("Syncing...", true);
 
-        // Fetch latest cloud orders first so another laptop's orders are merged safely
         try {
           const checkRes = await fetch(`${cloudBaseUrl}/ahb_pos_data.json?t=${Date.now()}`, { cache: "no-store" });
           if (checkRes.ok) {
@@ -2756,6 +2765,208 @@
       } else if (modeParam === "counter" || modeParam === "menu") {
         openCustomerPortal("Counter Direct", false);
       }
+    }
+
+    /* SEARCH INVOICE BY INVOICE NUMBER IN SETTINGS */
+    function lookupInvoiceByNumber() {
+      const q = (document.getElementById("invoiceSearchInput").value || "").trim().toLowerCase();
+      const resultBox = document.getElementById("invoiceLookupResultArea");
+      if (!resultBox) return;
+
+      if (!q) {
+        resultBox.style.display = "none";
+        resultBox.innerHTML = "";
+        return;
+      }
+
+      const found = [...orders].reverse().find(o => {
+        const inv = String(o.invoiceNumber || "").toLowerCase();
+        const ordNo = String(o.orderNumber || "").toLowerCase();
+        return inv === q || ordNo === q || inv.endsWith("-" + q) || inv.includes(q);
+      });
+
+      resultBox.style.display = "block";
+
+      if (!found) {
+        resultBox.innerHTML = `<div style="color:var(--danger); font-weight:700; font-size:12.5px;">No invoice found matching "${q}". (کوئی انوائس نہیں ملی)</div>`;
+        return;
+      }
+
+      const itemsList = Array.isArray(found.items) && found.items.length > 0
+        ? found.items.map(it => `
+            <tr>
+              <td>[${it.code || ""}] ${it.name}</td>
+              <td style="text-align:center; font-weight:normal;">${it.qty}</td>
+              <td style="text-align:right;">PKR ${Number(it.lineTotal || (it.unitPrice * it.qty) || 0).toFixed(2)}</td>
+            </tr>
+          `).join("")
+        : `<tr><td colspan="3" style="color:var(--muted); font-size:12px;">Item breakdown not saved on legacy record.</td></tr>`;
+
+      resultBox.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:8px;">
+          <div>
+            <strong style="color:var(--brand); font-size:14px;">${found.invoiceNumber || "INV-" + found.orderNumber}</strong>
+            <span class="order-tag" style="margin-left:6px;">Order #${found.orderNumber}</span>
+          </div>
+          <button class="btn-sky btn-sm" onclick="reprintFoundInvoice('${found.uid || found.orderNumber}')">Load &amp; Print Receipt</button>
+        </div>
+        <div style="font-size:12px; line-height:1.6; margin-bottom:8px;">
+          <div><strong>Date:</strong> ${found.dateOnly || found.date || "-"} &nbsp;|&nbsp; <strong>Time:</strong> ${found.timeOnly || found.timestamp || "-"}</div>
+          <div><strong>Customer:</strong> ${found.customer || "Walk-in"} &nbsp;|&nbsp; <strong>Mobile:</strong> ${found.mobile || "N/A"}</div>
+          <div><strong>Service:</strong> ${found.orderType || "Dine-In"} (${found.tableNumber || "No Table"}) &nbsp;|&nbsp; <strong>Payment:</strong> ${found.paymentMethod || "Cash"}</div>
+        </div>
+        <table style="margin-bottom:8px;">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th style="text-align:center; font-weight:normal;">Qty</th>
+              <th style="text-align:right;">Amount</th>
+            </tr>
+          </thead>
+          <tbody>${itemsList}</tbody>
+        </table>
+        <div class="totals-box" style="margin-bottom:0;">
+          <div><span>Subtotal</span><span>PKR ${Number(found.subtotal || found.total || 0).toFixed(2)}</span></div>
+          <div><span>Discount</span><span style="color:var(--danger);">PKR ${Number(found.discount || 0).toFixed(2)}</span></div>
+          <div><span>Tax</span><span>PKR ${Number(found.tax || 0).toFixed(2)}</span></div>
+          <div class="grand"><span>Total Paid (${found.paymentMethod || "Cash"})</span><span>PKR ${Number(found.total || 0).toFixed(2)}</span></div>
+        </div>
+      `;
+    }
+
+    function reprintFoundInvoice(uidOrOrderNo) {
+      const found = orders.find(o => o.uid === uidOrOrderNo || o.orderNumber === uidOrOrderNo);
+      if (!found) return;
+
+      const billedLines = Array.isArray(found.items) ? found.items : [];
+      const rowsHtml = billedLines.length
+        ? billedLines.map(item => `
+            <tr>
+              <td>[${item.code || ""}] ${item.name}</td>
+              <td class="qty-col">${item.qty}</td>
+              <td class="num">${Number(item.lineTotal || 0).toFixed(0)}</td>
+            </tr>
+          `).join("")
+        : `<tr><td colspan="3">Order #${found.orderNumber} Items</td></tr>`;
+
+      const tableLineHtml = (found.tableNumber && found.tableNumber !== "No Table") ? `<div><strong>Table:</strong> ${found.tableNumber}</div>` : "";
+      const dateOnlyStr = found.dateOnly || found.date || "";
+      const timeOnlyStr = found.timeOnly || found.timestamp || "";
+      const paymentMethod = found.paymentMethod || "Cash";
+      const invoiceNumber = found.invoiceNumber || `INV-${found.orderNumber}`;
+
+      latestCounterHtml = `
+        <div class="center line-dash">
+          <div class="welcome-tag">${RESTAURANT_INFO.welcomeTag}</div>
+          <div class="logo-mini">
+            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;&quot;>AHB</span>';" />
+          </div>
+          <div class="bold" style="font-size:14px;">${RESTAURANT_INFO.name}</div>
+          <div style="font-size:9.5px;">
+            ${RESTAURANT_INFO.addressLine1}<br />
+            ${RESTAURANT_INFO.addressLine2}
+          </div>
+        </div>
+
+        <div class="order-hero">ORDER #${found.orderNumber}</div>
+
+        <div class="line-dash" style="font-size:10px;">
+          <div><strong>Invoice #:</strong> ${invoiceNumber}</div>
+          <div><strong>Date:</strong> ${dateOnlyStr}</div>
+          <div><strong>Time:</strong> ${timeOnlyStr}</div>
+          <div><strong>Service:</strong> ${found.orderType || "Dine-In"}</div>
+          ${tableLineHtml}
+          <div><strong>Payment:</strong> ${paymentMethod}</div>
+          <div><strong>Customer:</strong> ${found.customer || "Walk-in"}</div>
+          <div><strong>Mobile:</strong> ${found.mobile || "N/A"}</div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th class="qty-col">Qty</th>
+              <th class="num">Amt</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+
+        <div style="border-top:1px dashed #000; padding-top:4px;">
+          <div class="row-flex"><span>Subtotal:</span><span>PKR ${Number(found.subtotal || found.total || 0).toFixed(2)}</span></div>
+          <div class="row-flex"><span>Discount:</span><span>PKR ${Number(found.discount || 0).toFixed(2)}</span></div>
+          <div class="row-flex"><span>Tax:</span><span>PKR ${Number(found.tax || 0).toFixed(2)}</span></div>
+          <div class="row-flex bold line-solid" style="font-size:12px;"><span>TOTAL (${paymentMethod.toUpperCase()}):</span><span>PKR ${Number(found.total || 0).toFixed(2)}</span></div>
+        </div>
+
+        <div class="center" style="margin-top:6px; font-size:9.5px;">
+          Thank you for your order!<br />
+          <strong>${RESTAURANT_INFO.deliveryNote}</strong><br />
+          Ph: <strong>${RESTAURANT_INFO.phone}</strong>
+          <div style="margin-top:4px; padding-top:3px; border-top:1px dotted #000; font-size:8.5px; font-weight:700;">
+            ${RESTAURANT_INFO.devCredit}<br />
+            ${RESTAURANT_INFO.devContact}
+          </div>
+        </div>
+      `;
+
+      document.getElementById("invoiceContainer").innerHTML = `
+        <div class="invoice-banner">
+          <div class="welcome-ahb-tag">${RESTAURANT_INFO.welcomeTag}</div>
+          <div class="receipt-logo-box">
+            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;&quot;>AHB</span>';" />
+          </div>
+          <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
+          <div class="invoice-sub">
+            ${RESTAURANT_INFO.addressLine1}<br />
+            ${RESTAURANT_INFO.addressLine2}
+          </div>
+        </div>
+
+        <div class="order-hero-box">ORDER #${found.orderNumber}</div>
+
+        <div class="invoice-meta-grid">
+          <div><strong>Invoice #:</strong> ${invoiceNumber}</div>
+          <div><strong>Date:</strong> ${dateOnlyStr}</div>
+          <div><strong>Time:</strong> ${timeOnlyStr}</div>
+          <div><strong>Service:</strong> ${found.orderType || "Dine-In"}</div>
+          ${tableLineHtml}
+          <div><strong>Payment:</strong> ${paymentMethod}</div>
+          <div><strong>Customer:</strong> ${found.customer || "Walk-in"}</div>
+          <div><strong>Mobile:</strong> ${found.mobile || "N/A"}</div>
+        </div>
+
+        <table class="invoice-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th class="qty-col">Qty</th>
+              <th class="num">Amt</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+
+        <div class="invoice-summary">
+          <div class="invoice-summary-row"><span>Subtotal:</span><span>PKR ${Number(found.subtotal || found.total || 0).toFixed(2)}</span></div>
+          <div class="invoice-summary-row"><span>Discount:</span><span>PKR ${Number(found.discount || 0).toFixed(2)}</span></div>
+          <div class="invoice-summary-row"><span>Tax:</span><span>PKR ${Number(found.tax || 0).toFixed(2)}</span></div>
+          <div class="invoice-summary-row grand-row"><span>TOTAL (${paymentMethod.toUpperCase()}):</span><span>PKR ${Number(found.total || 0).toFixed(2)}</span></div>
+        </div>
+
+        <div class="invoice-footer">
+          Thank you for your order!<br />
+          <strong>${RESTAURANT_INFO.deliveryNote}</strong><br />
+          Ph: <strong>${RESTAURANT_INFO.phone}</strong>
+          <div class="invoice-dev-credit">
+            ${RESTAURANT_INFO.devCredit}<br />
+            ${RESTAURANT_INFO.devContact}
+          </div>
+        </div>
+      `;
+
+      switchSection("POS");
+      dispatchDualSilentPrint(latestCounterHtml, "");
     }
 
     /* CUSTOMER PUBLIC & WAITER MOBILE ORDERING PORTAL */
@@ -3072,7 +3283,7 @@
           const tr = document.createElement("tr");
           tr.innerHTML = `
             <td><b>[${c.code}]</b> ${c.name}</td>
-            <td>${c.qty}</td>
+            <td style="font-weight:normal;">${c.qty}</td>
             <td>PKR ${(c.price * c.qty).toFixed(0)}</td>
             <td><button class="btn-red btn-sm" onclick="dropCustCartItem('${c.lineKey}')">X</button></td>
           `;
@@ -3387,7 +3598,6 @@
     }
 
     function printTableQrPoster() {
-      document.body.classList.remove("print-period-mode");
       document.body.classList.add("print-qr-mode");
       window.print();
       setTimeout(() => document.body.classList.remove("print-qr-mode"), 400);
@@ -3453,12 +3663,31 @@
     }
     .center { text-align: center; }
     .bold { font-weight: 900; }
-    .logo-mini {
-      width: 34px;
-      height: 34px;
-      margin: 0 auto 4px;
-      border-radius: 50%;
+    .welcome-tag {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      border-top: 1px dashed #000;
+      border-bottom: 1px dashed #000;
+      padding: 2px 0;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .order-hero {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 900;
       border: 1.5px solid #000;
+      padding: 4px 2px;
+      margin: 5px 0;
+      letter-spacing: 0.5px;
+    }
+    .logo-mini {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 5px;
+      border-radius: 50%;
+      border: 2px solid #000;
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -3468,13 +3697,21 @@
     .line-dash { border-bottom: 1px dashed #000; margin: 4px 0; padding-bottom: 4px; }
     .line-solid { border-top: 1px solid #000; border-bottom: 1px solid #000; margin: 4px 0; padding: 3px 0; }
     table { width: 100%; border-collapse: collapse; margin: 4px 0; }
-    th { border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 3px 1px; text-align: left; font-size: 10px; }
-    td { border-bottom: 1px dotted #999; padding: 3px 1px; vertical-align: top; }
+    th { border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 3px 2px; text-align: left; font-size: 10px; font-weight: normal; }
+    td { border-bottom: 1px dotted #999; padding: 3px 2px; vertical-align: top; }
+    th.qty-col, td.qty-col {
+      text-align: center;
+      white-space: nowrap;
+      padding-left: 8px;
+      padding-right: 8px;
+      font-weight: normal;
+    }
     .num { text-align: right; white-space: nowrap; }
     .row-flex { display: flex; justify-content: space-between; padding: 1.5px 0; }
     .kot-header { font-size: 15px; font-weight: 900; text-align: center; border: 2px solid #000; padding: 3px; margin-bottom: 5px; }
     .kot-meta { font-size: 12px; font-weight: 900; line-height: 1.4; }
     .kot-item td { font-size: 12.5px; font-weight: 900; padding: 5px 2px; border-bottom: 1px dashed #000; }
+    .kot-item td.qty-col { font-weight: normal; }
   </style>
 </head>
 <body>${innerBodyHtml}</body>
@@ -3492,15 +3729,15 @@
           const result = await window.electronPOS.printDualReceipts({
             counterPrinter: peripheralSettings.counterPrinter || "Counter_Printer",
             kitchenPrinter: peripheralSettings.kitchenPrinter || "Kitchen_Printer",
-            kotEnabled: peripheralSettings.kotEnabled === "YES",
+            kotEnabled: peripheralSettings.kotEnabled === "YES" && !!kitchenKotHtml,
             counterHtml: buildThermalDocumentHtml(counterHtml),
-            kitchenHtml: buildThermalDocumentHtml(kitchenKotHtml)
+            kitchenHtml: buildThermalDocumentHtml(kitchenKotHtml || "")
           });
 
           if (statusEl) {
             if (result && result.success) {
               statusEl.style.color = "var(--brand)";
-              statusEl.textContent = peripheralSettings.kotEnabled === "YES"
+              statusEl.textContent = (peripheralSettings.kotEnabled === "YES" && !!kitchenKotHtml)
                 ? `Printed! Counter (${peripheralSettings.counterPrinter}) + Kitchen KOT (${peripheralSettings.kitchenPrinter})`
                 : `Printed on Counter (${peripheralSettings.counterPrinter})!`;
             } else {
@@ -3515,7 +3752,7 @@
           }
         }
       } else {
-        document.body.classList.remove("print-period-mode", "print-qr-mode");
+        document.body.classList.remove("print-qr-mode");
         window.print();
       }
     }
@@ -3529,21 +3766,28 @@
     }
 
     async function testDualThermalPrint() {
-      const nowStr = new Date().toLocaleString();
+      const nowObj = new Date();
+      const dateOnlyStr = nowObj.toLocaleDateString();
+      const timeOnlyStr = nowObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      const testInvoiceNo = buildInvoiceNumber(nowObj, "000");
+
       const testCounter = `
         <div class="center line-dash">
+          <div class="welcome-tag">${RESTAURANT_INFO.welcomeTag}</div>
           <div class="logo-mini">
-            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:10px;&quot;>AHB</span>';" />
+            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;&quot;>AHB</span>';" />
           </div>
           <div class="bold" style="font-size:14px;">${RESTAURANT_INFO.name}</div>
           <div style="font-size:10px;">COUNTER PRINTER TEST</div>
         </div>
+        <div class="order-hero">ORDER #000</div>
         <div class="line-dash">
+          <div><strong>Invoice #:</strong> ${testInvoiceNo}</div>
           <div><strong>Printer:</strong> ${peripheralSettings.counterPrinter}</div>
-          <div><strong>Paper:</strong> ${peripheralSettings.paperSize}</div>
-          <div><strong>Time:</strong> ${nowStr}</div>
+          <div><strong>Date:</strong> ${dateOnlyStr}</div>
+          <div><strong>Time:</strong> ${timeOnlyStr}</div>
         </div>
-        <div class="center">Counter Printer Working!</div>
+        <div class="center">Thank you for your order!</div>
       `;
 
       const testKitchen = `
@@ -3551,13 +3795,14 @@
         <div class="kot-meta line-dash">
           <div>Printer: ${peripheralSettings.kitchenPrinter}</div>
           <div>Table: Table 1 (Dine-In)</div>
-          <div>Time: ${nowStr}</div>
+          <div>Date: ${dateOnlyStr}</div>
+          <div>Time: ${timeOnlyStr}</div>
         </div>
         <table>
-          <thead><tr><th>Item</th><th class="num">Qty</th></tr></thead>
+          <thead><tr><th>Item</th><th class="qty-col">Qty</th></tr></thead>
           <tbody>
-            <tr class="kot-item"><td>[001] Hunger Box Special Pizza (L)</td><td class="num">x1</td></tr>
-            <tr class="kot-item"><td>[015] Zinger Burger</td><td class="num">x2</td></tr>
+            <tr class="kot-item"><td>[001] Hunger Box Special Pizza (L)</td><td class="qty-col">x1</td></tr>
+            <tr class="kot-item"><td>[015] Zinger Burger</td><td class="qty-col">x2</td></tr>
           </tbody>
         </table>
         <div class="center bold">Kitchen Printer Working!</div>
@@ -3565,16 +3810,20 @@
 
       document.getElementById("invoiceContainer").innerHTML = `
         <div class="invoice-banner">
+          <div class="welcome-ahb-tag">${RESTAURANT_INFO.welcomeTag}</div>
           <div class="receipt-logo-box">
-            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:10px;&quot;>AHB</span>';" />
+            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;&quot;>AHB</span>';" />
           </div>
           <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
           <div class="invoice-sub">DUAL PRINTER TEST (COUNTER + KITCHEN)</div>
         </div>
+        <div class="order-hero-box">ORDER #000</div>
         <div class="invoice-meta-grid">
+          <div><strong>Invoice #:</strong> ${testInvoiceNo}</div>
           <div><strong>Counter:</strong> ${peripheralSettings.counterPrinter}</div>
           <div><strong>Kitchen:</strong> ${peripheralSettings.kitchenPrinter}</div>
-          <div><strong>Time:</strong> ${nowStr}</div>
+          <div><strong>Date:</strong> ${dateOnlyStr}</div>
+          <div><strong>Time:</strong> ${timeOnlyStr}</div>
         </div>
       `;
 
@@ -3810,7 +4059,6 @@
       await syncStore();
     }
 
-    /* FIXED: Instant validation & instant dashboard opening without waiting on network */
     function loginUser() {
       const rawUser = (document.getElementById("usernameInput").value || "").trim().toLowerCase();
       const p = document.getElementById("passInput").value;
@@ -3875,7 +4123,6 @@
 
       if (cloudPollTimer) clearInterval(cloudPollTimer);
       if (cloudBaseUrl) {
-        // Pull latest cloud orders immediately in background & poll every 2.5 seconds
         pullFromCloud(true);
         cloudPollTimer = setInterval(() => pullFromCloud(true), 2500);
       }
@@ -4523,7 +4770,7 @@
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td><b>[${b.code}]</b> ${b.name}</td>
-          <td>${b.qty}</td>
+          <td style="text-align:center; font-weight:normal;">${b.qty}</td>
           <td>PKR ${(b.price * b.qty).toFixed(2)}</td>
           <td><button class="btn-red" style="padding:3px 7px;" onclick="dropBillItem('${b.lineKey}')">X</button></td>
         `;
@@ -4556,9 +4803,11 @@
       const c = calcBill();
       const now = new Date();
       const dateIso = now.toISOString().slice(0, 10);
-      const timeStr = now.toLocaleString();
-      const timeOnlyStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      const dateOnlyStr = now.toLocaleDateString();
+      const timeOnlyStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      const timeStr = `${dateOnlyStr} ${timeOnlyStr}`;
       const formattedOrderNo = formatCode(orderCounter);
+      const invoiceNumber = buildInvoiceNumber(now, formattedOrderNo);
       orderCounter += 1;
 
       const billedLines = bill.map(b => ({
@@ -4571,8 +4820,11 @@
 
       orders.push({
         uid: "ORD-" + Date.now() + "-" + Math.floor(Math.random() * 10000),
+        invoiceNumber,
         orderNumber: formattedOrderNo,
         date: dateIso,
+        dateOnly: dateOnlyStr,
+        timeOnly: timeOnlyStr,
         timestamp: timeStr,
         orderType,
         tableNumber,
@@ -4580,6 +4832,7 @@
         role,
         customer: cust,
         mobile,
+        items: billedLines,
         subtotal: c.subtotal,
         discount: c.discount,
         tax: c.tax,
@@ -4589,18 +4842,19 @@
       const rowsHtml = billedLines.map(item => `
         <tr>
           <td>[${item.code}] ${item.name}</td>
-          <td class="num">${item.qty}</td>
+          <td class="qty-col">${item.qty}</td>
           <td class="num">${item.lineTotal.toFixed(0)}</td>
         </tr>
       `).join("");
 
       const tableLineHtml = tableNumber !== "No Table" ? `<div><strong>Table:</strong> ${tableNumber}</div>` : "";
 
-      /* 1. COUNTER CUSTOMER RECEIPT HTML WITH LOGO */
+      /* 1. COUNTER CUSTOMER RECEIPT HTML */
       latestCounterHtml = `
         <div class="center line-dash">
+          <div class="welcome-tag">${RESTAURANT_INFO.welcomeTag}</div>
           <div class="logo-mini">
-            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:10px;&quot;>AHB</span>';" />
+            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;&quot;>AHB</span>';" />
           </div>
           <div class="bold" style="font-size:14px;">${RESTAURANT_INFO.name}</div>
           <div style="font-size:9.5px;">
@@ -4609,9 +4863,12 @@
           </div>
         </div>
 
+        <div class="order-hero">ORDER #${formattedOrderNo}</div>
+
         <div class="line-dash" style="font-size:10px;">
-          <div><strong>Order #:</strong> ${formattedOrderNo}</div>
-          <div><strong>Date:</strong> ${timeStr}</div>
+          <div><strong>Invoice #:</strong> ${invoiceNumber}</div>
+          <div><strong>Date:</strong> ${dateOnlyStr}</div>
+          <div><strong>Time:</strong> ${timeOnlyStr}</div>
           <div><strong>Service:</strong> ${orderType}</div>
           ${tableLineHtml}
           <div><strong>Payment:</strong> ${paymentMethod}</div>
@@ -4623,7 +4880,7 @@
           <thead>
             <tr>
               <th>Item</th>
-              <th class="num">Qty</th>
+              <th class="qty-col">Qty</th>
               <th class="num">Amt</th>
             </tr>
           </thead>
@@ -4652,23 +4909,25 @@
       const kotRowsHtml = billedLines.map(item => `
         <tr class="kot-item">
           <td>[${item.code}] ${item.name}</td>
-          <td class="num">x${item.qty}</td>
+          <td class="qty-col">x${item.qty}</td>
         </tr>
       `).join("");
 
       latestKitchenKotHtml = `
-        <div class="kot-header">KITCHEN KOT • #${formattedOrderNo}</div>
+        <div class="kot-header">KITCHEN KOT • ORDER #${formattedOrderNo}</div>
         <div class="kot-meta line-dash">
+          <div>Invoice: ${invoiceNumber}</div>
           <div>Service: ${orderType}</div>
           <div>Table: ${tableNumber}</div>
           <div>Customer: ${cust}</div>
+          <div>Date: ${dateOnlyStr}</div>
           <div>Time: ${timeOnlyStr}</div>
         </div>
         <table>
           <thead>
             <tr>
               <th>ITEM TO PREPARE</th>
-              <th class="num">QTY</th>
+              <th class="qty-col">QTY</th>
             </tr>
           </thead>
           <tbody>${kotRowsHtml}</tbody>
@@ -4678,11 +4937,12 @@
         </div>
       `;
 
-      /* UPDATE ON-SCREEN THERMAL PREVIEW WITH LOGO */
+      /* UPDATE ON-SCREEN THERMAL PREVIEW */
       document.getElementById("invoiceContainer").innerHTML = `
         <div class="invoice-banner">
+          <div class="welcome-ahb-tag">${RESTAURANT_INFO.welcomeTag}</div>
           <div class="receipt-logo-box">
-            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:10px;&quot;>AHB</span>';" />
+            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;&quot;>AHB</span>';" />
           </div>
           <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
           <div class="invoice-sub">
@@ -4691,9 +4951,12 @@
           </div>
         </div>
 
+        <div class="order-hero-box">ORDER #${formattedOrderNo}</div>
+
         <div class="invoice-meta-grid">
-          <div><strong>Order #:</strong> ${formattedOrderNo}</div>
-          <div><strong>Date:</strong> ${timeStr}</div>
+          <div><strong>Invoice #:</strong> ${invoiceNumber}</div>
+          <div><strong>Date:</strong> ${dateOnlyStr}</div>
+          <div><strong>Time:</strong> ${timeOnlyStr}</div>
           <div><strong>Service:</strong> ${orderType}</div>
           ${tableLineHtml}
           <div><strong>Payment:</strong> ${paymentMethod}</div>
@@ -4705,7 +4968,7 @@
           <thead>
             <tr>
               <th>Item</th>
-              <th class="num">Qty</th>
+              <th class="qty-col">Qty</th>
               <th class="num">Amt</th>
             </tr>
           </thead>
@@ -4731,20 +4994,26 @@
       `;
 
       latestReceiptText = [
+        `            ${RESTAURANT_INFO.welcomeTag}`,
         RESTAURANT_INFO.name,
         `${RESTAURANT_INFO.addressLine1} ${RESTAURANT_INFO.addressLine2}`,
-        `Order #: ${formattedOrderNo} | Date: ${timeStr}`,
+        "==========================================",
+        `             ORDER #${formattedOrderNo}`,
+        "==========================================",
+        `Invoice #: ${invoiceNumber}`,
+        `Date: ${dateOnlyStr}`,
+        `Time: ${timeOnlyStr}`,
         `Service: ${orderType} | Table: ${tableNumber} | Payment: ${paymentMethod}`,
         `Customer: ${cust} | Mobile: ${mobile}`,
         "------------------------------------------",
-        ...billedLines.map(i => `[${i.code}] ${i.name} x${i.qty} = PKR ${i.lineTotal.toFixed(2)}`),
+        ...billedLines.map(i => `[${i.code}] ${i.name}   | Qty: ${i.qty} |   PKR ${i.lineTotal.toFixed(2)}`),
         "------------------------------------------",
         `Subtotal: PKR ${c.subtotal.toFixed(2)}`,
         `Discount: PKR ${c.discount.toFixed(2)}`,
         `Tax: PKR ${c.tax.toFixed(2)}`,
         `GRAND TOTAL (${paymentMethod}): PKR ${c.total.toFixed(2)}`,
         "------------------------------------------",
-        `${RESTAURANT_INFO.deliveryNote} | Phone: ${RESTAURANT_INFO.phone}`,
+        `Thank you for your order! - ${RESTAURANT_INFO.deliveryNote} | Phone: ${RESTAURANT_INFO.phone}`,
         RESTAURANT_INFO.devCredit,
         RESTAURANT_INFO.devContact
       ].join("\n");
@@ -4768,124 +5037,6 @@
       if (peripheralSettings.printMode === "AUTO") {
         await dispatchDualSilentPrint(latestCounterHtml, latestKitchenKotHtml);
       }
-    }
-
-    function generatePeriodSettlement(periodMode) {
-      const now = new Date();
-      let filteredOrders = [];
-      let filteredExpenses = [];
-      let titleLabel = "";
-      let rangeLabel = "";
-
-      if (periodMode === "WEEKLY") {
-        const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-        const cutoffIso = sevenDaysAgo.toISOString().slice(0, 10);
-        const todayIso = now.toISOString().slice(0, 10);
-        filteredOrders = orders.filter(o => o.date >= cutoffIso && o.date <= todayIso);
-        filteredExpenses = expensesList.filter(e => e.date >= cutoffIso && e.date <= todayIso);
-        titleLabel = "WEEKLY FINANCIAL SETTLEMENT (LAST 7 DAYS)";
-        rangeLabel = `${cutoffIso} to ${todayIso}`;
-      } else {
-        const monthPrefix = now.toISOString().slice(0, 7);
-        filteredOrders = orders.filter(o => String(o.date || "").startsWith(monthPrefix));
-        filteredExpenses = expensesList.filter(e => String(e.date || "").startsWith(monthPrefix));
-        titleLabel = "MONTHLY FINANCIAL SETTLEMENT STATEMENT";
-        rangeLabel = `Month: ${monthPrefix}`;
-      }
-
-      const totalOrdersCount = filteredOrders.length;
-
-      const cashSales = filteredOrders
-        .filter(o => (o.paymentMethod || "Cash") === "Cash")
-        .reduce((s, o) => s + Number(o.total || 0), 0);
-
-      const cardSales = filteredOrders
-        .filter(o => o.paymentMethod === "Card")
-        .reduce((s, o) => s + Number(o.total || 0), 0);
-
-      const onlineSales = filteredOrders
-        .filter(o => o.paymentMethod === "Online")
-        .reduce((s, o) => s + Number(o.total || 0), 0);
-
-      const grossSubtotal = filteredOrders.reduce((s, o) => s + Number(o.subtotal || 0), 0);
-      const totalDiscount = filteredOrders.reduce((s, o) => s + Number(o.discount || 0), 0);
-      const totalTax = filteredOrders.reduce((s, o) => s + Number(o.tax || 0), 0);
-      const combinedSales = cashSales + cardSales + onlineSales;
-
-      const paidSalariesTotal = staffList
-        .filter(s => s.paid)
-        .reduce((s, st) => s + Number(st.salary || 0), 0);
-
-      const totalExpensesAmount = filteredExpenses
-        .reduce((s, e) => s + Number(e.amount || 0), 0);
-
-      const remainingProfit = combinedSales - paidSalariesTotal - totalExpensesAmount;
-
-      const orderLines = filteredOrders.length
-        ? filteredOrders.map(o => `#${o.orderNumber} | ${o.date} | ${o.customer} | ${o.tableNumber || o.orderType} | [${o.paymentMethod || "Cash"}] | Disc: PKR ${Number(o.discount || 0).toFixed(0)} | PKR ${Number(o.total).toFixed(2)}`)
-        : ["No orders recorded in this period yet."];
-
-      const statementLines = [
-        "==========================================================",
-        `              ${RESTAURANT_INFO.name}`,
-        ` ${RESTAURANT_INFO.addressLine1} ${RESTAURANT_INFO.addressLine2}`,
-        ` Phone: ${RESTAURANT_INFO.phone} | ${RESTAURANT_INFO.deliveryNote}`,
-        "==========================================================",
-        ` ${titleLabel}`,
-        ` Period:      ${rangeLabel}`,
-        ` Generated:   ${now.toLocaleString()}`,
-        ` Prepared By: ${role || "ADMIN"}`,
-        "----------------------------------------------------------",
-        " ORDERS BREAKDOWN:",
-        ...orderLines,
-        "----------------------------------------------------------",
-        " PAYMENT COLLECTION SUMMARY:",
-        ` Total Orders Count:          ${totalOrdersCount}`,
-        ` 1. Cash Payments Received:   PKR ${cashSales.toFixed(2)}`,
-        ` 2. Card Payments Received:   PKR ${cardSales.toFixed(2)}`,
-        ` 3. Online Payments Received: PKR ${onlineSales.toFixed(2)}`,
-        " --------------------------------------------------------",
-        ` Gross Subtotal:              PKR ${grossSubtotal.toFixed(2)}`,
-        ` Total Discounts Given:       PKR ${totalDiscount.toFixed(2)}`,
-        ` Total Tax Collected:         PKR ${totalTax.toFixed(2)}`,
-        ` TOTAL COMBINED SALES:        PKR ${combinedSales.toFixed(2)}`,
-        "----------------------------------------------------------",
-        " DEDUCTIONS (SALARIES & EXPENSES):",
-        ` (-) Paid Staff Salaries:     PKR ${paidSalariesTotal.toFixed(2)}`,
-        ` (-) Restaurant Expenses:     PKR ${totalExpensesAmount.toFixed(2)}`,
-        "==========================================================",
-        ` NET PROFIT REMAINING:        PKR ${remainingProfit.toFixed(2)}`,
-        "==========================================================",
-        ` ${RESTAURANT_INFO.devCredit}`,
-        ` ${RESTAURANT_INFO.devContact}`
-      ];
-
-      latestPeriodText = statementLines.join("\n");
-      latestPeriodType = periodMode.toLowerCase() + "_settlement";
-      document.getElementById("periodSettlementBox").textContent = latestPeriodText;
-    }
-
-    function printPeriodStatement() {
-      if (!latestPeriodText) {
-        alert("Generate Weekly or Monthly Settlement first.");
-        return;
-      }
-      document.body.classList.remove("print-qr-mode");
-      document.body.classList.add("print-period-mode");
-      window.print();
-      setTimeout(() => document.body.classList.remove("print-period-mode"), 400);
-    }
-
-    function savePeriodTxt() {
-      if (!latestPeriodText) {
-        alert("Generate Weekly or Monthly Settlement first.");
-        return;
-      }
-      const blob = new Blob([latestPeriodText], { type: "text/plain;charset=utf-8" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = `arham_hunger_box_${latestPeriodType}.txt`;
-      a.click();
     }
 
     function saveReceiptTxt() {
@@ -4963,10 +5114,12 @@
     }
 
     function downloadSalesCsv() {
-      const csv = "OrderNumber,Timestamp,Option,Table,PaymentMethod,Role,Customer,Mobile,Subtotal,Discount,Tax,Total\n" +
+      const csv = "InvoiceNumber,OrderNumber,Date,Time,Option,Table,PaymentMethod,Role,Customer,Mobile,Subtotal,Discount,Tax,Total\n" +
         orders.map(o => [
+          escapeCsvField(o.invoiceNumber || ""),
           o.orderNumber,
-          escapeCsvField(o.timestamp),
+          escapeCsvField(o.dateOnly || o.date || ""),
+          escapeCsvField(o.timeOnly || o.timestamp || ""),
           escapeCsvField(o.orderType),
           escapeCsvField(o.tableNumber || "No Table"),
           escapeCsvField(o.paymentMethod || "Cash"),
@@ -5012,15 +5165,16 @@
       latestReceiptText = "";
       latestCounterHtml = "";
       latestKitchenKotHtml = "";
-      latestPeriodText = "";
 
-      document.getElementById("periodSettlementBox").textContent = "Select Weekly or Monthly Settlement to view full Cash/Card/Online breakdown, Total Discounts & Net Profit after Salary/Expenses.";
+      document.getElementById("invoiceSearchInput").value = "";
+      document.getElementById("invoiceLookupResultArea").style.display = "none";
       document.getElementById("invoiceContainer").innerHTML = `
         <div class="invoice-banner">
+          <div class="welcome-ahb-tag">${RESTAURANT_INFO.welcomeTag}</div>
           <div class="receipt-logo-box">
-            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:10px;&quot;>AHB</span>';" />
+            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;&quot;>AHB</span>';" />
           </div>
-          <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
+          <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
           <div class="invoice-sub">
             Al Madina Market, Basement Floor,<br />
             Kheshgi Payan Chowk, Nowshera
