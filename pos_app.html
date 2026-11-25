@@ -965,7 +965,7 @@
       color: var(--text);
     }
 
-    .err-text { color: #fca5a5; font-size: 12px; min-height: 18px; margin-bottom: 8px; font-weight: 600; }
+    .err-text { color: #fca5a5; font-size: 13px; min-height: 20px; margin-bottom: 8px; font-weight: 700; }
     .ok-text { color: var(--brand); font-size: 12px; min-height: 18px; margin-top: 6px; }
 
     /* SINGLE PAGE THERMAL PRINTER PRINT RULES */
@@ -1083,7 +1083,7 @@
         display: block !important;
       }
       body.print-qr-mode .settings-grid > div:last-child,
-      body.print-qr-mode .settings-grid > div:first-child > .box:not(:nth-child(3)) {
+      body.print-qr-mode .settings-grid > div:first-child > .box:not(:nth-child(4)) {
         display: none !important;
       }
       body.print-qr-mode #tableQrPrintArea {
@@ -1301,10 +1301,10 @@
       <!-- PASSWORD LOGIN FORM -->
       <div id="passwordLoginForm">
         <label for="usernameInput">Username</label>
-        <input id="usernameInput" type="text" placeholder="Enter username" />
+        <input id="usernameInput" type="text" placeholder="Enter username" onkeydown="if(event.key==='Enter') loginUser()" />
 
         <label for="passInput">Password</label>
-        <input id="passInput" type="password" placeholder="Enter password" />
+        <input id="passInput" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter') loginUser()" />
 
         <div class="login-links">
           <label style="display:flex; align-items:center; gap:6px; margin:0; cursor:pointer;">
@@ -1314,20 +1314,20 @@
           <button type="button" class="link-btn" onclick="toggleForgotBox()">Forgot Username &amp; Password?</button>
         </div>
 
-        <button class="btn-brand" style="width:100%; padding:10px;" onclick="loginUser()">Login</button>
+        <button type="button" class="btn-brand" style="width:100%; padding:11px; font-size:14px;" onclick="loginUser()">Login</button>
       </div>
 
       <!-- 4-DIGIT PIN LOGIN FORM -->
       <div id="pinLoginForm" style="display:none;">
         <label for="quickPinInput" style="text-align:center; font-weight:700; color:var(--accent);">Enter 4-Digit PIN</label>
-        <input id="quickPinInput" class="pin-input-large" type="password" inputmode="numeric" maxlength="4" placeholder="••••" oninput="handlePinAutoLogin(this.value)" />
-        <button class="btn-amber" style="width:100%; padding:10px;" onclick="loginWithPin()">Login</button>
+        <input id="quickPinInput" class="pin-input-large" type="password" inputmode="numeric" maxlength="4" placeholder="••••" oninput="sanitizePinInput(this)" onkeydown="if(event.key==='Enter') loginWithPin()" />
+        <button type="button" class="btn-amber" style="width:100%; padding:11px; font-size:14px;" onclick="loginWithPin()">Login</button>
         <div style="text-align:center; margin-top:8px;">
           <button type="button" class="link-btn" onclick="toggleForgotBox()">Forgot PIN?</button>
         </div>
       </div>
 
-      <div id="loginErr" class="err-text" style="margin-top:8px; text-align:center;"></div>
+      <div id="loginErr" class="err-text" style="margin-top:10px; text-align:center;"></div>
 
       <div class="dev-credit-box">
         Software Developed by Umair Ahmad
@@ -1384,14 +1384,14 @@
           <span>Staff</span>
         </button>
         <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Security PIN, Dual Printers, Counter & Table QR, Quick Price Update & Reports">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Settings</span>
         </button>
       </nav>
 
       <div class="top-actions">
         <span id="dualPrintBadge" class="sync-chip">Dual Print Ready</span>
-        <span id="cloudSyncBadge" class="sync-chip offline">Local Mode</span>
+        <span id="cloudSyncBadge" class="sync-chip offline" style="cursor:pointer;" onclick="pullFromCloud(false)" title="Click to Sync Now">Local Mode</span>
         <span id="roleBadge" class="role-chip">ADMIN</span>
         <button class="btn-outline btn-sm" onclick="switchTheme()">Theme</button>
         <button class="btn-outline btn-sm" onclick="logoutUser()">Logout</button>
@@ -1975,7 +1975,7 @@
               <input id="firebaseUrlInput" type="url" placeholder="https://your-project-id-default-rtdb.firebaseio.com" />
               <div class="btn-group">
                 <button class="btn-sky" onclick="saveCloudUrl()">Connect & Sync Now</button>
-                <button class="btn-outline" onclick="pullFromCloud()">Refresh From Cloud</button>
+                <button class="btn-outline" onclick="pullFromCloud(false)">Refresh From Cloud</button>
               </div>
               <div id="cloudMsg" class="ok-text"></div>
             </div>
@@ -2421,7 +2421,6 @@
         tabPin.classList.add("active");
         const pinInput = document.getElementById("quickPinInput");
         if (pinInput) {
-          pinInput.value = "";
           pinInput.focus();
         }
       } else {
@@ -2432,23 +2431,21 @@
       }
     }
 
-    function handlePinAutoLogin(val) {
-      const cleaned = val.replace(/\D/g, "").slice(0, 4);
-      document.getElementById("quickPinInput").value = cleaned;
-      if (cleaned.length === 4) {
-        loginWithPin();
-      }
+    /* FIXED: Only digits allowed in PIN box; does NOT clear or misfire before clicking Login */
+    function sanitizePinInput(inputEl) {
+      inputEl.value = inputEl.value.replace(/\D/g, "").slice(0, 4);
+      document.getElementById("loginErr").textContent = "";
     }
 
-    async function loginWithPin() {
-      if (cloudBaseUrl) {
-        await pullFromCloud(true);
-      }
-      const enteredPin = (document.getElementById("quickPinInput").value || "").trim();
+    function loginWithPin() {
+      const pinInput = document.getElementById("quickPinInput");
+      const enteredPin = (pinInput.value || "").trim();
       const err = document.getElementById("loginErr");
+      err.style.color = "#fca5a5";
 
       if (enteredPin.length !== 4) {
-        err.textContent = "Please enter a 4-digit PIN.";
+        err.textContent = "Please enter a complete 4-digit PIN (4 ہندسوں کا کوڈ درج کریں).";
+        pinInput.focus();
         return;
       }
 
@@ -2458,14 +2455,15 @@
       else if (enteredPin === String(auth.WAITER_PIN)) matchedRole = "WAITER";
 
       if (!matchedRole) {
-        err.textContent = "Invalid 4-Digit PIN.";
-        document.getElementById("quickPinInput").value = "";
+        err.textContent = "Invalid 4-Digit PIN! یہ PIN کوڈ غلط ہے۔";
+        pinInput.value = "";
+        pinInput.focus();
         return;
       }
 
       const usernameForRole = auth[matchedRole + "_USER"] || matchedRole.toLowerCase();
-      document.getElementById("quickPinInput").value = "";
-      await completeUserSessionLogin(matchedRole, usernameForRole, "4-Digit PIN");
+      pinInput.value = "";
+      completeUserSessionLogin(matchedRole, usernameForRole, "4-Digit PIN");
     }
 
     function playNotificationBeep() {
@@ -2532,6 +2530,17 @@
       updateDualPrintBadge();
     }
 
+    /* MERGE HELPER SO MULTI-LAPTOP ORDERS NEVER OVERWRITE EACH OTHER */
+    function mergeOrdersByUniqueKey(localArr, remoteArr) {
+      const map = new Map();
+      [...(remoteArr || []), ...(localArr || [])].forEach(o => {
+        if (!o) return;
+        const key = o.uid || `${o.orderNumber}_${o.timestamp}_${o.total}`;
+        map.set(key, o);
+      });
+      return Array.from(map.values());
+    }
+
     async function pushToCloud() {
       if (!cloudBaseUrl) {
         updateCloudBadge("Local Mode", false);
@@ -2540,6 +2549,31 @@
       isCloudSyncLocked = true;
       try {
         updateCloudBadge("Syncing...", true);
+
+        // Fetch latest cloud orders first so another laptop's orders are merged safely
+        try {
+          const checkRes = await fetch(`${cloudBaseUrl}/ahb_pos_data.json?t=${Date.now()}`, { cache: "no-store" });
+          if (checkRes.ok) {
+            const existingRemote = await checkRes.json();
+            if (existingRemote && Array.isArray(existingRemote.orders)) {
+              orders = mergeOrdersByUniqueKey(orders, existingRemote.orders);
+            }
+            if (existingRemote && typeof existingRemote.orderCounter === "number" && existingRemote.orderCounter > orderCounter) {
+              orderCounter = existingRemote.orderCounter;
+            }
+            if (existingRemote && Array.isArray(existingRemote.tableOrderQueue)) {
+              const mergedQ = [...tableOrderQueue];
+              existingRemote.tableOrderQueue.forEach(rq => {
+                if (!dismissedOrderIds.includes(rq.id) && !mergedQ.some(lq => lq.id === rq.id)) {
+                  mergedQ.push(rq);
+                }
+              });
+              tableOrderQueue = mergedQ;
+            }
+            saveLocalCache();
+          }
+        } catch (e) {}
+
         const cleanQueue = tableOrderQueue.filter(q => !dismissedOrderIds.includes(q.id));
         const cleanCalls = waiterCallQueue.filter(c => !dismissedOrderIds.includes(c.id));
         const payload = {
@@ -2562,10 +2596,12 @@
         });
         if (!res.ok) throw new Error("Cloud write failed");
         updateCloudBadge("Cloud Synced", true);
+        renderMetrics();
+        renderOrderAnalytics();
       } catch (err) {
         updateCloudBadge("Sync Error", false);
       } finally {
-        setTimeout(() => { isCloudSyncLocked = false; }, 1200);
+        setTimeout(() => { isCloudSyncLocked = false; }, 600);
       }
     }
 
@@ -2576,7 +2612,7 @@
       }
       if (silent && isCloudSyncLocked) return;
       try {
-        const res = await fetch(`${cloudBaseUrl}/ahb_pos_data.json`);
+        const res = await fetch(`${cloudBaseUrl}/ahb_pos_data.json?t=${Date.now()}`, { cache: "no-store" });
         if (!res.ok) throw new Error("Cloud read failed");
         const data = await res.json();
 
@@ -2592,8 +2628,12 @@
         }
 
         if (Array.isArray(data.items) && data.items.length) items = data.items;
-        orders = Array.isArray(data.orders) ? data.orders : [];
-        if (typeof data.orderCounter === "number") orderCounter = data.orderCounter;
+        if (Array.isArray(data.orders)) {
+          orders = mergeOrdersByUniqueKey(orders, data.orders);
+        }
+        if (typeof data.orderCounter === "number" && data.orderCounter >= orderCounter) {
+          orderCounter = data.orderCounter;
+        }
         if (data.auth) {
           auth = {
             ADMIN_USER: data.auth.ADMIN_USER || "admin",
@@ -2610,9 +2650,9 @@
           };
           applyLoginScreenModeUI();
         }
-        staffList = Array.isArray(data.staffList) ? data.staffList : [];
-        loginHistoryLogs = Array.isArray(data.loginHistoryLogs) ? data.loginHistoryLogs : [];
-        expensesList = Array.isArray(data.expensesList) ? data.expensesList : [];
+        if (Array.isArray(data.staffList)) staffList = data.staffList;
+        if (Array.isArray(data.loginHistoryLogs)) loginHistoryLogs = data.loginHistoryLogs;
+        if (Array.isArray(data.expensesList)) expensesList = data.expensesList;
 
         const cloudDismissed = Array.isArray(data.dismissedOrderIds) ? data.dismissedOrderIds : [];
         dismissedOrderIds = [...new Set([...dismissedOrderIds, ...cloudDismissed])].slice(-300);
@@ -2652,7 +2692,10 @@
         updateCloudBadge("Cloud Synced", true);
         if (!silent) {
           const msg = document.getElementById("cloudMsg");
-          if (msg) msg.textContent = "Synced! Latest orders & data loaded from Cloud.";
+          if (msg) {
+            msg.style.color = "var(--brand)";
+            msg.textContent = "Synced! Latest orders & totals updated on this device.";
+          }
         }
       } catch (err) {
         updateCloudBadge("Sync Error", false);
@@ -2660,7 +2703,7 @@
           const msg = document.getElementById("cloudMsg");
           if (msg) {
             msg.style.color = "var(--danger)";
-            msg.textContent = "Could not connect to Firebase URL. Check rules/URL.";
+            msg.textContent = "Could not connect to Firebase URL. Check internet or Firebase rules.";
           }
         }
       }
@@ -2679,6 +2722,9 @@
       localStorage.setItem(DB.CLOUD_URL, cloudBaseUrl);
       msg.style.color = "var(--brand)";
       msg.textContent = "Connecting to Cloud...";
+
+      if (cloudPollTimer) clearInterval(cloudPollTimer);
+      cloudPollTimer = setInterval(() => pullFromCloud(true), 2500);
       pullFromCloud(false);
     }
 
@@ -2753,13 +2799,13 @@
       }
 
       selectCustPaymentMethod("Cash");
-
-      if (cloudBaseUrl) {
-        await pullFromCloud(true);
-      }
       renderCustomerCategories();
       renderCustomerMenu();
       renderCustomerCart();
+
+      if (cloudBaseUrl) {
+        pullFromCloud(true);
+      }
       if (asWaiter) renderWaiterMobileCalls();
     }
 
@@ -3764,16 +3810,22 @@
       await syncStore();
     }
 
-    async function loginUser() {
-      if (cloudBaseUrl) {
-        await pullFromCloud(true);
-      }
+    /* FIXED: Instant validation & instant dashboard opening without waiting on network */
+    function loginUser() {
       const rawUser = (document.getElementById("usernameInput").value || "").trim().toLowerCase();
       const p = document.getElementById("passInput").value;
       const err = document.getElementById("loginErr");
+      err.style.color = "#fca5a5";
 
       if (!rawUser) {
-        err.textContent = "Please enter your username.";
+        err.textContent = "Please enter your username (یوزر نیم درج کریں).";
+        document.getElementById("usernameInput").focus();
+        return;
+      }
+
+      if (!p) {
+        err.textContent = "Please enter your password (پاسورڈ درج کریں).";
+        document.getElementById("passInput").focus();
         return;
       }
 
@@ -3787,21 +3839,23 @@
       else if (rawUser === waiterUserLower) matchedRole = "WAITER";
 
       if (!matchedRole) {
-        err.textContent = "Invalid username.";
+        err.textContent = `Invalid Username! "${rawUser}" غلط یوزر نیم ہے۔`;
+        document.getElementById("usernameInput").focus();
         return;
       }
 
       if (p !== auth[matchedRole]) {
-        err.textContent = "Invalid username or password.";
+        err.textContent = "Invalid Password! پاسورڈ غلط ہے، دوبارہ چیک کریں۔";
+        document.getElementById("passInput").focus();
         return;
       }
 
       document.getElementById("usernameInput").value = "";
       document.getElementById("passInput").value = "";
-      await completeUserSessionLogin(matchedRole, rawUser, "Password");
+      completeUserSessionLogin(matchedRole, rawUser, "Password");
     }
 
-    async function completeUserSessionLogin(matchedRole, rawUser, methodLabel) {
+    function completeUserSessionLogin(matchedRole, rawUser, methodLabel) {
       document.getElementById("loginErr").textContent = "";
       role = matchedRole;
       loggedInUsername = rawUser;
@@ -3817,11 +3871,13 @@
       if (loginHistoryLogs.length > 120) {
         loginHistoryLogs = loginHistoryLogs.slice(0, 120);
       }
-      await syncStore();
+      saveLocalCache();
 
       if (cloudPollTimer) clearInterval(cloudPollTimer);
       if (cloudBaseUrl) {
-        cloudPollTimer = setInterval(() => pullFromCloud(true), 6000);
+        // Pull latest cloud orders immediately in background & poll every 2.5 seconds
+        pullFromCloud(true);
+        cloudPollTimer = setInterval(() => pullFromCloud(true), 2500);
       }
 
       if (role === "WAITER") {
@@ -4514,6 +4570,7 @@
       }));
 
       orders.push({
+        uid: "ORD-" + Date.now() + "-" + Math.floor(Math.random() * 10000),
         orderNumber: formattedOrderNo,
         date: dateIso,
         timestamp: timeStr,
@@ -4700,13 +4757,13 @@
       document.getElementById("dPct").value = "0";
 
       saveLocalCache();
-      await pushToCloud();
       renderBill();
       renderMetrics();
       renderOrderAnalytics();
       if (role === "ADMIN") {
         renderExpenses();
       }
+      await pushToCloud();
 
       if (peripheralSettings.printMode === "AUTO") {
         await dispatchDualSilentPrint(latestCounterHtml, latestKitchenKotHtml);
