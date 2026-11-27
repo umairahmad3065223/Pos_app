@@ -63,9 +63,7 @@
       color: #f8fafc;
     }
 
-    .login-box label {
-      color: #bfdbfe;
-    }
+    .login-box label { color: #bfdbfe; }
 
     .login-box input,
     .login-box select {
@@ -424,6 +422,21 @@
       font-weight: 800;
     }
 
+    .edit-mode-banner {
+      background: rgba(245, 158, 11, 0.16);
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
     .live-badge-pulse {
       background: rgba(239, 68, 68, 0.18);
       color: var(--danger);
@@ -776,6 +789,14 @@
       margin-bottom: 12px;
     }
 
+    .cust-option-group.two-cols {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cust-option-group.one-col {
+      grid-template-columns: 1fr;
+    }
+
     .cust-choice-btn {
       background: var(--panel-2);
       color: var(--text);
@@ -816,26 +837,40 @@
       box-shadow: 0 -8px 24px rgba(0,0,0,0.4);
     }
 
-    /* 58MM / 80MM THERMAL RECEIPT PREVIEW & PRINT DESIGN */
-    .thermal-preview-wrap {
+    /* DUAL THERMAL PREVIEW (FINAL BILL + SEPARATE KITCHEN KOT ON SCREEN) */
+    .dual-thermal-preview-stack {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      gap: 14px;
       background: #e2e8f0;
       padding: 12px;
       border-radius: 10px;
       margin-bottom: 12px;
+      align-items: center;
+    }
+
+    .preview-label-pill {
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: #0f172a;
+      color: #ffffff;
+      letter-spacing: 0.5px;
     }
 
     .invoice-sheet {
-      width: 58mm;
+      width: 64mm;
       max-width: 100%;
       background: #ffffff;
       color: #000000;
-      border: 1px dashed #94a3b8;
-      padding: 6px 5px;
+      border: 1px dashed #64748b;
+      padding: 7px 6px;
       font-family: "Consolas", "Courier New", monospace;
       font-size: 11px;
       line-height: 1.3;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     }
 
     .invoice-banner {
@@ -857,7 +892,6 @@
       color: #000000;
     }
 
-    /* ENLARGED RECEIPT LOGO */
     .receipt-logo-box {
       width: 56px;
       height: 56px;
@@ -901,6 +935,17 @@
       padding: 4px 2px;
       margin: 5px 0;
       letter-spacing: 0.5px;
+      color: #000000;
+    }
+
+    .kot-preview-header {
+      text-align: center;
+      font-size: 14px;
+      font-weight: 900;
+      border: 2px solid #000000;
+      padding: 4px 2px;
+      margin-bottom: 5px;
+      background: #f8fafc;
       color: #000000;
     }
 
@@ -989,6 +1034,10 @@
       line-height: 1.35;
     }
 
+    .print-cut-divider {
+      display: none;
+    }
+
     .invoice-lookup-card {
       background: var(--panel-2);
       border: 1px solid var(--line);
@@ -1000,7 +1049,7 @@
     .err-text { color: #fca5a5; font-size: 13px; min-height: 20px; margin-bottom: 8px; font-weight: 700; }
     .ok-text { color: var(--brand); font-size: 12px; min-height: 18px; margin-top: 6px; }
 
-    /* SINGLE PAGE THERMAL PRINTER PRINT RULES */
+    /* SINGLE THERMAL PRINTER PRINT RULES (PRINTS FINAL BILL + KITCHEN KOT TOGETHER) */
     @page {
       size: 80mm auto;
       margin: 0;
@@ -1022,11 +1071,13 @@
       #customerQrPortal,
       .topbar,
       .no-print,
+      .preview-label-pill,
       .summary-strip-6,
       .summary-strip,
       #liveWaiterCallsBox,
       #liveTableOrdersBox,
       #sectionEXPENSES,
+      #sectionLOYALTY,
       #sectionSTAFF,
       #sectionSETTINGS {
         display: none !important;
@@ -1042,7 +1093,7 @@
         padding: 0 !important;
       }
 
-      /* Mode 1: Single Thermal Bill Print */
+      /* Mode 1: Single Printer Prints Final Bill + Kitchen KOT Back-to-Back */
       body:not(.print-qr-mode) .dash-grid > div:first-child,
       body:not(.print-qr-mode) .dash-grid > div:last-child > .box:not(#printableReceipt) {
         display: none !important;
@@ -1059,11 +1110,9 @@
         padding: 0 !important;
         margin: 0 !important;
         box-shadow: none !important;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
       }
 
-      body:not(.print-qr-mode) .thermal-preview-wrap {
+      body:not(.print-qr-mode) .dual-thermal-preview-stack {
         display: block !important;
         padding: 0 !important;
         margin: 0 !important;
@@ -1074,6 +1123,7 @@
         display: block !important;
         border: none !important;
         border-radius: 0 !important;
+        box-shadow: none !important;
         padding: 2mm !important;
         margin: 0 !important;
         width: 76mm !important;
@@ -1084,7 +1134,22 @@
         break-inside: avoid !important;
       }
 
-      /* Mode 2: Table / Counter QR Poster Print */
+      body:not(.print-qr-mode) .print-cut-divider {
+        display: block !important;
+        text-align: center !important;
+        font-family: "Consolas", monospace !important;
+        font-size: 10px !important;
+        font-weight: 900 !important;
+        color: #000000 !important;
+        border-top: 2px dashed #000000 !important;
+        border-bottom: 2px dashed #000000 !important;
+        padding: 4px 0 !important;
+        margin: 8px 0 !important;
+        page-break-after: always !important;
+        break-after: page !important;
+      }
+
+      /* Mode 2: Table / Counter / Online Delivery QR Poster Print */
       body.print-qr-mode #sectionPOS {
         display: none !important;
       }
@@ -1121,7 +1186,7 @@
         </div>
         <div>
           <h1 id="custPortalMainTitle">Arham Hunger Box — Digital Menu</h1>
-          <p id="custTableBanner" style="color:var(--accent); font-weight:800; font-size:12px;">Direct Counter & Table Ordering</p>
+          <p id="custTableBanner" style="color:var(--accent); font-weight:800; font-size:12px;">Direct Counter &amp; Table Ordering</p>
         </div>
       </div>
       <div class="btn-group">
@@ -1145,7 +1210,7 @@
       <div id="customerCallWaiterCard" class="waiter-call-banner">
         <div>
           <strong style="color:var(--danger); font-size:14px;">Need Assistance at Your Table? (ویٹر کو بلائیں)</strong>
-          <div style="font-size:12px; color:var(--muted);">Tap to send an instant alert directly to the Waiter & Counter.</div>
+          <div style="font-size:12px; color:var(--muted);">Tap to send an instant alert directly to the Waiter &amp; Counter.</div>
         </div>
         <div class="btn-group">
           <select id="callWaiterReason" style="width:auto; margin:0; padding:7px 10px;">
@@ -1160,7 +1225,7 @@
 
       <div class="box">
         <div class="box-head">
-          <h2>Select Food & Drinks</h2>
+          <h2>Select Food &amp; Drinks</h2>
           <input id="custSearchInput" placeholder="Search code (001), pizza, burger..." style="width:230px; margin:0;" oninput="renderCustomerMenu()" />
         </div>
         <div id="custCategoryBar" class="filter-bar"></div>
@@ -1178,7 +1243,7 @@
 
       <div class="box" id="custCartSection">
         <div class="box-head">
-          <h2>Customer Details & Order Summary</h2>
+          <h2>Customer Details &amp; Order Summary</h2>
           <span id="custTablePill" class="order-tag">Counter Direct</span>
         </div>
 
@@ -1197,20 +1262,20 @@
             <option value="Table 10">Table 10</option>
             <option value="Table 11">Table 11</option>
             <option value="Table 12">Table 12</option>
-            <option value="Counter Direct">Counter Direct (Walk-In / Takeaway / Delivery)</option>
+            <option value="Counter Direct">Counter Direct (Walk-In / Takeaway)</option>
           </select>
         </div>
 
-        <label style="color:var(--brand); font-weight:800; font-size:12.5px;">1. Select Order Option (یہاں کھانا ہے / لے جانا ہے / ڈیلیوری):</label>
-        <div class="cust-option-group">
+        <label id="custOrderOptLabel" style="color:var(--brand); font-weight:800; font-size:12.5px;">1. Select Order Option (یہاں کھانا ہے / لے جانا ہے):</label>
+        <div id="custOrderTypeGroup" class="cust-option-group two-cols">
           <button type="button" id="optDineIn" class="cust-choice-btn active" onclick="selectCustOrderType('Dine-In')">
             Dine-In<br><small style="font-weight:600; opacity:0.85;">یہاں کھانا ہے</small>
           </button>
           <button type="button" id="optTakeaway" class="cust-choice-btn" onclick="selectCustOrderType('Takeaway')">
             Takeaway<br><small style="font-weight:600; opacity:0.85;">ساتھ لے جانا ہے</small>
           </button>
-          <button type="button" id="optDelivery" class="cust-choice-btn" onclick="selectCustOrderType('Delivery (Free Upto 3km)')">
-            Delivery<br><small style="font-weight:600; opacity:0.85;">ڈیلیوری (Free 3km)</small>
+          <button type="button" id="optDelivery" class="cust-choice-btn" style="display:none;" onclick="selectCustOrderType('Delivery (Free Upto 3km)')">
+            Home Delivery (Free Upto 3km)<br><small style="font-weight:600; opacity:0.85;">گھر پر ڈیلیوری</small>
           </button>
         </div>
 
@@ -1283,7 +1348,7 @@
         <strong id="custFloatTotal">PKR 0</strong>
       </div>
       <button class="btn-amber" onclick="document.getElementById('custCartSection').scrollIntoView({behavior:'smooth'})">
-        View Order & Send
+        View Order &amp; Send
       </button>
     </div>
   </div>
@@ -1301,13 +1366,11 @@
 
       <h2>Sign In</h2>
 
-      <!-- LOGIN MODE SWITCHER (PASSWORD vs 4-DIGIT PIN) -->
       <div id="loginModeTabs" class="login-mode-tabs">
         <button type="button" id="tabPasswordBtn" class="login-tab-btn active" onclick="switchLoginMethod('PASSWORD')">Password Login</button>
         <button type="button" id="tabPinBtn" class="login-tab-btn" onclick="switchLoginMethod('PIN')">4-Digit PIN</button>
       </div>
 
-      <!-- PASSWORD LOGIN FORM -->
       <div id="passwordLoginForm">
         <label for="usernameInput">Username</label>
         <input id="usernameInput" type="text" placeholder="Enter username" onkeydown="if(event.key==='Enter') loginUser()" />
@@ -1326,7 +1389,6 @@
         <button type="button" class="btn-brand" style="width:100%; padding:11px; font-size:14px;" onclick="loginUser()">Login</button>
       </div>
 
-      <!-- 4-DIGIT PIN LOGIN FORM -->
       <div id="pinLoginForm" style="display:none;">
         <label for="quickPinInput" style="text-align:center; font-weight:700; color:var(--accent);">Enter 4-Digit PIN</label>
         <input id="quickPinInput" class="pin-input-large" type="password" inputmode="numeric" maxlength="4" placeholder="••••" oninput="sanitizePinInput(this)" onkeydown="if(event.key==='Enter') loginWithPin()" />
@@ -1343,7 +1405,6 @@
         <span>For Software Inquiries: 03065223123</span>
       </div>
 
-      <!-- FORGOT USERNAME, PASSWORD & PIN PANEL -->
       <div id="forgotBox" class="forgot-panel">
         <h4>Reset Credentials &amp; PIN</h4>
         <p style="margin:0 0 8px; font-size:12px; color:var(--muted);">Enter your Master Recovery PIN and Username to update Password or 4-Digit PIN.</p>
@@ -1388,18 +1449,22 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           <span>Expenses</span>
         </button>
+        <button id="navLoyaltyBtn" class="mini-nav-btn" onclick="switchSection('LOYALTY')" title="Loyalty Card System (Pizza Items Only)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Loyalty</span>
+        </button>
         <button id="navStaffBtn" class="mini-nav-btn" onclick="switchSection('STAFF')" title="Staff Management">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>Staff</span>
         </button>
-        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Invoice Lookup, Security PIN, Dual Printers & QR">
+        <button id="navSettingsBtn" class="mini-nav-btn" onclick="switchSection('SETTINGS')" title="Settings, Invoice Lookup, Security PIN, Single Printer & QR">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Settings</span>
         </button>
       </nav>
 
       <div class="top-actions">
-        <span id="dualPrintBadge" class="sync-chip">Dual Print Ready</span>
+        <span id="dualPrintBadge" class="sync-chip">Single Printer: Bill + KOT</span>
         <span id="cloudSyncBadge" class="sync-chip offline" style="cursor:pointer;" onclick="pullFromCloud(false)" title="Click to Sync Now">Local Mode</span>
         <span id="roleBadge" class="role-chip">ADMIN</span>
         <button class="btn-outline btn-sm" onclick="switchTheme()">Theme</button>
@@ -1449,7 +1514,7 @@
         <!-- LIVE INCOMING ORDERS FROM TABLE/ONLINE (HIDDEN FOR OWNER) -->
         <div id="liveTableOrdersBox" class="box" style="border-color: var(--accent); display:none;">
           <div class="box-head">
-            <h2>Live Incoming Orders (Waiter, WhatsApp & QR Menu)</h2>
+            <h2>Live Incoming Orders (Waiter, WhatsApp &amp; QR Menu)</h2>
             <span id="liveTableOrderCount" class="live-badge-pulse">0 New Orders</span>
           </div>
           <div id="liveTableOrdersList"></div>
@@ -1467,7 +1532,6 @@
                 </div>
               </div>
 
-              <!-- WHATSAPP MESSAGE QUICK IMPORTER -->
               <div id="whatsappImportBox" class="variant-picker" style="display:none; border-color:#25D366;">
                 <div class="variant-picker-head" style="color:#25D366;">
                   <span>Paste Customer WhatsApp Delivery Order</span>
@@ -1490,7 +1554,7 @@
               <div id="menuCards" class="menu-grid"></div>
             </div>
 
-            <!-- TODAY'S COMPLETED ORDERS & SALES LOG (VISIBLE TO OWNER, ADMIN, CASHIER) -->
+            <!-- TODAY'S COMPLETED ORDERS & SALES LOG -->
             <div class="box">
               <div class="box-head">
                 <h2>Today's Completed Orders &amp; Sales Log (Cash / Card / Online)</h2>
@@ -1519,6 +1583,11 @@
               <div class="box-head">
                 <h2>Active Bill</h2>
                 <span id="currentOrderBadge" class="order-tag">Order #000</span>
+              </div>
+
+              <div id="editingInvoiceBanner" class="edit-mode-banner" style="display:none;">
+                <span id="editingInvoiceText">Editing Invoice #INV-...</span>
+                <button type="button" class="btn-red btn-sm" onclick="cancelEditInvoice()">Cancel Edit</button>
               </div>
 
               <div class="bill-meta-banner">
@@ -1570,10 +1639,11 @@
                   <input id="cName" placeholder="Walk-in Customer" />
                 </div>
                 <div>
-                  <label for="cMobile">Customer Mobile</label>
-                  <input id="cMobile" type="tel" placeholder="03XXXXXXXXX" />
+                  <label for="cMobile">Mobile / Loyalty # (000)</label>
+                  <input id="cMobile" type="text" placeholder="03XX or 000" oninput="autoMatchLoyaltyOnBill()" />
                 </div>
               </div>
+              <div id="billLoyaltyBadge" style="font-size:11.5px; color:var(--accent); font-weight:700; margin-bottom:8px; display:none;"></div>
 
               <table>
                 <thead>
@@ -1589,7 +1659,7 @@
 
               <div class="row-2">
                 <div>
-                  <label for="dPct">Discount (%)</label>
+                  <label id="dPctLabel" for="dPct">Discount (%)</label>
                   <input id="dPct" type="number" min="0" max="100" value="0" oninput="renderBill()" onchange="renderBill()" />
                 </div>
                 <div>
@@ -1600,23 +1670,26 @@
 
               <div class="totals-box">
                 <div><span>Subtotal</span><span id="bSub">PKR 0.00</span></div>
-                <div><span>Discount</span><span id="bDisc" style="color:var(--danger);">PKR 0.00</span></div>
+                <div><span id="bDiscLabel">Discount</span><span id="bDisc" style="color:var(--danger);">PKR 0.00</span></div>
                 <div><span>Tax</span><span id="bTax">PKR 0.00</span></div>
                 <div class="grand"><span>Grand Total</span><span id="bGrand">PKR 0.00</span></div>
               </div>
 
               <div class="btn-group">
-                <button class="btn-brand" onclick="generateBill()">Generate Bill</button>
+                <button id="generateBillBtn" class="btn-brand" onclick="generateBill()">Generate Bill</button>
                 <button class="btn-red" onclick="emptyBill()">Clear</button>
               </div>
             </div>
 
+            <!-- SEPARATE FINAL BILL + SEPARATE KITCHEN KOT PREVIEW -->
             <div class="box" id="printableReceipt">
               <div class="box-head no-print">
-                <h2>Thermal Receipt (Counter + Kitchen KOT)</h2>
+                <h2>Final Bill &amp; Kitchen KOT (Single Printer Dual Ticket)</h2>
               </div>
 
-              <div class="thermal-preview-wrap">
+              <div class="dual-thermal-preview-stack">
+                <!-- 1. FINAL CUSTOMER BILL -->
+                <span class="preview-label-pill no-print">1. Customer Final Bill</span>
                 <div id="invoiceContainer" class="invoice-sheet">
                   <div class="invoice-banner">
                     <div class="welcome-ahb-tag">WELCOME TO AHB</div>
@@ -1631,10 +1704,20 @@
                   </div>
                   <p style="text-align:center; color:#475569; margin:12px 0; font-size:10px;">No bill generated yet.</p>
                 </div>
+
+                <!-- CUT / PAGE BREAK DIVIDER FOR THERMAL PRINTER -->
+                <div class="print-cut-divider">✂ - - - - KITCHEN KOT TICKET - - - - ✂</div>
+
+                <!-- 2. SEPARATE KITCHEN KOT TICKET -->
+                <span class="preview-label-pill no-print" style="background:#b45309;">2. Kitchen KOT Ticket</span>
+                <div id="kitchenKotContainer" class="invoice-sheet">
+                  <div class="kot-preview-header">KITCHEN KOT TICKET</div>
+                  <p style="text-align:center; color:#475569; margin:10px 0; font-size:10px;">Kitchen ticket appears here when bill is generated.</p>
+                </div>
               </div>
 
               <div class="btn-group no-print">
-                <button class="btn-sky" onclick="printDualBillAndKot()">Print Thermal Bill</button>
+                <button class="btn-sky" onclick="printDualBillAndKot()">Print Both (Final Bill + Kitchen KOT)</button>
                 <button class="btn-outline" onclick="saveReceiptTxt()">Save .TXT</button>
                 <button class="btn-amber" onclick="mailReceipt()">Email</button>
               </div>
@@ -1679,12 +1762,12 @@
                 <div>
                   <label for="expCategory">Category</label>
                   <select id="expCategory">
-                    <option value="Vegetables & Grocery">Vegetables & Grocery</option>
-                    <option value="Meat & Chicken">Meat & Chicken</option>
-                    <option value="Dairy & Cheese">Dairy & Cheese</option>
-                    <option value="Gas & Electricity">Gas & Electricity</option>
-                    <option value="Packaging & Boxes">Packaging & Boxes</option>
-                    <option value="Maintenance & Other">Maintenance & Other</option>
+                    <option value="Vegetables & Grocery">Vegetables &amp; Grocery</option>
+                    <option value="Meat & Chicken">Meat &amp; Chicken</option>
+                    <option value="Dairy & Cheese">Dairy &amp; Cheese</option>
+                    <option value="Gas & Electricity">Gas &amp; Electricity</option>
+                    <option value="Packaging & Boxes">Packaging &amp; Boxes</option>
+                    <option value="Maintenance & Other">Maintenance &amp; Other</option>
                   </select>
                 </div>
                 <div>
@@ -1726,7 +1809,7 @@
           <div>
             <div class="box">
               <div class="box-head">
-                <h2>Profit & Deduction Summary (This Month)</h2>
+                <h2>Profit &amp; Deduction Summary (This Month)</h2>
               </div>
               <div class="totals-box" id="liveProfitBox">
                 <div><span>Total Monthly Sales</span><span id="pSales">PKR 0.00</span></div>
@@ -1742,7 +1825,82 @@
         </div>
       </div>
 
-      <!-- SECTION 3: STAFF MANAGEMENT (OWNER & ADMIN) -->
+      <!-- SECTION 3: LOYALTY CARD SYSTEM (PIZZA ITEMS ONLY • STARTS FROM 000) -->
+      <div id="sectionLOYALTY" style="display:none;">
+        <div class="summary-strip">
+          <div class="metric-card amber">
+            <span>Total Loyalty Members</span>
+            <strong id="loyTotalMembers">0</strong>
+          </div>
+          <div class="metric-card">
+            <span>Next Loyalty ID</span>
+            <strong id="loyNextIdBadge">#000</strong>
+          </div>
+          <div class="metric-card sky">
+            <span>Total Loyalty Orders</span>
+            <strong id="loyTotalOrders">0</strong>
+          </div>
+          <div class="metric-card purple">
+            <span>Total Loyalty Spend</span>
+            <strong id="loyTotalSpend">PKR 0.00</strong>
+          </div>
+        </div>
+
+        <div class="box" style="border-color: var(--accent);">
+          <div class="box-head">
+            <h2>Register New Loyalty Member (Pizza Items Only • Starts from 000)</h2>
+            <span id="loyFormNextCode" class="order-tag">Card #000</span>
+          </div>
+          <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--accent); font-weight:700;">
+            Note: Loyalty Card discount applies ONLY on Pizza menu items (Special Pizzas) — never on the full bill or non-pizza items.
+          </p>
+          <div class="row-4">
+            <div>
+              <label for="loyName">Member Full Name *</label>
+              <input id="loyName" placeholder="e.g. Muhammad Usman" />
+            </div>
+            <div>
+              <label for="loyPhone">Mobile Number (03XXXXXXXXX) *</label>
+              <input id="loyPhone" type="tel" placeholder="03001234567" />
+            </div>
+            <div>
+              <label for="loyDiscount">Pizza Discount (%) [Default 10%]</label>
+              <input id="loyDiscount" type="number" min="0" max="50" value="10" placeholder="10" />
+            </div>
+            <div>
+              <label for="loyPointsInit">Starting Bonus Points</label>
+              <input id="loyPointsInit" type="number" min="0" value="10" placeholder="10" />
+            </div>
+          </div>
+          <button class="btn-amber" onclick="addLoyaltyMember()">+ Create Loyalty Card</button>
+        </div>
+
+        <div class="box">
+          <div class="box-head">
+            <h2>Registered Loyalty Members Directory (000 Series — Pizza Discount Only)</h2>
+            <input id="loySearchInput" placeholder="Search Loyalty # (000), Name, or Mobile..." style="width:260px; margin:0;" oninput="renderLoyalty()" />
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Loyalty ID</th>
+                  <th>Customer Name</th>
+                  <th>Mobile Number</th>
+                  <th>Pizza Discount %</th>
+                  <th>Points</th>
+                  <th>Total Orders</th>
+                  <th>Total Spent</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="loyaltyRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: STAFF MANAGEMENT (OWNER & ADMIN) -->
       <div id="sectionSTAFF" style="display:none;">
         <div class="summary-strip">
           <div class="metric-card sky">
@@ -1797,7 +1955,7 @@
 
         <div class="box">
           <div class="box-head">
-            <h2>Staff List — Paid / Unpaid, Suspend & Remove</h2>
+            <h2>Staff List — Paid / Unpaid, Suspend &amp; Remove</h2>
             <button class="btn-outline btn-sm" onclick="resetMonthlySalaries()">Reset All to Unpaid</button>
           </div>
           <div class="table-scroll">
@@ -1820,7 +1978,7 @@
         </div>
       </div>
 
-      <!-- SECTION 4: SETTINGS (OWNER & ADMIN) -->
+      <!-- SECTION 5: SETTINGS (OWNER & ADMIN) -->
       <div id="sectionSETTINGS" style="display:none;">
         <div class="settings-grid">
           <!-- LEFT COLUMN OF SETTINGS -->
@@ -1828,7 +1986,7 @@
             <!-- ORDER TYPE & DELIVERY ANALYTICS -->
             <div class="box" style="border-color: var(--info);">
               <div class="box-head">
-                <h2>Order Type & Delivery Analytics (Dine-In, Takeaway, Delivery & Online)</h2>
+                <h2>Order Type &amp; Delivery Analytics (Dine-In, Takeaway, Delivery &amp; Online)</h2>
               </div>
               <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
                 Complete breakdown showing how many customers chose Dine-In, Takeaway, Home Delivery, or Online payments.
@@ -1854,27 +2012,20 @@
               </div>
             </div>
 
-            <!-- DUAL THERMAL PRINTER & KITCHEN KOT SETTINGS -->
+            <!-- SINGLE THERMAL PRINTER (PRINTS FINAL BILL + KITCHEN KOT TOGETHER) -->
             <div class="box" style="border-color: var(--brand);">
               <div class="box-head">
-                <h2>Dual Thermal Printers (Counter Bill + Kitchen KOT)</h2>
+                <h2>Thermal Printer Settings (Final Bill + Kitchen KOT on One Printer)</h2>
               </div>
               <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-                Set exact Windows printer names (e.g. <strong>Counter_Printer</strong> &amp; <strong>Kitchen_Printer</strong>). In Electron Desktop App, one click silently prints Customer Receipt at Counter and KOT in Kitchen simultaneously.
+                Connected to your single thermal printer (<strong>POS-80</strong> / <strong>SpeedX</strong>). Every print automatically outputs the <strong>Customer Final Bill</strong> first and the <strong>Kitchen KOT Ticket</strong> right after it.
               </p>
 
-              <div class="row-2">
-                <div>
-                  <label for="counterPrinterInput" style="color:var(--brand); font-weight:700;">Counter Printer Name (Windows)</label>
-                  <input id="counterPrinterInput" type="text" placeholder="Counter_Printer" onchange="savePeripheralSettings()" />
-                </div>
-                <div>
-                  <label for="kitchenPrinterInput" style="color:var(--accent); font-weight:700;">Kitchen Printer Name (Windows)</label>
-                  <input id="kitchenPrinterInput" type="text" placeholder="Kitchen_Printer" onchange="savePeripheralSettings()" />
-                </div>
-              </div>
-
               <div class="row-3">
+                <div>
+                  <label for="counterPrinterInput" style="color:var(--brand); font-weight:700;">Thermal Printer Name</label>
+                  <input id="counterPrinterInput" type="text" placeholder="POS-80" onchange="savePeripheralSettings()" />
+                </div>
                 <div>
                   <label for="printModeSelect" style="color:var(--brand); font-weight:700;">Receipt Printing Mode</label>
                   <select id="printModeSelect" onchange="savePeripheralSettings()">
@@ -1883,53 +2034,48 @@
                   </select>
                 </div>
                 <div>
-                  <label for="kotEnabledSelect">Kitchen KOT Print</label>
+                  <label for="kotEnabledSelect">Kitchen KOT Ticket</label>
                   <select id="kotEnabledSelect" onchange="savePeripheralSettings()">
-                    <option value="YES">Enabled (Counter + Kitchen)</option>
-                    <option value="NO">Disabled (Counter Only)</option>
-                  </select>
-                </div>
-                <div>
-                  <label for="printerPaperSelect">Thermal Paper Size</label>
-                  <select id="printerPaperSelect" onchange="savePeripheralSettings()">
-                    <option value="80mm">80mm (3-Inch) Thermal</option>
-                    <option value="58mm">58mm Thermal</option>
+                    <option value="YES">Enabled (Final Bill + Kitchen KOT)</option>
+                    <option value="NO">Disabled (Final Bill Only)</option>
                   </select>
                 </div>
               </div>
 
               <div class="btn-group">
-                <button class="btn-brand" onclick="savePeripheralSettings()">Save Printer Names</button>
-                <button class="btn-sky" onclick="testDualThermalPrint()">Test Both Printers (Counter + KOT)</button>
+                <button class="btn-brand" onclick="savePeripheralSettings()">Save Printer Settings</button>
+                <button class="btn-sky" onclick="testDualThermalPrint()">Test Print (Final Bill + Kitchen KOT)</button>
               </div>
               <div id="peripheralStatusMsg" class="ok-text"></div>
             </div>
 
-            <!-- TABLE & COUNTER PRO QR CODE GENERATOR -->
+            <!-- TABLE, COUNTER & ONLINE DELIVERY QR CODE GENERATOR -->
             <div class="box" style="border-color: var(--info);">
               <div class="box-head">
-                <h2>Counter & Table Pro QR Code Generator (Digital Menu)</h2>
+                <h2>Counter, Table &amp; Online Delivery QR Code Generator</h2>
               </div>
               <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-                Generate a QR code for the <strong>Counter</strong> or any <strong>Table</strong>. Customers scan it to open the full menu, call a waiter, choose Dine-In / Takeaway / Delivery, and send orders directly to Counter POS or WhatsApp.
+                • <strong>Online Delivery QR:</strong> Shows ONLY Home Delivery &amp; Address field.<br />
+                • <strong>Counter Direct &amp; Tables 1–12:</strong> Shows ONLY Dine-In &amp; Takeaway (Delivery option removed).
               </p>
               <div class="row-2">
                 <div>
-                  <label for="qrTableSelect">Select Counter or Table</label>
+                  <label for="qrTableSelect">Select QR Type / Table</label>
                   <select id="qrTableSelect" onchange="generateTableQrCode()">
-                    <option value="Counter Direct">Counter Direct (Walk-In Counter QR)</option>
-                    <option value="Table 1">Table 1</option>
-                    <option value="Table 2">Table 2</option>
-                    <option value="Table 3">Table 3</option>
-                    <option value="Table 4">Table 4</option>
-                    <option value="Table 5">Table 5</option>
-                    <option value="Table 6">Table 6</option>
-                    <option value="Table 7">Table 7</option>
-                    <option value="Table 8">Table 8</option>
-                    <option value="Table 9">Table 9</option>
-                    <option value="Table 10">Table 10</option>
-                    <option value="Table 11">Table 11</option>
-                    <option value="Table 12">Table 12</option>
+                    <option value="Online Delivery">Online Delivery (Home Delivery &amp; Address Only)</option>
+                    <option value="Counter Direct">Counter Direct (Dine-In &amp; Takeaway Only)</option>
+                    <option value="Table 1">Table 1 (Dine-In &amp; Takeaway)</option>
+                    <option value="Table 2">Table 2 (Dine-In &amp; Takeaway)</option>
+                    <option value="Table 3">Table 3 (Dine-In &amp; Takeaway)</option>
+                    <option value="Table 4">Table 4 (Dine-In &amp; Takeaway)</option>
+                    <option value="Table 5">Table 5 (Dine-In &amp; Takeaway)</option>
+                    <option value="Table 6">Table 6 (Dine-In &amp; Takeaway)</option>
+                    <option value="Table 7">Table 7 (Dine-In &amp; Takeaway)</option>
+                    <option value="Table 8">Table 8 (Dine-In &amp; Takeaway)</option>
+                    <option value="Table 9">Table 9 (Dine-In &amp; Takeaway)</option>
+                    <option value="Table 10">Table 10 (Dine-In &amp; Takeaway)</option>
+                    <option value="Table 11">Table 11 (Dine-In &amp; Takeaway)</option>
+                    <option value="Table 12">Table 12 (Dine-In &amp; Takeaway)</option>
                   </select>
                 </div>
                 <div>
@@ -1946,24 +2092,24 @@
 
               <div id="tableQrPrintArea" class="qr-poster-card">
                 <h3>ARHAM HUNGER BOX</h3>
-                <div id="qrPosterTableTitle" class="qr-poster-table-tag">COUNTER DIRECT</div><br />
+                <div id="qrPosterTableTitle" class="qr-poster-table-tag">ONLINE DELIVERY</div><br />
                 <img id="tableQrImg" src="" alt="Digital Menu QR Code" />
-                <p>Scan QR Code with Mobile Camera<br />to View Menu, Call Waiter & Order</p>
+                <p id="qrPosterSubNote">Scan QR Code with Mobile Camera<br />to Order Home Delivery</p>
               </div>
             </div>
 
-            <!-- CLOUD SYNC CONFIGURATION (1-SECOND LIVE SYNC) -->
+            <!-- CLOUD SYNC CONFIGURATION -->
             <div class="box" style="border-color: var(--info);">
               <div class="box-head">
-                <h2>Live 1-Second Cloud Sync (Owner, Admin, Cashier & Waiter)</h2>
+                <h2>Live 1-Second Cloud Sync (Owner, Admin, Cashier &amp; Waiter)</h2>
               </div>
               <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-                Paste your <strong>Firebase Realtime Database URL</strong> below. Every sale, bill, and order made by Admin, Cashier, or Waiter updates on the Owner &amp; Counter screens within <strong>1 second</strong>.
+                Paste your <strong>Firebase Realtime Database URL</strong> below. Every sale, bill, loyalty card, and order syncs across all devices within <strong>1 second</strong>.
               </p>
               <label for="firebaseUrlInput">Firebase Database URL</label>
               <input id="firebaseUrlInput" type="url" placeholder="https://your-project-id-default-rtdb.firebaseio.com" />
               <div class="btn-group">
-                <button class="btn-sky" onclick="saveCloudUrl()">Connect & Live Sync Now</button>
+                <button class="btn-sky" onclick="saveCloudUrl()">Connect &amp; Live Sync Now</button>
                 <button class="btn-outline" onclick="pullFromCloud(false)">Refresh From Cloud</button>
               </div>
               <div id="cloudMsg" class="ok-text"></div>
@@ -1972,21 +2118,21 @@
 
           <!-- RIGHT COLUMN OF SETTINGS -->
           <div>
-            <!-- SEARCH INVOICE BY INVOICE NUMBER (INSTANT LOOKUP) -->
+            <!-- SEARCH INVOICE BY INVOICE NUMBER OR CUSTOMER NAME + EDIT INVOICE -->
             <div class="box" style="border-color: var(--info);">
               <div class="box-head">
-                <h2>Search Invoice by Invoice Number (انوائس نمبر تلاش کریں)</h2>
+                <h2>Search &amp; Edit Invoice (By Invoice # or Customer Name)</h2>
               </div>
               <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-                Enter full Invoice # (e.g. <strong>INV-20261125-000</strong>) or Order # (e.g. <strong>000</strong>) — the full invoice details will appear automatically.
+                Search by <strong>Invoice Number</strong> (e.g. <strong>INV-20261127-000</strong> or <strong>000</strong>) OR by <strong>Customer Name</strong> (e.g. <strong>Ali</strong>) — then view, reprint, or <strong>Edit Invoice</strong>.
               </p>
               <div class="row-2">
                 <div>
-                  <label for="invoiceSearchInput" style="color:var(--info); font-weight:700;">Invoice Number / Order #</label>
-                  <input id="invoiceSearchInput" type="text" placeholder="Type Invoice # (e.g. INV-20261125-000 or 000)" oninput="lookupInvoiceByNumber()" />
+                  <label for="invoiceSearchInput" style="color:var(--info); font-weight:700;">Invoice Number OR Customer Name</label>
+                  <input id="invoiceSearchInput" type="text" placeholder="Type Invoice # (000) or Customer Name..." oninput="lookupInvoiceByNumberOrName()" />
                 </div>
                 <div style="display:flex; align-items:flex-end;">
-                  <button class="btn-sky" style="width:100%; margin-bottom:10px;" onclick="lookupInvoiceByNumber()">Find Invoice</button>
+                  <button class="btn-sky" style="width:100%; margin-bottom:10px;" onclick="lookupInvoiceByNumberOrName()">Search Invoice</button>
                 </div>
               </div>
               <div id="invoiceLookupResultArea" class="invoice-lookup-card" style="display:none;"></div>
@@ -2148,7 +2294,7 @@
                 <h2 style="color:var(--danger);">Owner Exclusive: POS &amp; Expenses Reset</h2>
               </div>
               <p class="sub" style="margin:0 0 10px; font-size:12px; color:var(--muted);">
-                <strong>Owner Control Only:</strong> Clears all POS sales, Today's Orders, Order Type Analytics, order numbers (#000), and Expenses records permanently. <strong>Staff records &amp; salaries remain safe.</strong>
+                <strong>Owner Control Only:</strong> Clears all POS sales, Today's Orders, Order Type Analytics, order numbers (#000), and Expenses records permanently. <strong>Staff &amp; Loyalty records remain safe.</strong>
               </p>
               <div class="btn-group">
                 <button type="button" class="btn-red" id="wipeBtn" onclick="wipeSalesData()">Reset POS &amp; Expenses Data</button>
@@ -2181,6 +2327,8 @@
       PASS: "ahb_pos_pass_v4",
       THEME: "ahb_pos_theme_v4",
       STAFF: "ahb_pos_staff_v4",
+      LOYALTY: "ahb_pos_loyalty_v4",
+      LOYALTY_SEQ: "ahb_pos_loyalty_seq_v4",
       EXPENSES: "ahb_pos_expenses_v4",
       CLOUD_URL: "ahb_pos_cloud_url_v4",
       TABLE_QUEUE: "ahb_pos_table_queue_v4",
@@ -2327,6 +2475,29 @@
       code: formatCode(idx + 1)
     }));
 
+    function isPizzaMenuItem(menuOrBillItem) {
+      if (!menuOrBillItem) return false;
+      const cat = String(menuOrBillItem.category || "").toLowerCase().trim();
+      if (cat === "special pizzas" || cat === "pizza" || cat === "pizzas") return true;
+
+      if (menuOrBillItem.parentId) {
+        const parent = items.find(i => i.id === menuOrBillItem.parentId);
+        if (parent) {
+          const pCat = String(parent.category || "").toLowerCase().trim();
+          if (pCat === "special pizzas" || pCat === "pizza" || pCat === "pizzas") return true;
+        }
+      }
+
+      if (menuOrBillItem.code) {
+        const byCode = items.find(i => String(i.code) === String(menuOrBillItem.code));
+        if (byCode) {
+          const cCat = String(byCode.category || "").toLowerCase().trim();
+          if (cCat === "special pizzas" || cCat === "pizza" || cCat === "pizzas") return true;
+        }
+      }
+      return false;
+    }
+
     let auth = JSON.parse(localStorage.getItem(DB.PASS)) || {
       OWNER_USER: "owner",
       ADMIN_USER: "admin",
@@ -2360,19 +2531,20 @@
     let orders = JSON.parse(localStorage.getItem(DB.SALES)) || [];
     let orderCounter = localStorage.getItem(DB.ORDER_SEQ) !== null ? Number(localStorage.getItem(DB.ORDER_SEQ)) : 0;
     let staffList = JSON.parse(localStorage.getItem(DB.STAFF)) || [];
+    let loyaltyList = JSON.parse(localStorage.getItem(DB.LOYALTY)) || [];
+    let loyaltyCounter = localStorage.getItem(DB.LOYALTY_SEQ) !== null ? Number(localStorage.getItem(DB.LOYALTY_SEQ)) : 0;
     let expensesList = JSON.parse(localStorage.getItem(DB.EXPENSES)) || [];
     let tableOrderQueue = JSON.parse(localStorage.getItem(DB.TABLE_QUEUE)) || [];
     let waiterCallQueue = JSON.parse(localStorage.getItem(DB.WAITER_CALLS)) || [];
     let dismissedOrderIds = JSON.parse(localStorage.getItem(DB.DISMISSED_IDS)) || [];
     let peripheralSettings = JSON.parse(localStorage.getItem(DB.PERIPHERALS)) || {
-      counterPrinter: "Counter_Printer",
-      kitchenPrinter: "Kitchen_Printer",
+      counterPrinter: "POS-80",
+      kitchenPrinter: "POS-80",
       kotEnabled: "YES",
       printMode: "AUTO",
       paperSize: "80mm"
     };
-    if (!peripheralSettings.counterPrinter) peripheralSettings.counterPrinter = "Counter_Printer";
-    if (!peripheralSettings.kitchenPrinter) peripheralSettings.kitchenPrinter = "Kitchen_Printer";
+    if (!peripheralSettings.counterPrinter) peripheralSettings.counterPrinter = "POS-80";
     if (!peripheralSettings.kotEnabled) peripheralSettings.kotEnabled = "YES";
 
     let cloudBaseUrl = (localStorage.getItem(DB.CLOUD_URL) || DEFAULT_CLOUD_URL).replace(/\/+$/, "");
@@ -2383,6 +2555,8 @@
     let activeCat = "All";
     let custActiveCat = "All";
     let bill = [];
+    let editingInvoiceUid = null;
+    let activeLoyaltyMemberCode = null;
     let custCart = [];
     let activeCustomerTable = "Counter Direct";
     let custSelectedOrderType = "Dine-In";
@@ -2450,9 +2624,7 @@
         tabPass.classList.remove("active");
         tabPin.classList.add("active");
         const pinInput = document.getElementById("quickPinInput");
-        if (pinInput) {
-          pinInput.focus();
-        }
+        if (pinInput) pinInput.focus();
       } else {
         passForm.style.display = "block";
         pinForm.style.display = "none";
@@ -2523,7 +2695,13 @@
 
     function updateOrderBadge() {
       const badge = document.getElementById("currentOrderBadge");
-      if (badge) badge.textContent = "Order #" + formatCode(orderCounter);
+      if (!badge) return;
+      if (editingInvoiceUid) {
+        const ord = orders.find(o => o.uid === editingInvoiceUid);
+        badge.textContent = ord ? `Editing #${ord.orderNumber}` : "Editing Bill";
+      } else {
+        badge.textContent = "Order #" + formatCode(orderCounter);
+      }
     }
 
     function updateCloudBadge(statusText, isOnline) {
@@ -2536,16 +2714,10 @@
     function updateDualPrintBadge() {
       const badge = document.getElementById("dualPrintBadge");
       if (!badge) return;
-      const isElectron = !!(window.electronPOS && typeof window.electronPOS.printDualReceipts === "function");
-      if (isElectron) {
-        badge.textContent = peripheralSettings.kotEnabled === "YES"
-          ? `Silent Dual Print (${peripheralSettings.counterPrinter} + ${peripheralSettings.kitchenPrinter})`
-          : `Silent Print (${peripheralSettings.counterPrinter})`;
-        badge.classList.remove("offline");
-      } else {
-        badge.textContent = "Browser Print Mode";
-        badge.classList.add("offline");
-      }
+      badge.textContent = peripheralSettings.kotEnabled === "YES"
+        ? `Printer (${peripheralSettings.counterPrinter}): Final Bill + KOT`
+        : `Printer (${peripheralSettings.counterPrinter}): Final Bill`;
+      badge.classList.remove("offline");
     }
 
     function saveLocalCache() {
@@ -2554,6 +2726,8 @@
       localStorage.setItem(DB.ORDER_SEQ, String(orderCounter));
       localStorage.setItem(DB.PASS, JSON.stringify(auth));
       localStorage.setItem(DB.STAFF, JSON.stringify(staffList));
+      localStorage.setItem(DB.LOYALTY, JSON.stringify(loyaltyList));
+      localStorage.setItem(DB.LOYALTY_SEQ, String(loyaltyCounter));
       localStorage.setItem(DB.EXPENSES, JSON.stringify(expensesList));
       localStorage.setItem(DB.TABLE_QUEUE, JSON.stringify(tableOrderQueue));
       localStorage.setItem(DB.WAITER_CALLS, JSON.stringify(waiterCallQueue));
@@ -2606,6 +2780,10 @@
         applyLoginScreenModeUI();
       }
       if (Array.isArray(data.staffList)) staffList = data.staffList;
+      if (Array.isArray(data.loyaltyList)) loyaltyList = data.loyaltyList;
+      if (typeof data.loyaltyCounter === "number") {
+        loyaltyCounter = Math.max(loyaltyCounter, data.loyaltyCounter);
+      }
       expensesList = Array.isArray(data.expensesList) ? data.expensesList : [];
 
       const cloudDismissed = Array.isArray(data.dismissedOrderIds) ? data.dismissedOrderIds : [];
@@ -2645,6 +2823,7 @@
       }
       if (canManageAdminOrOwner()) {
         renderExpenses();
+        renderLoyalty();
         renderStaff();
       }
       updateCloudBadge("Live Synced (1s)", true);
@@ -2654,7 +2833,6 @@
       stopRealtimeCloudStream();
       if (!cloudBaseUrl) return;
 
-      // 1-second fast polling fallback + Firebase SSE instant stream
       cloudPollTimer = setInterval(() => pullFromCloud(true), 1000);
 
       try {
@@ -2730,6 +2908,8 @@
           orderCounter,
           auth,
           staffList,
+          loyaltyList,
+          loyaltyCounter,
           expensesList,
           tableOrderQueue: cleanQueue,
           waiterCallQueue: cleanCalls,
@@ -2840,13 +3020,190 @@
 
       if (tableParam) {
         openCustomerPortal(tableParam, false);
+      } else if (modeParam === "delivery") {
+        openCustomerPortal("Online Delivery", false);
       } else if (modeParam === "counter" || modeParam === "menu") {
         openCustomerPortal("Counter Direct", false);
       }
     }
 
-    /* SEARCH INVOICE BY INVOICE NUMBER IN SETTINGS */
-    function lookupInvoiceByNumber() {
+    /* LOYALTY CARD SYSTEM (PIZZA ITEMS ONLY • STARTS FROM 000) */
+    async function addLoyaltyMember() {
+      if (!canManageAdminOrOwner()) return;
+      const name = document.getElementById("loyName").value.trim();
+      const phone = document.getElementById("loyPhone").value.trim();
+      const discountPct = Math.min(50, Math.max(0, Number(document.getElementById("loyDiscount").value) || 0));
+      const initPoints = Math.max(0, Number(document.getElementById("loyPointsInit").value) || 0);
+
+      if (!name || !phone) {
+        alert("Enter Customer Name and Mobile Number for Loyalty Card.");
+        return;
+      }
+
+      const duplicate = loyaltyList.find(m => m.phone.replace(/\D/g, "") === phone.replace(/\D/g, ""));
+      if (duplicate) {
+        alert(`This mobile number is already registered under Loyalty Card #${duplicate.code} (${duplicate.name}).`);
+        return;
+      }
+
+      const code = formatCode(loyaltyCounter);
+      loyaltyCounter += 1;
+
+      loyaltyList.unshift({
+        id: "LOY-" + Date.now(),
+        code,
+        name,
+        phone,
+        discountPct,
+        points: initPoints,
+        ordersCount: 0,
+        totalSpent: 0,
+        createdAt: getTodayIso()
+      });
+
+      document.getElementById("loyName").value = "";
+      document.getElementById("loyPhone").value = "";
+      document.getElementById("loyDiscount").value = "10";
+      document.getElementById("loyPointsInit").value = "10";
+
+      renderLoyalty();
+      await syncStore(false);
+    }
+
+    function updateLoyaltyBillBanner(member) {
+      const badge = document.getElementById("billLoyaltyBadge");
+      const dLabel = document.getElementById("dPctLabel");
+      if (!badge) return;
+
+      if (!member) {
+        badge.style.display = "none";
+        if (dLabel) dLabel.textContent = "Discount (%)";
+        return;
+      }
+
+      const pizzaSubtotal = bill
+        .filter(b => isPizzaMenuItem(b))
+        .reduce((s, b) => s + b.price * b.qty, 0);
+
+      badge.style.display = "block";
+      if (dLabel) dLabel.textContent = "Pizza Loyalty Discount (%)";
+
+      if (pizzaSubtotal > 0) {
+        badge.style.color = "var(--brand)";
+        badge.textContent = `Loyalty Card #${member.code} (${member.name}) • ${member.discountPct}% Discount Active ONLY on Pizza Items (Pizza Total: PKR ${pizzaSubtotal.toFixed(0)})`;
+      } else {
+        badge.style.color = "var(--accent)";
+        badge.textContent = `Loyalty Card #${member.code} (${member.name}) • ${member.discountPct}% Discount applies ONLY on Pizza Items (Add a Pizza to apply discount)`;
+      }
+    }
+
+    function applyLoyaltyToPosBill(code) {
+      const member = loyaltyList.find(m => m.code === code);
+      if (!member) return;
+      activeLoyaltyMemberCode = member.code;
+      document.getElementById("cName").value = member.name;
+      document.getElementById("cMobile").value = member.phone;
+      document.getElementById("dPct").value = String(member.discountPct !== undefined ? member.discountPct : 10);
+
+      updateLoyaltyBillBanner(member);
+      renderBill();
+      switchSection("POS");
+    }
+
+    function autoMatchLoyaltyOnBill() {
+      const val = (document.getElementById("cMobile").value || "").trim();
+      if (!val) {
+        activeLoyaltyMemberCode = null;
+        document.getElementById("dPct").value = "0";
+        updateLoyaltyBillBanner(null);
+        renderBill();
+        return;
+      }
+
+      const matched = loyaltyList.find(m =>
+        m.code === val ||
+        m.phone.replace(/\D/g, "") === val.replace(/\D/g, "")
+      );
+
+      if (matched) {
+        activeLoyaltyMemberCode = matched.code;
+        if (!document.getElementById("cName").value.trim()) {
+          document.getElementById("cName").value = matched.name;
+        }
+        document.getElementById("dPct").value = String(matched.discountPct !== undefined ? matched.discountPct : 10);
+        updateLoyaltyBillBanner(matched);
+        renderBill();
+      } else {
+        if (activeLoyaltyMemberCode) {
+          activeLoyaltyMemberCode = null;
+          document.getElementById("dPct").value = "0";
+        }
+        updateLoyaltyBillBanner(null);
+        renderBill();
+      }
+    }
+
+    async function removeLoyaltyMember(code) {
+      if (!canManageAdminOrOwner()) return;
+      if (!confirm(`Delete Loyalty Card #${code}?`)) return;
+      loyaltyList = loyaltyList.filter(m => m.code !== code);
+      renderLoyalty();
+      await syncStore(false);
+    }
+
+    function renderLoyalty() {
+      const tbody = document.getElementById("loyaltyRows");
+      if (!tbody) return;
+
+      const nextCodeStr = "#" + formatCode(loyaltyCounter);
+      const nextEl = document.getElementById("loyNextIdBadge");
+      const formNextEl = document.getElementById("loyFormNextCode");
+      if (nextEl) nextEl.textContent = nextCodeStr;
+      if (formNextEl) formNextEl.textContent = "Card " + nextCodeStr;
+
+      document.getElementById("loyTotalMembers").textContent = String(loyaltyList.length);
+      const totalOrders = loyaltyList.reduce((s, m) => s + Number(m.ordersCount || 0), 0);
+      const totalSpent = loyaltyList.reduce((s, m) => s + Number(m.totalSpent || 0), 0);
+      document.getElementById("loyTotalOrders").textContent = String(totalOrders);
+      document.getElementById("loyTotalSpend").textContent = "PKR " + totalSpent.toFixed(2);
+
+      const q = (document.getElementById("loySearchInput")?.value || "").trim().toLowerCase();
+      const filtered = loyaltyList.filter(m =>
+        !q ||
+        m.code.toLowerCase().includes(q) ||
+        m.name.toLowerCase().includes(q) ||
+        m.phone.toLowerCase().includes(q)
+      );
+
+      tbody.innerHTML = "";
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--muted);">No loyalty members found. Next new card starts at #${formatCode(loyaltyCounter)}.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach(m => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><span class="order-tag">#${m.code}</span></td>
+          <td><b>${m.name}</b></td>
+          <td>${m.phone}</td>
+          <td><span class="status-pill pill-paid">${m.discountPct}% OFF (Pizza Only)</span></td>
+          <td><b>${m.points} pts</b></td>
+          <td>${m.ordersCount || 0}</td>
+          <td>PKR ${Number(m.totalSpent || 0).toFixed(2)}</td>
+          <td>
+            <div class="btn-group">
+              ${role !== "OWNER" ? `<button class="btn-brand btn-sm" onclick="applyLoyaltyToPosBill('${m.code}')">Use in Bill</button>` : ""}
+              <button class="btn-red btn-sm" onclick="removeLoyaltyMember('${m.code}')">Delete</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    /* SEARCH INVOICE BY INVOICE NUMBER OR CUSTOMER NAME + EDIT INVOICE */
+    function lookupInvoiceByNumberOrName() {
       const q = (document.getElementById("invoiceSearchInput").value || "").trim().toLowerCase();
       const resultBox = document.getElementById("invoiceLookupResultArea");
       if (!resultBox) return;
@@ -2857,71 +3214,137 @@
         return;
       }
 
-      const found = [...orders].reverse().find(o => {
+      const matches = [...orders].reverse().filter(o => {
         const inv = String(o.invoiceNumber || "").toLowerCase();
         const ordNo = String(o.orderNumber || "").toLowerCase();
-        return inv === q || ordNo === q || inv.endsWith("-" + q) || inv.includes(q);
+        const custName = String(o.customer || "").toLowerCase();
+        return inv === q || ordNo === q || inv.endsWith("-" + q) || inv.includes(q) || custName.includes(q);
       });
 
       resultBox.style.display = "block";
 
-      if (!found) {
+      if (matches.length === 0) {
         resultBox.innerHTML = `<div style="color:var(--danger); font-weight:700; font-size:12.5px;">No invoice found matching "${q}". (کوئی انوائس نہیں ملی)</div>`;
         return;
       }
 
-      const itemsList = Array.isArray(found.items) && found.items.length > 0
-        ? found.items.map(it => `
-            <tr>
-              <td>[${it.code || ""}] ${it.name}</td>
-              <td style="text-align:center; font-weight:normal;">${it.qty}</td>
-              <td style="text-align:right;">PKR ${Number(it.lineTotal || (it.unitPrice * it.qty) || 0).toFixed(2)}</td>
-            </tr>
-          `).join("")
-        : `<tr><td colspan="3" style="color:var(--muted); font-size:12px;">Item breakdown not saved on legacy record.</td></tr>`;
+      resultBox.innerHTML = matches.slice(0, 10).map(found => {
+        const itemsList = Array.isArray(found.items) && found.items.length > 0
+          ? found.items.map(it => `
+              <tr>
+                <td>[${it.code || ""}] ${it.name}</td>
+                <td style="text-align:center; font-weight:normal;">${it.qty}</td>
+                <td style="text-align:right;">PKR ${Number(it.lineTotal || (it.unitPrice * it.qty) || 0).toFixed(2)}</td>
+              </tr>
+            `).join("")
+          : `<tr><td colspan="3" style="color:var(--muted); font-size:12px;">Item breakdown not saved on legacy record.</td></tr>`;
 
-      const printActionBtn = role !== "OWNER"
-        ? `<button class="btn-sky btn-sm" onclick="reprintFoundInvoice('${found.uid || found.orderNumber}')">Load &amp; Print Receipt</button>`
-        : "";
+        const keyId = found.uid || found.orderNumber;
+        const actionBtns = role !== "OWNER"
+          ? `
+            <div class="btn-group">
+              <button class="btn-amber btn-sm" onclick="editFoundInvoice('${keyId}')">Edit Invoice</button>
+              <button class="btn-sky btn-sm" onclick="reprintFoundInvoice('${keyId}')">Reprint</button>
+            </div>
+          `
+          : "";
 
-      resultBox.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:8px;">
-          <div>
-            <strong style="color:var(--brand); font-size:14px;">${found.invoiceNumber || "INV-" + found.orderNumber}</strong>
-            <span class="order-tag" style="margin-left:6px;">Order #${found.orderNumber}</span>
+        return `
+          <div style="border:1px solid var(--line); border-radius:10px; padding:10px; margin-bottom:10px; background:var(--panel);">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:8px;">
+              <div>
+                <strong style="color:var(--brand); font-size:14px;">${found.invoiceNumber || "INV-" + found.orderNumber}</strong>
+                <span class="order-tag" style="margin-left:6px;">Order #${found.orderNumber}</span>
+              </div>
+              ${actionBtns}
+            </div>
+            <div style="font-size:12px; line-height:1.6; margin-bottom:8px;">
+              <div><strong>Customer:</strong> ${found.customer || "Walk-in"} &nbsp;|&nbsp; <strong>Mobile:</strong> ${found.mobile || "N/A"}</div>
+              <div><strong>Date:</strong> ${found.dateOnly || found.date || "-"} &nbsp;|&nbsp; <strong>Time:</strong> ${found.timeOnly || found.timestamp || "-"}</div>
+              <div><strong>Service:</strong> ${found.orderType || "Dine-In"} (${found.tableNumber || "No Table"}) &nbsp;|&nbsp; <strong>Payment:</strong> ${found.paymentMethod || "Cash"}</div>
+            </div>
+            <table style="margin-bottom:8px;">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th style="text-align:center; font-weight:normal;">Qty</th>
+                  <th style="text-align:right;">Amount</th>
+                </tr>
+              </thead>
+              <tbody>${itemsList}</tbody>
+            </table>
+            <div class="totals-box" style="margin-bottom:0;">
+              <div><span>Subtotal</span><span>PKR ${Number(found.subtotal || found.total || 0).toFixed(2)}</span></div>
+              <div><span>Discount</span><span style="color:var(--danger);">PKR ${Number(found.discount || 0).toFixed(2)}</span></div>
+              <div><span>Tax</span><span>PKR ${Number(found.tax || 0).toFixed(2)}</span></div>
+              <div class="grand"><span>Total Paid (${found.paymentMethod || "Cash"})</span><span>PKR ${Number(found.total || 0).toFixed(2)}</span></div>
+            </div>
           </div>
-          ${printActionBtn}
-        </div>
-        <div style="font-size:12px; line-height:1.6; margin-bottom:8px;">
-          <div><strong>Date:</strong> ${found.dateOnly || found.date || "-"} &nbsp;|&nbsp; <strong>Time:</strong> ${found.timeOnly || found.timestamp || "-"}</div>
-          <div><strong>Customer:</strong> ${found.customer || "Walk-in"} &nbsp;|&nbsp; <strong>Mobile:</strong> ${found.mobile || "N/A"}</div>
-          <div><strong>Service:</strong> ${found.orderType || "Dine-In"} (${found.tableNumber || "No Table"}) &nbsp;|&nbsp; <strong>Payment:</strong> ${found.paymentMethod || "Cash"}</div>
-        </div>
-        <table style="margin-bottom:8px;">
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th style="text-align:center; font-weight:normal;">Qty</th>
-              <th style="text-align:right;">Amount</th>
-            </tr>
-          </thead>
-          <tbody>${itemsList}</tbody>
-        </table>
-        <div class="totals-box" style="margin-bottom:0;">
-          <div><span>Subtotal</span><span>PKR ${Number(found.subtotal || found.total || 0).toFixed(2)}</span></div>
-          <div><span>Discount</span><span style="color:var(--danger);">PKR ${Number(found.discount || 0).toFixed(2)}</span></div>
-          <div><span>Tax</span><span>PKR ${Number(found.tax || 0).toFixed(2)}</span></div>
-          <div class="grand"><span>Total Paid (${found.paymentMethod || "Cash"})</span><span>PKR ${Number(found.total || 0).toFixed(2)}</span></div>
-        </div>
-      `;
+        `;
+      }).join("");
     }
 
-    function reprintFoundInvoice(uidOrOrderNo) {
+    function editFoundInvoice(uidOrOrderNo) {
       if (role === "OWNER") return;
       const found = orders.find(o => o.uid === uidOrOrderNo || o.orderNumber === uidOrOrderNo);
       if (!found) return;
 
-      const billedLines = Array.isArray(found.items) ? found.items : [];
+      editingInvoiceUid = found.uid || found.orderNumber;
+      bill = (found.items || []).map((it, idx) => {
+        const matchedMenu = items.find(m => String(m.code) === String(it.code));
+        return {
+          lineKey: `edit_${idx}_${it.code || idx}`,
+          parentId: matchedMenu ? matchedMenu.id : (idx + 1),
+          code: it.code || formatCode(idx + 1),
+          category: it.category || (matchedMenu ? matchedMenu.category : ""),
+          name: it.name,
+          price: Number(it.unitPrice || (it.lineTotal / Math.max(1, it.qty)) || 0),
+          qty: Number(it.qty || 1)
+        };
+      });
+
+      const otSel = document.getElementById("orderType");
+      if ([...otSel.options].some(o => o.value === found.orderType)) otSel.value = found.orderType;
+
+      const tblSel = document.getElementById("tableNumber");
+      if ([...tblSel.options].some(o => o.value === found.tableNumber)) tblSel.value = found.tableNumber;
+
+      const paySel = document.getElementById("paymentMethod");
+      if ([...paySel.options].some(o => o.value === found.paymentMethod)) paySel.value = found.paymentMethod;
+
+      document.getElementById("cName").value = found.customer || "";
+      document.getElementById("cMobile").value = found.mobile === "N/A" ? "" : (found.mobile || "");
+
+      const sub = Number(found.subtotal || 0);
+      const disc = Number(found.discount || 0);
+      const computedDiscPct = sub > 0 ? Math.round((disc / sub) * 100) : 0;
+      document.getElementById("dPct").value = String(computedDiscPct);
+
+      document.getElementById("editingInvoiceBanner").style.display = "flex";
+      document.getElementById("editingInvoiceText").textContent = `Editing Invoice: ${found.invoiceNumber || "INV-" + found.orderNumber} (Order #${found.orderNumber})`;
+      document.getElementById("generateBillBtn").textContent = "Update Invoice & Reprint";
+
+      updateOrderBadge();
+      renderBill();
+      switchSection("POS");
+    }
+
+    function cancelEditInvoice() {
+      editingInvoiceUid = null;
+      activeLoyaltyMemberCode = null;
+      bill = [];
+      document.getElementById("cName").value = "";
+      document.getElementById("cMobile").value = "";
+      document.getElementById("dPct").value = "0";
+      updateLoyaltyBillBanner(null);
+      document.getElementById("editingInvoiceBanner").style.display = "none";
+      document.getElementById("generateBillBtn").textContent = "Generate Bill";
+      updateOrderBadge();
+      renderBill();
+    }
+
+    function buildReceiptAndKotBlocks(dataObj) {
+      const billedLines = Array.isArray(dataObj.items) ? dataObj.items : [];
       const rowsHtml = billedLines.length
         ? billedLines.map(item => `
             <tr>
@@ -2930,15 +3353,27 @@
               <td class="num">${Number(item.lineTotal || 0).toFixed(0)}</td>
             </tr>
           `).join("")
-        : `<tr><td colspan="3">Order #${found.orderNumber} Items</td></tr>`;
+        : `<tr><td colspan="3">Order #${dataObj.orderNumber} Items</td></tr>`;
 
-      const tableLineHtml = (found.tableNumber && found.tableNumber !== "No Table") ? `<div><strong>Table:</strong> ${found.tableNumber}</div>` : "";
-      const dateOnlyStr = found.dateOnly || found.date || "";
-      const timeOnlyStr = found.timeOnly || found.timestamp || "";
-      const paymentMethod = found.paymentMethod || "Cash";
-      const invoiceNumber = found.invoiceNumber || `INV-${found.orderNumber}`;
+      const kotRowsHtml = billedLines.length
+        ? billedLines.map(item => `
+            <tr class="kot-item">
+              <td>[${item.code || ""}] ${item.name}</td>
+              <td class="qty-col">x${item.qty}</td>
+            </tr>
+          `).join("")
+        : `<tr><td colspan="2">Order #${dataObj.orderNumber}</td></tr>`;
 
-      latestCounterHtml = `
+      const tableLineHtml = (dataObj.tableNumber && dataObj.tableNumber !== "No Table")
+        ? `<div><strong>Table:</strong> ${dataObj.tableNumber}</div>`
+        : "";
+      const dateOnlyStr = dataObj.dateOnly || dataObj.date || "";
+      const timeOnlyStr = dataObj.timeOnly || dataObj.timestamp || "";
+      const paymentMethod = dataObj.paymentMethod || "Cash";
+      const invoiceNumber = dataObj.invoiceNumber || `INV-${dataObj.orderNumber}`;
+      const discountLabelText = dataObj.loyaltyPizzaOnly ? "Pizza Loyalty Disc:" : "Discount:";
+
+      const counterPrintHtml = `
         <div class="center line-dash">
           <div class="welcome-tag">${RESTAURANT_INFO.welcomeTag}</div>
           <div class="logo-mini">
@@ -2951,17 +3386,17 @@
           </div>
         </div>
 
-        <div class="order-hero">ORDER #${found.orderNumber}</div>
+        <div class="order-hero">ORDER #${dataObj.orderNumber}</div>
 
         <div class="line-dash" style="font-size:10px;">
           <div><strong>Invoice #:</strong> ${invoiceNumber}</div>
           <div><strong>Date:</strong> ${dateOnlyStr}</div>
           <div><strong>Time:</strong> ${timeOnlyStr}</div>
-          <div><strong>Service:</strong> ${found.orderType || "Dine-In"}</div>
+          <div><strong>Service:</strong> ${dataObj.orderType || "Dine-In"}</div>
           ${tableLineHtml}
           <div><strong>Payment:</strong> ${paymentMethod}</div>
-          <div><strong>Customer:</strong> ${found.customer || "Walk-in"}</div>
-          <div><strong>Mobile:</strong> ${found.mobile || "N/A"}</div>
+          <div><strong>Customer:</strong> ${dataObj.customer || "Walk-in"}</div>
+          <div><strong>Mobile:</strong> ${dataObj.mobile || "N/A"}</div>
         </div>
 
         <table>
@@ -2976,10 +3411,10 @@
         </table>
 
         <div style="border-top:1px dashed #000; padding-top:4px;">
-          <div class="row-flex"><span>Subtotal:</span><span>PKR ${Number(found.subtotal || found.total || 0).toFixed(2)}</span></div>
-          <div class="row-flex"><span>Discount:</span><span>PKR ${Number(found.discount || 0).toFixed(2)}</span></div>
-          <div class="row-flex"><span>Tax:</span><span>PKR ${Number(found.tax || 0).toFixed(2)}</span></div>
-          <div class="row-flex bold line-solid" style="font-size:12px;"><span>TOTAL (${paymentMethod.toUpperCase()}):</span><span>PKR ${Number(found.total || 0).toFixed(2)}</span></div>
+          <div class="row-flex"><span>Subtotal:</span><span>PKR ${Number(dataObj.subtotal || dataObj.total || 0).toFixed(2)}</span></div>
+          <div class="row-flex"><span>${discountLabelText}</span><span>PKR ${Number(dataObj.discount || 0).toFixed(2)}</span></div>
+          <div class="row-flex"><span>Tax:</span><span>PKR ${Number(dataObj.tax || 0).toFixed(2)}</span></div>
+          <div class="row-flex bold line-solid" style="font-size:12px;"><span>TOTAL (${paymentMethod.toUpperCase()}):</span><span>PKR ${Number(dataObj.total || 0).toFixed(2)}</span></div>
         </div>
 
         <div class="center" style="margin-top:6px; font-size:9.5px;">
@@ -2990,6 +3425,30 @@
             ${RESTAURANT_INFO.devCredit}<br />
             ${RESTAURANT_INFO.devContact}
           </div>
+        </div>
+      `;
+
+      const kitchenPrintHtml = `
+        <div class="kot-header">KITCHEN KOT • ORDER #${dataObj.orderNumber}</div>
+        <div class="kot-meta line-dash">
+          <div>Invoice: ${invoiceNumber}</div>
+          <div>Service: ${dataObj.orderType || "Dine-In"}</div>
+          <div>Table: ${dataObj.tableNumber || "No Table"}</div>
+          <div>Customer: ${dataObj.customer || "Walk-in"}</div>
+          <div>Date: ${dateOnlyStr}</div>
+          <div>Time: ${timeOnlyStr}</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>ITEM TO PREPARE</th>
+              <th class="qty-col">QTY</th>
+            </tr>
+          </thead>
+          <tbody>${kotRowsHtml}</tbody>
+        </table>
+        <div class="center bold" style="margin-top:6px; font-size:11px;">
+          --- ARHAM HUNGER BOX KITCHEN ---
         </div>
       `;
 
@@ -3006,17 +3465,17 @@
           </div>
         </div>
 
-        <div class="order-hero-box">ORDER #${found.orderNumber}</div>
+        <div class="order-hero-box">ORDER #${dataObj.orderNumber}</div>
 
         <div class="invoice-meta-grid">
           <div><strong>Invoice #:</strong> ${invoiceNumber}</div>
           <div><strong>Date:</strong> ${dateOnlyStr}</div>
           <div><strong>Time:</strong> ${timeOnlyStr}</div>
-          <div><strong>Service:</strong> ${found.orderType || "Dine-In"}</div>
+          <div><strong>Service:</strong> ${dataObj.orderType || "Dine-In"}</div>
           ${tableLineHtml}
           <div><strong>Payment:</strong> ${paymentMethod}</div>
-          <div><strong>Customer:</strong> ${found.customer || "Walk-in"}</div>
-          <div><strong>Mobile:</strong> ${found.mobile || "N/A"}</div>
+          <div><strong>Customer:</strong> ${dataObj.customer || "Walk-in"}</div>
+          <div><strong>Mobile:</strong> ${dataObj.mobile || "N/A"}</div>
         </div>
 
         <table class="invoice-table">
@@ -3031,10 +3490,10 @@
         </table>
 
         <div class="invoice-summary">
-          <div class="invoice-summary-row"><span>Subtotal:</span><span>PKR ${Number(found.subtotal || found.total || 0).toFixed(2)}</span></div>
-          <div class="invoice-summary-row"><span>Discount:</span><span>PKR ${Number(found.discount || 0).toFixed(2)}</span></div>
-          <div class="invoice-summary-row"><span>Tax:</span><span>PKR ${Number(found.tax || 0).toFixed(2)}</span></div>
-          <div class="invoice-summary-row grand-row"><span>TOTAL (${paymentMethod.toUpperCase()}):</span><span>PKR ${Number(found.total || 0).toFixed(2)}</span></div>
+          <div class="invoice-summary-row"><span>Subtotal:</span><span>PKR ${Number(dataObj.subtotal || dataObj.total || 0).toFixed(2)}</span></div>
+          <div class="invoice-summary-row"><span>${discountLabelText}</span><span>PKR ${Number(dataObj.discount || 0).toFixed(2)}</span></div>
+          <div class="invoice-summary-row"><span>Tax:</span><span>PKR ${Number(dataObj.tax || 0).toFixed(2)}</span></div>
+          <div class="invoice-summary-row grand-row"><span>TOTAL (${paymentMethod.toUpperCase()}):</span><span>PKR ${Number(dataObj.total || 0).toFixed(2)}</span></div>
         </div>
 
         <div class="invoice-footer">
@@ -3048,8 +3507,41 @@
         </div>
       `;
 
+      document.getElementById("kitchenKotContainer").innerHTML = `
+        <div class="kot-preview-header">KITCHEN KOT • ORDER #${dataObj.orderNumber}</div>
+        <div class="invoice-meta-grid" style="font-weight:800;">
+          <div>Invoice: ${invoiceNumber}</div>
+          <div>Service: ${dataObj.orderType || "Dine-In"}</div>
+          <div>Table: ${dataObj.tableNumber || "No Table"}</div>
+          <div>Customer: ${dataObj.customer || "Walk-in"}</div>
+          <div>Date: ${dateOnlyStr} | ${timeOnlyStr}</div>
+        </div>
+        <table class="invoice-table">
+          <thead>
+            <tr>
+              <th>ITEM TO PREPARE</th>
+              <th class="qty-col">QTY</th>
+            </tr>
+          </thead>
+          <tbody>${kotRowsHtml}</tbody>
+        </table>
+        <div class="invoice-footer" style="font-weight:900;">
+          --- ARHAM HUNGER BOX KITCHEN ---
+        </div>
+      `;
+
+      latestCounterHtml = counterPrintHtml;
+      latestKitchenKotHtml = kitchenPrintHtml;
+      latestOrderNo = dataObj.orderNumber;
+    }
+
+    function reprintFoundInvoice(uidOrOrderNo) {
+      if (role === "OWNER") return;
+      const found = orders.find(o => o.uid === uidOrOrderNo || o.orderNumber === uidOrOrderNo);
+      if (!found) return;
+      buildReceiptAndKotBlocks(found);
       switchSection("POS");
-      dispatchDualSilentPrint(latestCounterHtml, "");
+      dispatchDualSilentPrint(latestCounterHtml, latestKitchenKotHtml);
     }
 
     /* CUSTOMER PUBLIC & WAITER MOBILE ORDERING PORTAL */
@@ -3068,6 +3560,30 @@
       const callWaiterCard = document.getElementById("customerCallWaiterCard");
       const mainTitle = document.getElementById("custPortalMainTitle");
 
+      const optGroup = document.getElementById("custOrderTypeGroup");
+      const optLabel = document.getElementById("custOrderOptLabel");
+      const optDineIn = document.getElementById("optDineIn");
+      const optTakeaway = document.getElementById("optTakeaway");
+      const optDelivery = document.getElementById("optDelivery");
+
+      const isOnlineDeliveryOnly = !asWaiter && activeCustomerTable === "Online Delivery";
+
+      if (isOnlineDeliveryOnly) {
+        optLabel.textContent = "1. Order Option (آن لائن ہوم ڈیلیوری):";
+        optGroup.className = "cust-option-group one-col";
+        optDineIn.style.display = "none";
+        optTakeaway.style.display = "none";
+        optDelivery.style.display = "block";
+        selectCustOrderType("Delivery (Free Upto 3km)");
+      } else {
+        optLabel.textContent = "1. Select Order Option (یہاں کھانا ہے / لے جانا ہے):";
+        optGroup.className = "cust-option-group two-cols";
+        optDineIn.style.display = "block";
+        optTakeaway.style.display = "block";
+        optDelivery.style.display = "none";
+        selectCustOrderType(activeCustomerTable === "Counter Direct" ? "Takeaway" : "Dine-In");
+      }
+
       if (asWaiter) {
         mainTitle.textContent = "Arham Hunger Box — Waiter Order Portal";
         waiterBadge.style.display = "inline-block";
@@ -3077,19 +3593,18 @@
         callWaiterCard.style.display = "none";
         document.getElementById("custTableBanner").textContent = `Taking Order for ${activeCustomerTable} • Sends Directly to Counter`;
         document.getElementById("custTablePill").textContent = activeCustomerTable;
-        selectCustOrderType(activeCustomerTable === "Counter Direct" ? "Takeaway" : "Dine-In");
       } else {
         mainTitle.textContent = "Arham Hunger Box — Digital Menu";
         waiterBadge.style.display = "none";
         waiterLogoutBtn.style.display = "none";
         waiterTableWrap.style.display = "none";
-        callWaiterCard.style.display = "flex";
-        const isCounter = activeCustomerTable === "Counter Direct";
-        document.getElementById("custTableBanner").textContent = isCounter
-          ? "Counter Walk-In Digital Menu • Direct Order to Counter"
-          : `Ordering for: ${activeCustomerTable} • Direct to Counter`;
+        callWaiterCard.style.display = isOnlineDeliveryOnly ? "none" : "flex";
+        document.getElementById("custTableBanner").textContent = isOnlineDeliveryOnly
+          ? "Online Home Delivery Menu • Free Delivery Upto 3km"
+          : (activeCustomerTable === "Counter Direct"
+              ? "Counter Walk-In Digital Menu • Dine-In & Takeaway"
+              : `Ordering for: ${activeCustomerTable} • Dine-In & Takeaway`);
         document.getElementById("custTablePill").textContent = activeCustomerTable;
-        selectCustOrderType(isCounter ? "Takeaway" : "Dine-In");
       }
 
       selectCustPaymentMethod("Cash");
@@ -3251,7 +3766,7 @@
     }
 
     function openTablePreviewPortal() {
-      const selectedTbl = document.getElementById("qrTableSelect").value || "Counter Direct";
+      const selectedTbl = document.getElementById("qrTableSelect").value || "Online Delivery";
       openCustomerPortal(selectedTbl, false);
     }
 
@@ -3324,6 +3839,7 @@
             lineKey,
             parentId: itemId,
             code: item.code || formatCode(item.id),
+            category: item.category,
             name: `${item.name} (${v.label})`,
             price: v.price,
             qty: 1
@@ -3345,6 +3861,7 @@
         lineKey,
         parentId: it.id,
         code: it.code || formatCode(it.id),
+        category: it.category,
         name: it.name,
         price: it.price,
         qty: 1
@@ -3424,7 +3941,7 @@
           id: (isWaiterPortalMode ? "WTR-" : (viaWhatsapp ? "WA-" : "QR-")) + Date.now() + "-" + Math.floor(Math.random() * 1000),
           sourceType: isWaiterPortalMode ? "WAITER" : (viaWhatsapp ? "WHATSAPP" : "QR"),
           waiterName: isWaiterPortalMode ? loggedInUsername : "",
-          tableNumber: activeCustomerTable,
+          tableNumber: activeCustomerTable === "Online Delivery" ? "No Table" : activeCustomerTable,
           orderType: custSelectedOrderType,
           paymentMethod: custSelectedPaymentMethod,
           deliveryAddress,
@@ -3446,7 +3963,7 @@
             `*Name:* ${custName}`,
             `*Phone:* ${custPhone}`,
             `*Type:* ${custSelectedOrderType}`,
-            activeCustomerTable !== "Counter Direct" ? `*Table:* ${activeCustomerTable}` : "",
+            (activeCustomerTable !== "Counter Direct" && activeCustomerTable !== "Online Delivery") ? `*Table:* ${activeCustomerTable}` : "",
             deliveryAddress ? `*Address:* ${deliveryAddress}` : "",
             `*Payment:* ${custSelectedPaymentMethod}`,
             `------------------------`,
@@ -3542,7 +4059,10 @@
 
       document.getElementById("orderType").value = "Delivery (Free Upto 3km)";
       document.getElementById("tableNumber").value = "No Table";
-      if (foundPhone) document.getElementById("cMobile").value = foundPhone;
+      if (foundPhone) {
+        document.getElementById("cMobile").value = foundPhone;
+        autoMatchLoyaltyOnBill();
+      }
       const displayCust = [foundName || "WhatsApp Customer", foundAddress ? `Address: ${foundAddress}` : ""].filter(Boolean).join(" | ");
       document.getElementById("cName").value = displayCust;
 
@@ -3602,7 +4122,7 @@
             <div style="font-weight:800; color:var(--brand); margin-bottom:6px;">PKR ${Number(tq.total).toFixed(2)}</div>
             <div class="btn-group">
               <button class="btn-brand btn-sm" onclick="acceptTableOrderToBill('${tq.id}', false)">Load to Bill</button>
-              <button class="btn-sky btn-sm" onclick="acceptTableOrderToBill('${tq.id}', true)">Make Bill & Print</button>
+              <button class="btn-sky btn-sm" onclick="acceptTableOrderToBill('${tq.id}', true)">Make Bill &amp; Print</button>
               <button class="btn-red btn-sm" onclick="dismissTableOrder('${tq.id}')">Dismiss</button>
             </div>
           </div>
@@ -3647,6 +4167,7 @@
       document.getElementById("cMobile").value = tq.customerPhone === "N/A" ? "" : tq.customerPhone;
 
       bill = tq.items.map(i => ({ ...i }));
+      autoMatchLoyaltyOnBill();
 
       renderBill();
       renderLiveTableOrders();
@@ -3674,20 +4195,27 @@
       await pushToCloud(false);
     }
 
-    /* COUNTER & TABLE PRO QR CODE GENERATOR */
+    /* COUNTER, TABLE & ONLINE DELIVERY QR CODE GENERATOR */
     function generateTableQrCode() {
-      const tableVal = document.getElementById("qrTableSelect").value || "Counter Direct";
+      const tableVal = document.getElementById("qrTableSelect").value || "Online Delivery";
       const customBase = (document.getElementById("qrBaseUrlInput").value || "").trim();
       const baseLocation = customBase || window.location.href.split("?")[0];
 
       const urlObj = new URL(baseLocation, window.location.origin);
-      urlObj.searchParams.set("table", tableVal);
+      if (tableVal === "Online Delivery") {
+        urlObj.searchParams.set("mode", "delivery");
+      } else {
+        urlObj.searchParams.set("table", tableVal);
+      }
       if (cloudBaseUrl) {
         urlObj.searchParams.set("cloud", cloudBaseUrl);
       }
       const targetScanUrl = urlObj.toString();
 
       document.getElementById("qrPosterTableTitle").textContent = tableVal.toUpperCase();
+      document.getElementById("qrPosterSubNote").innerHTML = tableVal === "Online Delivery"
+        ? "Scan QR Code with Mobile Camera<br />to Order Home Delivery (Free Upto 3km)"
+        : "Scan QR Code with Mobile Camera<br />for Dine-In, Takeaway &amp; Call Waiter";
       document.getElementById("tableQrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(targetScanUrl)}`;
     }
 
@@ -3697,56 +4225,52 @@
       setTimeout(() => document.body.classList.remove("print-qr-mode"), 400);
     }
 
-    /* DUAL THERMAL PRINTER (COUNTER + KITCHEN KOT) SETTINGS & EXECUTION */
+    /* SINGLE THERMAL PRINTER SETTINGS & EXECUTION (FINAL BILL + KITCHEN KOT) */
     function loadPeripheralUi() {
       const cp = document.getElementById("counterPrinterInput");
-      const kp = document.getElementById("kitchenPrinterInput");
       const pm = document.getElementById("printModeSelect");
       const ke = document.getElementById("kotEnabledSelect");
-      const pp = document.getElementById("printerPaperSelect");
 
-      if (cp) cp.value = peripheralSettings.counterPrinter || "Counter_Printer";
-      if (kp) kp.value = peripheralSettings.kitchenPrinter || "Kitchen_Printer";
+      if (cp) cp.value = peripheralSettings.counterPrinter || "POS-80";
       if (pm) pm.value = peripheralSettings.printMode || "AUTO";
       if (ke) ke.value = peripheralSettings.kotEnabled || "YES";
-      if (pp) pp.value = peripheralSettings.paperSize || "80mm";
       updateDualPrintBadge();
     }
 
     function savePeripheralSettings() {
       if (!canManageAdminOrOwner()) return;
       const cp = document.getElementById("counterPrinterInput");
-      const kp = document.getElementById("kitchenPrinterInput");
       const pm = document.getElementById("printModeSelect");
       const ke = document.getElementById("kotEnabledSelect");
-      const pp = document.getElementById("printerPaperSelect");
 
-      if (cp) peripheralSettings.counterPrinter = cp.value.trim() || "Counter_Printer";
-      if (kp) peripheralSettings.kitchenPrinter = kp.value.trim() || "Kitchen_Printer";
+      if (cp) {
+        const val = cp.value.trim() || "POS-80";
+        peripheralSettings.counterPrinter = val;
+        peripheralSettings.kitchenPrinter = val;
+      }
       if (pm) peripheralSettings.printMode = pm.value;
       if (ke) peripheralSettings.kotEnabled = ke.value;
-      if (pp) peripheralSettings.paperSize = pp.value;
 
       saveLocalCache();
 
       const msg = document.getElementById("peripheralStatusMsg");
       if (msg) {
         msg.style.color = "var(--brand)";
-        msg.textContent = `Saved! Counter: "${peripheralSettings.counterPrinter}" | Kitchen: "${peripheralSettings.kitchenPrinter}" | Mode: ${peripheralSettings.printMode}`;
+        msg.textContent = `Saved! Printer: "${peripheralSettings.counterPrinter}" | Final Bill + Kitchen KOT: ${peripheralSettings.kotEnabled} | Mode: ${peripheralSettings.printMode}`;
       }
     }
 
-    function buildThermalDocumentHtml(innerBodyHtml) {
-      const widthCss = peripheralSettings.paperSize === "58mm" ? "58mm" : "80mm";
+    function buildCombinedSinglePrinterDocumentHtml(counterHtml, kitchenKotHtml) {
+      const includeKot = peripheralSettings.kotEnabled === "YES" && !!kitchenKotHtml;
       return `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8" />
   <style>
-    @page { size: ${widthCss} auto; margin: 0; }
+    @page { size: 80mm auto; margin: 0; }
     * { box-sizing: border-box; }
     body {
-      width: ${widthCss};
+      width: 80mm;
       margin: 0;
       padding: 2mm;
       background: #ffffff;
@@ -3802,13 +4326,27 @@
     }
     .num { text-align: right; white-space: nowrap; }
     .row-flex { display: flex; justify-content: space-between; padding: 1.5px 0; }
+    .cut-separator {
+      text-align: center;
+      font-weight: 900;
+      font-size: 10px;
+      border-top: 2px dashed #000;
+      border-bottom: 2px dashed #000;
+      padding: 4px 0;
+      margin: 10px 0;
+      page-break-after: always;
+      break-after: page;
+    }
     .kot-header { font-size: 15px; font-weight: 900; text-align: center; border: 2px solid #000; padding: 3px; margin-bottom: 5px; }
     .kot-meta { font-size: 12px; font-weight: 900; line-height: 1.4; }
     .kot-item td { font-size: 12.5px; font-weight: 900; padding: 5px 2px; border-bottom: 1px dashed #000; }
     .kot-item td.qty-col { font-weight: normal; }
   </style>
 </head>
-<body>${innerBodyHtml}</body>
+<body>
+  ${counterHtml}
+  ${includeKot ? `<div class="cut-separator">✂ - - - - KITCHEN KOT TICKET - - - - ✂</div>${kitchenKotHtml}` : ""}
+</body>
 </html>`;
     }
 
@@ -3818,25 +4356,24 @@
         try {
           if (statusEl) {
             statusEl.style.color = "var(--info)";
-            statusEl.textContent = "Sending silent print to Counter & Kitchen printers...";
+            statusEl.textContent = "Printing Final Bill + Kitchen KOT on printer...";
           }
+          const combinedHtml = buildCombinedSinglePrinterDocumentHtml(counterHtml, kitchenKotHtml);
           const result = await window.electronPOS.printDualReceipts({
-            counterPrinter: peripheralSettings.counterPrinter || "Counter_Printer",
-            kitchenPrinter: peripheralSettings.kitchenPrinter || "Kitchen_Printer",
-            kotEnabled: peripheralSettings.kotEnabled === "YES" && !!kitchenKotHtml,
-            counterHtml: buildThermalDocumentHtml(counterHtml),
-            kitchenHtml: buildThermalDocumentHtml(kitchenKotHtml || "")
+            counterPrinter: peripheralSettings.counterPrinter || "POS-80",
+            kitchenPrinter: peripheralSettings.counterPrinter || "POS-80",
+            kotEnabled: false,
+            counterHtml: combinedHtml,
+            kitchenHtml: ""
           });
 
           if (statusEl) {
             if (result && result.success) {
               statusEl.style.color = "var(--brand)";
-              statusEl.textContent = (peripheralSettings.kotEnabled === "YES" && !!kitchenKotHtml)
-                ? `Printed! Counter (${peripheralSettings.counterPrinter}) + Kitchen KOT (${peripheralSettings.kitchenPrinter})`
-                : `Printed on Counter (${peripheralSettings.counterPrinter})!`;
+              statusEl.textContent = `Printed Final Bill + Kitchen KOT on "${peripheralSettings.counterPrinter}"!`;
             } else {
               statusEl.style.color = "var(--danger)";
-              statusEl.textContent = "Printer Alert: " + ((result && result.error) || "Check printer names in Settings.");
+              statusEl.textContent = "Printer Alert: " + ((result && result.error) || "Check printer name in Settings.");
             }
           }
         } catch (err) {
@@ -3865,63 +4402,28 @@
       const timeOnlyStr = nowObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
       const testInvoiceNo = buildInvoiceNumber(nowObj, "000");
 
-      const testCounter = `
-        <div class="center line-dash">
-          <div class="welcome-tag">${RESTAURANT_INFO.welcomeTag}</div>
-          <div class="logo-mini">
-            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;&quot;>AHB</span>';" />
-          </div>
-          <div class="bold" style="font-size:14px;">${RESTAURANT_INFO.name}</div>
-          <div style="font-size:10px;">COUNTER PRINTER TEST</div>
-        </div>
-        <div class="order-hero">ORDER #000</div>
-        <div class="line-dash">
-          <div><strong>Invoice #:</strong> ${testInvoiceNo}</div>
-          <div><strong>Printer:</strong> ${peripheralSettings.counterPrinter}</div>
-          <div><strong>Date:</strong> ${dateOnlyStr}</div>
-          <div><strong>Time:</strong> ${timeOnlyStr}</div>
-        </div>
-        <div class="center">Thank you for your order!</div>
-      `;
+      const sampleData = {
+        invoiceNumber: testInvoiceNo,
+        orderNumber: "000",
+        dateOnly: dateOnlyStr,
+        timeOnly: timeOnlyStr,
+        orderType: "Dine-In",
+        tableNumber: "Table 1",
+        paymentMethod: "Cash",
+        customer: "Test Guest",
+        mobile: "0301-5977178",
+        items: [
+          { code: "001", name: "Hunger Box Special Pizza (L)", qty: 1, lineTotal: 2000 },
+          { code: "015", name: "Zinger Burger", qty: 2, lineTotal: 800 }
+        ],
+        subtotal: 2800,
+        discount: 0,
+        tax: 0,
+        total: 2800
+      };
 
-      const testKitchen = `
-        <div class="kot-header">*** KITCHEN KOT TEST ***</div>
-        <div class="kot-meta line-dash">
-          <div>Printer: ${peripheralSettings.kitchenPrinter}</div>
-          <div>Table: Table 1 (Dine-In)</div>
-          <div>Date: ${dateOnlyStr}</div>
-          <div>Time: ${timeOnlyStr}</div>
-        </div>
-        <table>
-          <thead><tr><th>Item</th><th class="qty-col">Qty</th></tr></thead>
-          <tbody>
-            <tr class="kot-item"><td>[001] Hunger Box Special Pizza (L)</td><td class="qty-col">x1</td></tr>
-            <tr class="kot-item"><td>[015] Zinger Burger</td><td class="qty-col">x2</td></tr>
-          </tbody>
-        </table>
-        <div class="center bold">Kitchen Printer Working!</div>
-      `;
-
-      document.getElementById("invoiceContainer").innerHTML = `
-        <div class="invoice-banner">
-          <div class="welcome-ahb-tag">${RESTAURANT_INFO.welcomeTag}</div>
-          <div class="receipt-logo-box">
-            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;&quot;>AHB</span>';" />
-          </div>
-          <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
-          <div class="invoice-sub">DUAL PRINTER TEST (COUNTER + KITCHEN)</div>
-        </div>
-        <div class="order-hero-box">ORDER #000</div>
-        <div class="invoice-meta-grid">
-          <div><strong>Invoice #:</strong> ${testInvoiceNo}</div>
-          <div><strong>Counter:</strong> ${peripheralSettings.counterPrinter}</div>
-          <div><strong>Kitchen:</strong> ${peripheralSettings.kitchenPrinter}</div>
-          <div><strong>Date:</strong> ${dateOnlyStr}</div>
-          <div><strong>Time:</strong> ${timeOnlyStr}</div>
-        </div>
-      `;
-
-      await dispatchDualSilentPrint(testCounter, testKitchen);
+      buildReceiptAndKotBlocks(sampleData);
+      await dispatchDualSilentPrint(latestCounterHtml, latestKitchenKotHtml);
     }
 
     /* QUICK ITEM PRICE UPDATER BY CODE OR NAME */
@@ -4250,6 +4752,7 @@
       renderOrderAnalytics();
       if (canManageAdminOrOwner()) {
         renderExpenses();
+        renderLoyalty();
         renderStaff();
       }
     }
@@ -4259,6 +4762,8 @@
       loggedInUsername = "";
       isWaiterPortalMode = false;
       bill = [];
+      editingInvoiceUid = null;
+      activeLoyaltyMemberCode = null;
       stopRealtimeCloudStream();
       closeVariantPicker();
       document.getElementById("dashboardShell").style.display = "none";
@@ -4271,20 +4776,19 @@
       if (!canManageAdminOrOwner() && sec !== "POS") return;
       document.getElementById("sectionPOS").style.display = sec === "POS" ? "block" : "none";
       document.getElementById("sectionEXPENSES").style.display = sec === "EXPENSES" ? "block" : "none";
+      document.getElementById("sectionLOYALTY").style.display = sec === "LOYALTY" ? "block" : "none";
       document.getElementById("sectionSTAFF").style.display = sec === "STAFF" ? "block" : "none";
       document.getElementById("sectionSETTINGS").style.display = sec === "SETTINGS" ? "block" : "none";
 
       document.getElementById("navPosBtn").classList.toggle("active", sec === "POS");
       document.getElementById("navExpensesBtn").classList.toggle("active", sec === "EXPENSES");
+      document.getElementById("navLoyaltyBtn").classList.toggle("active", sec === "LOYALTY");
       document.getElementById("navStaffBtn").classList.toggle("active", sec === "STAFF");
       document.getElementById("navSettingsBtn").classList.toggle("active", sec === "SETTINGS");
 
-      if (sec === "EXPENSES") {
-        renderExpenses();
-      }
-      if (sec === "STAFF") {
-        renderStaff();
-      }
+      if (sec === "EXPENSES") renderExpenses();
+      if (sec === "LOYALTY") renderLoyalty();
+      if (sec === "STAFF") renderStaff();
       if (sec === "SETTINGS") {
         renderOrderAnalytics();
         generateTableQrCode();
@@ -4787,6 +5291,7 @@
           lineKey,
           parentId: itemId,
           code: itemCode,
+          category: item.category,
           name: `${item.name} (${variant.label})`,
           price: variant.price,
           qty: 1
@@ -4837,6 +5342,7 @@
         lineKey,
         parentId: it.id,
         code: it.code || formatCode(it.id),
+        category: it.category,
         name: it.name,
         price: it.price,
         qty: 1
@@ -4850,29 +5356,45 @@
     }
 
     function emptyBill() {
+      if (editingInvoiceUid) {
+        cancelEditInvoice();
+        return;
+      }
       bill = [];
+      activeLoyaltyMemberCode = null;
       document.getElementById("dPct").value = "0";
+      updateLoyaltyBillBanner(null);
       renderBill();
     }
 
     function calcBill() {
       const subtotal = bill.reduce((s, b) => s + b.price * b.qty, 0);
+      const pizzaSubtotal = bill
+        .filter(b => isPizzaMenuItem(b))
+        .reduce((s, b) => s + b.price * b.qty, 0);
+
       const dPct = Math.min(100, Math.max(0, Number(document.getElementById("dPct").value) || 0));
       const tPct = Math.min(50, Math.max(0, Number(document.getElementById("tPct").value) || 0));
-      const discount = subtotal * (dPct / 100);
+
+      // Loyalty card discount applies ONLY to Pizza items; never to the whole bill
+      const discountBase = activeLoyaltyMemberCode ? pizzaSubtotal : subtotal;
+      const discount = discountBase * (dPct / 100);
       const taxable = subtotal - discount;
       const tax = taxable * (tPct / 100);
       const total = taxable + tax;
-      return { subtotal, discount, tax, total };
+      return { subtotal, pizzaSubtotal, discount, tax, total, isPizzaOnlyDiscount: Boolean(activeLoyaltyMemberCode) };
     }
 
     function renderBill() {
       const body = document.getElementById("billRows");
       body.innerHTML = "";
       bill.forEach(b => {
+        const pizzaTag = isPizzaMenuItem(b)
+          ? ` <span style="font-size:10px; color:var(--accent); font-weight:800;">[PIZZA]</span>`
+          : "";
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td><b>[${b.code}]</b> ${b.name}</td>
+          <td><b>[${b.code}]</b> ${b.name}${pizzaTag}</td>
           <td style="text-align:center; font-weight:normal;">${b.qty}</td>
           <td>PKR ${(b.price * b.qty).toFixed(2)}</td>
           <td><button class="btn-red" style="padding:3px 7px;" onclick="dropBillItem('${b.lineKey}')">X</button></td>
@@ -4880,8 +5402,17 @@
         body.appendChild(tr);
       });
 
+      if (activeLoyaltyMemberCode) {
+        const member = loyaltyList.find(m => m.code === activeLoyaltyMemberCode);
+        updateLoyaltyBillBanner(member || null);
+      }
+
       const c = calcBill();
       document.getElementById("bSub").textContent = "PKR " + c.subtotal.toFixed(2);
+      const bDiscLabelEl = document.getElementById("bDiscLabel");
+      if (bDiscLabelEl) {
+        bDiscLabelEl.textContent = c.isPizzaOnlyDiscount ? "Discount (Pizza Items Only)" : "Discount";
+      }
       document.getElementById("bDisc").textContent = "PKR " + c.discount.toFixed(2);
       document.getElementById("bTax").textContent = "PKR " + c.tax.toFixed(2);
       document.getElementById("bGrand").textContent = "PKR " + c.total.toFixed(2);
@@ -4909,233 +5440,120 @@
       const dateOnlyStr = now.toLocaleDateString();
       const timeOnlyStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
       const timeStr = `${dateOnlyStr} ${timeOnlyStr}`;
-      const formattedOrderNo = formatCode(orderCounter);
-      const invoiceNumber = buildInvoiceNumber(now, formattedOrderNo);
-      orderCounter += 1;
 
       const billedLines = bill.map(b => ({
         code: b.code,
+        category: b.category || "",
         name: b.name,
         qty: b.qty,
         unitPrice: b.price,
         lineTotal: b.price * b.qty
       }));
 
-      orders.push({
-        uid: "ORD-" + Date.now() + "-" + Math.floor(Math.random() * 10000),
-        invoiceNumber,
-        orderNumber: formattedOrderNo,
-        date: dateIso,
-        dateOnly: dateOnlyStr,
-        timeOnly: timeOnlyStr,
-        timestamp: timeStr,
-        orderType,
-        tableNumber,
-        paymentMethod,
-        role,
-        customer: cust,
-        mobile,
-        items: billedLines,
-        subtotal: c.subtotal,
-        discount: c.discount,
-        tax: c.tax,
-        total: c.total
-      });
+      let finalRecordObj = null;
 
-      const rowsHtml = billedLines.map(item => `
-        <tr>
-          <td>[${item.code}] ${item.name}</td>
-          <td class="qty-col">${item.qty}</td>
-          <td class="num">${item.lineTotal.toFixed(0)}</td>
-        </tr>
-      `).join("");
+      if (editingInvoiceUid) {
+        const existingIdx = orders.findIndex(o => o.uid === editingInvoiceUid || o.orderNumber === editingInvoiceUid);
+        if (existingIdx !== -1) {
+          const prev = orders[existingIdx];
+          orders[existingIdx] = {
+            ...prev,
+            orderType,
+            tableNumber,
+            paymentMethod,
+            customer: cust,
+            mobile,
+            items: billedLines,
+            subtotal: c.subtotal,
+            discount: c.discount,
+            loyaltyPizzaOnly: c.isPizzaOnlyDiscount,
+            tax: c.tax,
+            total: c.total
+          };
+          finalRecordObj = orders[existingIdx];
+        }
+        editingInvoiceUid = null;
+        document.getElementById("editingInvoiceBanner").style.display = "none";
+        document.getElementById("generateBillBtn").textContent = "Generate Bill";
+      } else {
+        const formattedOrderNo = formatCode(orderCounter);
+        const invoiceNumber = buildInvoiceNumber(now, formattedOrderNo);
+        orderCounter += 1;
 
-      const tableLineHtml = tableNumber !== "No Table" ? `<div><strong>Table:</strong> ${tableNumber}</div>` : "";
+        finalRecordObj = {
+          uid: "ORD-" + Date.now() + "-" + Math.floor(Math.random() * 10000),
+          invoiceNumber,
+          orderNumber: formattedOrderNo,
+          date: dateIso,
+          dateOnly: dateOnlyStr,
+          timeOnly: timeOnlyStr,
+          timestamp: timeStr,
+          orderType,
+          tableNumber,
+          paymentMethod,
+          role,
+          customer: cust,
+          mobile,
+          items: billedLines,
+          subtotal: c.subtotal,
+          discount: c.discount,
+          loyaltyPizzaOnly: c.isPizzaOnlyDiscount,
+          tax: c.tax,
+          total: c.total
+        };
+        orders.push(finalRecordObj);
 
-      /* 1. COUNTER CUSTOMER RECEIPT HTML */
-      latestCounterHtml = `
-        <div class="center line-dash">
-          <div class="welcome-tag">${RESTAURANT_INFO.welcomeTag}</div>
-          <div class="logo-mini">
-            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;&quot;>AHB</span>';" />
-          </div>
-          <div class="bold" style="font-size:14px;">${RESTAURANT_INFO.name}</div>
-          <div style="font-size:9.5px;">
-            ${RESTAURANT_INFO.addressLine1}<br />
-            ${RESTAURANT_INFO.addressLine2}
-          </div>
-        </div>
+        if (activeLoyaltyMemberCode) {
+          const loyMember = loyaltyList.find(m => m.code === activeLoyaltyMemberCode);
+          if (loyMember) {
+            loyMember.ordersCount = Number(loyMember.ordersCount || 0) + 1;
+            loyMember.totalSpent = Number(loyMember.totalSpent || 0) + c.total;
+            loyMember.points = Number(loyMember.points || 0) + Math.floor(c.total / 100);
+          }
+        }
+      }
 
-        <div class="order-hero">ORDER #${formattedOrderNo}</div>
-
-        <div class="line-dash" style="font-size:10px;">
-          <div><strong>Invoice #:</strong> ${invoiceNumber}</div>
-          <div><strong>Date:</strong> ${dateOnlyStr}</div>
-          <div><strong>Time:</strong> ${timeOnlyStr}</div>
-          <div><strong>Service:</strong> ${orderType}</div>
-          ${tableLineHtml}
-          <div><strong>Payment:</strong> ${paymentMethod}</div>
-          <div><strong>Customer:</strong> ${cust}</div>
-          <div><strong>Mobile:</strong> ${mobile}</div>
-        </div>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th class="qty-col">Qty</th>
-              <th class="num">Amt</th>
-            </tr>
-          </thead>
-          <tbody>${rowsHtml}</tbody>
-        </table>
-
-        <div style="border-top:1px dashed #000; padding-top:4px;">
-          <div class="row-flex"><span>Subtotal:</span><span>PKR ${c.subtotal.toFixed(2)}</span></div>
-          <div class="row-flex"><span>Discount:</span><span>PKR ${c.discount.toFixed(2)}</span></div>
-          <div class="row-flex"><span>Tax:</span><span>PKR ${c.tax.toFixed(2)}</span></div>
-          <div class="row-flex bold line-solid" style="font-size:12px;"><span>TOTAL (${paymentMethod.toUpperCase()}):</span><span>PKR ${c.total.toFixed(2)}</span></div>
-        </div>
-
-        <div class="center" style="margin-top:6px; font-size:9.5px;">
-          Thank you for your order!<br />
-          <strong>${RESTAURANT_INFO.deliveryNote}</strong><br />
-          Ph: <strong>${RESTAURANT_INFO.phone}</strong>
-          <div style="margin-top:4px; padding-top:3px; border-top:1px dotted #000; font-size:8.5px; font-weight:700;">
-            ${RESTAURANT_INFO.devCredit}<br />
-            ${RESTAURANT_INFO.devContact}
-          </div>
-        </div>
-      `;
-
-      /* 2. KITCHEN KOT */
-      const kotRowsHtml = billedLines.map(item => `
-        <tr class="kot-item">
-          <td>[${item.code}] ${item.name}</td>
-          <td class="qty-col">x${item.qty}</td>
-        </tr>
-      `).join("");
-
-      latestKitchenKotHtml = `
-        <div class="kot-header">KITCHEN KOT • ORDER #${formattedOrderNo}</div>
-        <div class="kot-meta line-dash">
-          <div>Invoice: ${invoiceNumber}</div>
-          <div>Service: ${orderType}</div>
-          <div>Table: ${tableNumber}</div>
-          <div>Customer: ${cust}</div>
-          <div>Date: ${dateOnlyStr}</div>
-          <div>Time: ${timeOnlyStr}</div>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>ITEM TO PREPARE</th>
-              <th class="qty-col">QTY</th>
-            </tr>
-          </thead>
-          <tbody>${kotRowsHtml}</tbody>
-        </table>
-        <div class="center bold" style="margin-top:6px; font-size:11px;">
-          --- ARHAM HUNGER BOX KITCHEN ---
-        </div>
-      `;
-
-      /* UPDATE ON-SCREEN THERMAL PREVIEW */
-      document.getElementById("invoiceContainer").innerHTML = `
-        <div class="invoice-banner">
-          <div class="welcome-ahb-tag">${RESTAURANT_INFO.welcomeTag}</div>
-          <div class="receipt-logo-box">
-            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;&quot;>AHB</span>';" />
-          </div>
-          <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
-          <div class="invoice-sub">
-            ${RESTAURANT_INFO.addressLine1}<br />
-            ${RESTAURANT_INFO.addressLine2}
-          </div>
-        </div>
-
-        <div class="order-hero-box">ORDER #${formattedOrderNo}</div>
-
-        <div class="invoice-meta-grid">
-          <div><strong>Invoice #:</strong> ${invoiceNumber}</div>
-          <div><strong>Date:</strong> ${dateOnlyStr}</div>
-          <div><strong>Time:</strong> ${timeOnlyStr}</div>
-          <div><strong>Service:</strong> ${orderType}</div>
-          ${tableLineHtml}
-          <div><strong>Payment:</strong> ${paymentMethod}</div>
-          <div><strong>Customer:</strong> ${cust}</div>
-          <div><strong>Mobile:</strong> ${mobile}</div>
-        </div>
-
-        <table class="invoice-table">
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th class="qty-col">Qty</th>
-              <th class="num">Amt</th>
-            </tr>
-          </thead>
-          <tbody>${rowsHtml}</tbody>
-        </table>
-
-        <div class="invoice-summary">
-          <div class="invoice-summary-row"><span>Subtotal:</span><span>PKR ${c.subtotal.toFixed(2)}</span></div>
-          <div class="invoice-summary-row"><span>Discount:</span><span>PKR ${c.discount.toFixed(2)}</span></div>
-          <div class="invoice-summary-row"><span>Tax:</span><span>PKR ${c.tax.toFixed(2)}</span></div>
-          <div class="invoice-summary-row grand-row"><span>TOTAL (${paymentMethod.toUpperCase()}):</span><span>PKR ${c.total.toFixed(2)}</span></div>
-        </div>
-
-        <div class="invoice-footer">
-          Thank you for your order!<br />
-          <strong>${RESTAURANT_INFO.deliveryNote}</strong><br />
-          Ph: <strong>${RESTAURANT_INFO.phone}</strong>
-          <div class="invoice-dev-credit">
-            ${RESTAURANT_INFO.devCredit}<br />
-            ${RESTAURANT_INFO.devContact}
-          </div>
-        </div>
-      `;
+      buildReceiptAndKotBlocks(finalRecordObj);
 
       latestReceiptText = [
         `            ${RESTAURANT_INFO.welcomeTag}`,
         RESTAURANT_INFO.name,
         `${RESTAURANT_INFO.addressLine1} ${RESTAURANT_INFO.addressLine2}`,
         "==========================================",
-        `             ORDER #${formattedOrderNo}`,
+        `             ORDER #${finalRecordObj.orderNumber}`,
         "==========================================",
-        `Invoice #: ${invoiceNumber}`,
-        `Date: ${dateOnlyStr}`,
-        `Time: ${timeOnlyStr}`,
+        `Invoice #: ${finalRecordObj.invoiceNumber}`,
+        `Date: ${finalRecordObj.dateOnly}`,
+        `Time: ${finalRecordObj.timeOnly}`,
         `Service: ${orderType} | Table: ${tableNumber} | Payment: ${paymentMethod}`,
         `Customer: ${cust} | Mobile: ${mobile}`,
         "------------------------------------------",
         ...billedLines.map(i => `[${i.code}] ${i.name}   | Qty: ${i.qty} |   PKR ${i.lineTotal.toFixed(2)}`),
         "------------------------------------------",
         `Subtotal: PKR ${c.subtotal.toFixed(2)}`,
-        `Discount: PKR ${c.discount.toFixed(2)}`,
+        `${c.isPizzaOnlyDiscount ? "Pizza Loyalty Discount" : "Discount"}: PKR ${c.discount.toFixed(2)}`,
         `Tax: PKR ${c.tax.toFixed(2)}`,
         `GRAND TOTAL (${paymentMethod}): PKR ${c.total.toFixed(2)}`,
         "------------------------------------------",
         `Thank you for your order! - ${RESTAURANT_INFO.deliveryNote} | Phone: ${RESTAURANT_INFO.phone}`,
-        RESTAURANT_INFO.devCredit,
-        RESTAURANT_INFO.devContact
+        `${RESTAURANT_INFO.devCredit} | ${RESTAURANT_INFO.devContact}`
       ].join("\n");
 
-      latestOrderNo = formattedOrderNo;
-
       bill = [];
+      activeLoyaltyMemberCode = null;
       document.getElementById("cName").value = "";
       document.getElementById("cMobile").value = "";
       document.getElementById("dPct").value = "0";
+      updateLoyaltyBillBanner(null);
 
-      saveLocalCache();
       renderBill();
       renderMetrics();
       renderOrderAnalytics();
       if (canManageAdminOrOwner()) {
         renderExpenses();
+        renderLoyalty();
       }
-      await pushToCloud(false);
+      await syncStore(false);
 
       if (peripheralSettings.printMode === "AUTO") {
         await dispatchDualSilentPrint(latestCounterHtml, latestKitchenKotHtml);
@@ -5143,183 +5561,207 @@
     }
 
     function saveReceiptTxt() {
-      if (!latestReceiptText) { alert("Generate a bill first."); return; }
+      if (!latestReceiptText) {
+        alert("Generate a bill first.");
+        return;
+      }
       const blob = new Blob([latestReceiptText], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = `order_${latestOrderNo || "bill"}.txt`;
+      a.href = url;
+      a.download = `AHB_Order_${latestOrderNo || "000"}.txt`;
       a.click();
+      URL.revokeObjectURL(url);
     }
 
     function mailReceipt() {
-      if (!latestReceiptText) { alert("Generate a bill first."); return; }
-      const to = prompt("Enter email address to send receipt:");
-      if (!to) return;
-      window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent("Order #" + (latestOrderNo || "") + " - Arham Hunger Box")}&body=${encodeURIComponent(latestReceiptText)}`;
+      if (!latestReceiptText) {
+        alert("Generate a bill first.");
+        return;
+      }
+      const subject = encodeURIComponent(`Arham Hunger Box Invoice - Order #${latestOrderNo}`);
+      const body = encodeURIComponent(latestReceiptText);
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
     }
 
+    /* DAILY METRICS & TODAY'S COMPLETED ORDERS */
     function renderMetrics() {
-      const today = getTodayIso();
-      const todayList = (orders || []).filter(o => o.date === today);
+      const todayIso = getTodayIso();
+      const todayOrders = orders.filter(o => (o.date || todayIso) === todayIso);
 
-      const cashToday = todayList
-        .filter(o => (o.paymentMethod || "Cash") === "Cash")
-        .reduce((s, o) => s + Number(o.total || 0), 0);
+      let cashToday = 0;
+      let cardToday = 0;
+      let onlineToday = 0;
+      let discountToday = 0;
+      let totalToday = 0;
 
-      const cardToday = todayList
-        .filter(o => o.paymentMethod === "Card")
-        .reduce((s, o) => s + Number(o.total || 0), 0);
+      todayOrders.forEach(o => {
+        const amt = Number(o.total || 0);
+        const disc = Number(o.discount || 0);
+        const pm = o.paymentMethod || "Cash";
+        totalToday += amt;
+        discountToday += disc;
+        if (pm === "Card") cardToday += amt;
+        else if (pm === "Online") onlineToday += amt;
+        else cashToday += amt;
+      });
 
-      const onlineToday = todayList
-        .filter(o => o.paymentMethod === "Online")
-        .reduce((s, o) => s + Number(o.total || 0), 0);
-
-      const discountToday = todayList
-        .reduce((s, o) => s + Number(o.discount || 0), 0);
-
-      const net = cashToday + cardToday + onlineToday;
-
-      document.getElementById("mOrders").textContent = String(todayList.length);
+      document.getElementById("mOrders").textContent = String(todayOrders.length);
       document.getElementById("mCash").textContent = "PKR " + cashToday.toFixed(2);
       document.getElementById("mCard").textContent = "PKR " + cardToday.toFixed(2);
       document.getElementById("mOnline").textContent = "PKR " + onlineToday.toFixed(2);
       document.getElementById("mDiscountToday").textContent = "PKR " + discountToday.toFixed(2);
-      document.getElementById("mNet").textContent = "PKR " + net.toFixed(2);
+      document.getElementById("mNet").textContent = "PKR " + totalToday.toFixed(2);
 
-      const payBody = document.getElementById("todayPaymentRows");
-      if (payBody) {
-        payBody.innerHTML = "";
-        if (todayList.length === 0) {
-          payBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--muted);">No orders recorded today yet.</td></tr>`;
-        } else {
-          [...todayList].reverse().forEach(o => {
-            const pm = o.paymentMethod || "Cash";
-            const pillClass = pm === "Card" ? "pill-card" : (pm === "Online" ? "pill-online" : "pill-paid");
-            const tblDisplay = (o.tableNumber && o.tableNumber !== "No Table") ? `${o.tableNumber} (${o.orderType})` : o.orderType;
-            const discAmt = Number(o.discount || 0);
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-              <td><b>#${o.orderNumber}</b></td>
-              <td>${o.customer}</td>
-              <td>${tblDisplay}</td>
-              <td><span class="status-pill ${pillClass}">${pm.toUpperCase()}</span></td>
-              <td style="color:${discAmt > 0 ? 'var(--danger)' : 'var(--muted)'}; font-weight:700;">PKR ${discAmt.toFixed(2)}</td>
-              <td><b>PKR ${Number(o.total).toFixed(2)}</b></td>
-            `;
-            payBody.appendChild(tr);
-          });
-        }
+      const tbody = document.getElementById("todayPaymentRows");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+      const recent = [...todayOrders].reverse();
+      if (recent.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--muted);">No orders recorded today yet.</td></tr>`;
+        return;
       }
-    }
 
-    function escapeCsvField(val) {
-      return `"${String(val ?? "").replace(/"/g, '""')}"`;
+      recent.forEach(o => {
+        const pm = o.paymentMethod || "Cash";
+        const pillClass = pm === "Card" ? "pill-card" : (pm === "Online" ? "pill-online" : "pill-paid");
+        const discVal = Number(o.discount || 0);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><b>#${o.orderNumber}</b></td>
+          <td>${o.customer || "Walk-in"}</td>
+          <td>${o.tableNumber && o.tableNumber !== "No Table" ? o.tableNumber : (o.orderType || "Dine-In")}</td>
+          <td><span class="status-pill ${pillClass}">${pm.toUpperCase()}</span></td>
+          <td style="color:${discVal > 0 ? "var(--danger)" : "var(--muted)"};">PKR ${discVal.toFixed(2)}</td>
+          <td><b>PKR ${Number(o.total || 0).toFixed(2)}</b></td>
+        `;
+        tbody.appendChild(tr);
+      });
     }
 
     function downloadSalesCsv() {
-      const csv = "InvoiceNumber,OrderNumber,Date,Time,Option,Table,PaymentMethod,Role,Customer,Mobile,Subtotal,Discount,Tax,Total\n" +
-        orders.map(o => [
-          escapeCsvField(o.invoiceNumber || ""),
-          o.orderNumber,
-          escapeCsvField(o.dateOnly || o.date || ""),
-          escapeCsvField(o.timeOnly || o.timestamp || ""),
-          escapeCsvField(o.orderType),
-          escapeCsvField(o.tableNumber || "No Table"),
-          escapeCsvField(o.paymentMethod || "Cash"),
-          escapeCsvField(o.role),
-          escapeCsvField(o.customer),
-          escapeCsvField(o.mobile),
-          Number(o.subtotal || 0).toFixed(2),
-          Number(o.discount || 0).toFixed(2),
-          Number(o.tax || 0).toFixed(2),
-          Number(o.total || 0).toFixed(2)
-        ].join(",")).join("\n");
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "arham_hunger_box_sales.csv";
-      a.click();
-    }
-
-    /* OWNER EXCLUSIVE RESET FUNCTION */
-    async function wipeSalesData() {
-      if (role !== "OWNER") {
-        alert("Only the Owner can reset POS & Expenses data.");
+      if (!canManageAdminOrOwner()) return;
+      if (orders.length === 0) {
+        alert("No sales records available.");
         return;
       }
-      if (!confirm("Reset POS sales, Today's Orders, Order Type Analytics, order numbers (#000), and Expenses records permanently? (Staff list & salaries will NOT be deleted)")) return;
+      const headers = ["InvoiceNo", "OrderNo", "Date", "Time", "ServiceType", "Table", "PaymentMethod", "Role", "Customer", "Mobile", "Subtotal", "Discount", "Tax", "Total"];
+      const rows = orders.map(o => [
+        `"${o.invoiceNumber || "INV-" + o.orderNumber}"`,
+        `"${o.orderNumber || "000"}"`,
+        `"${o.dateOnly || o.date || ""}"`,
+        `"${o.timeOnly || o.timestamp || ""}"`,
+        `"${o.orderType || "Dine-In"}"`,
+        `"${o.tableNumber || "No Table"}"`,
+        `"${o.paymentMethod || "Cash"}"`,
+        `"${o.role || ""}"`,
+        `"${(o.customer || "").replace(/"/g, '""')}"`,
+        `"${o.mobile || ""}"`,
+        Number(o.subtotal || o.total || 0).toFixed(2),
+        Number(o.discount || 0).toFixed(2),
+        Number(o.tax || 0).toFixed(2),
+        Number(o.total || 0).toFixed(2)
+      ].join(","));
 
-      isCloudSyncLocked = true;
+      const csv = [headers.join(","), ...rows].join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "arham_hunger_box_sales.csv";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
 
-      localStorage.removeItem(DB.MENU);
-      localStorage.removeItem(DB.SALES);
-      localStorage.removeItem(DB.ORDER_SEQ);
-      localStorage.removeItem(DB.EXPENSES);
-      localStorage.removeItem(DB.TABLE_QUEUE);
-      localStorage.removeItem(DB.WAITER_CALLS);
-      localStorage.removeItem(DB.DISMISSED_IDS);
-
-      items = starterMenu.map(item => ({
-        ...item,
-        variants: item.variants ? item.variants.map(v => ({ ...v })) : undefined
-      }));
-      orders = [];
-      expensesList = [];
-      tableOrderQueue = [];
-      waiterCallQueue = [];
-      dismissedOrderIds = [];
-      orderCounter = 0;
-      bill = [];
-      latestReceiptText = "";
-      latestCounterHtml = "";
-      latestKitchenKotHtml = "";
-      latestOrderNo = null;
-      lastAlertCount = 0;
-      lastKnownOrderCount = 0;
-
-      const invSearch = document.getElementById("invoiceSearchInput");
-      if (invSearch) invSearch.value = "";
-      const invLookup = document.getElementById("invoiceLookupResultArea");
-      if (invLookup) {
-        invLookup.style.display = "none";
-        invLookup.innerHTML = "";
+    /* OWNER EXCLUSIVE: RESET POS & EXPENSES DATA */
+    async function wipeSalesData() {
+      if (role !== "OWNER") {
+        alert("Access Denied: Only the Owner account can reset POS and Expenses data.");
+        return;
       }
 
-      document.getElementById("invoiceContainer").innerHTML = `
-        <div class="invoice-banner">
-          <div class="welcome-ahb-tag">${RESTAURANT_INFO.welcomeTag}</div>
-          <div class="receipt-logo-box">
-            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;&quot;>AHB</span>';" />
-          </div>
-          <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
-          <div class="invoice-sub">
-            Al Madina Market, Basement Floor,<br />
-            Kheshgi Payan Chowk, Nowshera
-          </div>
-        </div>
-        <p style="text-align:center; color:#475569; margin:12px 0; font-size:10px;">No bill generated yet.</p>
-      `;
+      const btn = document.getElementById("wipeBtn");
+      const msgEl = document.getElementById("resetStatusMsg");
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Resetting POS & Expenses...";
+      }
 
-      updateOrderBadge();
-      renderCategories();
-      renderMenu();
-      renderBill();
-      renderMetrics();
-      renderExpenses();
-      renderLiveWaiterCalls();
-      renderLiveTableOrders();
-      renderOrderAnalytics();
+      try {
+        isCloudSyncLocked = true;
+        orders = [];
+        orderCounter = 0;
+        expensesList = [];
+        bill = [];
+        editingInvoiceUid = null;
+        activeLoyaltyMemberCode = null;
+        latestReceiptText = "";
+        latestCounterHtml = "";
+        latestKitchenKotHtml = "";
+        latestOrderNo = null;
+        lastKnownOrderCount = 0;
 
-      await syncStore(true);
+        localStorage.removeItem(DB.SALES);
+        localStorage.removeItem(DB.ORDER_SEQ);
+        localStorage.removeItem(DB.EXPENSES);
+        saveLocalCache();
 
-      const resetMsg = document.getElementById("resetStatusMsg");
-      if (resetMsg) {
-        resetMsg.style.color = "var(--brand)";
-        resetMsg.textContent = "All Orders, Today's Sales, Analytics & Expenses permanently deleted! (Staff records preserved)";
+        updateOrderBadge();
+        renderBill();
+        renderMetrics();
+        renderOrderAnalytics();
+        renderExpenses();
+        renderStaff();
+
+        const lookupArea = document.getElementById("invoiceLookupResultArea");
+        if (lookupArea) {
+          lookupArea.style.display = "none";
+          lookupArea.innerHTML = "";
+        }
+
+        const invContainer = document.getElementById("invoiceContainer");
+        if (invContainer) {
+          invContainer.innerHTML = `
+            <div class="invoice-banner">
+              <div class="welcome-ahb-tag">${RESTAURANT_INFO.welcomeTag}</div>
+              <div class="receipt-logo-box">
+                <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;&quot;>AHB</span>';" />
+              </div>
+              <div class="invoice-brand-title">${RESTAURANT_INFO.name}</div>
+              <div class="invoice-sub">
+                ${RESTAURANT_INFO.addressLine1}<br />
+                ${RESTAURANT_INFO.addressLine2}
+              </div>
+            </div>
+            <p style="text-align:center; color:#475569; margin:12px 0; font-size:10px;">No bill generated yet.</p>
+          `;
+        }
+
+        const kotContainer = document.getElementById("kitchenKotContainer");
+        if (kotContainer) {
+          kotContainer.innerHTML = `
+            <div class="kot-preview-header">KITCHEN KOT TICKET</div>
+            <p style="text-align:center; color:#475569; margin:10px 0; font-size:10px;">Kitchen ticket appears here when bill is generated.</p>
+          `;
+        }
+
+        if (cloudBaseUrl) {
+          await pushToCloud(true);
+        }
+
+        if (msgEl) {
+          msgEl.style.color = "var(--brand)";
+          msgEl.textContent = "All POS sales, Today's Orders, Order Analytics, Order #000 & Expenses have been reset!";
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "Reset POS & Expenses Data";
+        }
+        setTimeout(() => { isCloudSyncLocked = false; }, 500);
       }
     }
 
-    updateDualPrintBadge();
     initPageMode();
   </script>
 </body>
