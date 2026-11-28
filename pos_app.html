@@ -2318,7 +2318,7 @@
     };
 
     const DB = {
-      MENU: "ahb_pos_menu_v4",
+      MENU: "ahb_pos_menu_v5",
       SALES: "ahb_pos_sales_v4",
       ORDER_SEQ: "ahb_pos_order_seq_v4",
       PASS: "ahb_pos_pass_v4",
@@ -2452,7 +2452,49 @@
       { name: "Chicken Soup", category: "Soup", price: 200 },
 
       { name: "Black Coffee", category: "Coffee", price: 250 },
-      { name: "Cappuccino", category: "Coffee", price: 350 }
+      { name: "Cappuccino", category: "Coffee", price: 350 },
+
+      {
+        name: "Fizz Up",
+        category: "Cold Drinks",
+        price: 70,
+        variants: [
+          { label: "Regular", price: 70 },
+          { label: "Liter", price: 140 },
+          { label: "1.5 Liter", price: 180 }
+        ]
+      },
+      {
+        name: "NextCola",
+        category: "Cold Drinks",
+        price: 70,
+        variants: [
+          { label: "Regular", price: 70 },
+          { label: "Liter", price: 140 },
+          { label: "1.5 Liter", price: 180 }
+        ]
+      },
+      {
+        name: "7UP",
+        category: "Cold Drinks",
+        price: 80,
+        variants: [
+          { label: "Regular", price: 80 },
+          { label: "Can", price: 120 },
+          { label: "Liter", price: 180 },
+          { label: "1.5 Liter", price: 200 }
+        ]
+      },
+      {
+        name: "Pepsi",
+        category: "Cold Drinks",
+        price: 120,
+        variants: [
+          { label: "Can", price: 120 },
+          { label: "Liter", price: 180 },
+          { label: "1.5 Liter", price: 200 }
+        ]
+      }
     ];
 
     function formatCode(num) {
@@ -5553,37 +5595,32 @@
 
       buildReceiptAndKotBlocks(finalRecordObj);
 
-      latestReceiptText = [
-        `            ${RESTAURANT_INFO.welcomeTag}`,
+      const txtLines = [
+        RESTAURANT_INFO.welcomeTag,
         RESTAURANT_INFO.name,
         `${RESTAURANT_INFO.addressLine1} ${RESTAURANT_INFO.addressLine2}`,
-        "==========================================",
-        `             ORDER #${finalRecordObj.orderNumber}`,
-        "==========================================",
         `Invoice #: ${finalRecordObj.invoiceNumber}`,
+        `ORDER #${finalRecordObj.orderNumber}`,
         `Date: ${finalRecordObj.dateOnly}`,
         `Time: ${finalRecordObj.timeOnly}`,
-        `Service: ${orderType} | Table: ${tableNumber} | Payment: ${paymentMethod}`,
-        `Customer: ${cust} | Mobile: ${mobile}`,
-        "------------------------------------------",
-        ...billedLines.map(i => `[${i.code}] ${i.name}   | Qty: ${i.qty} |   PKR ${i.lineTotal.toFixed(0)}`),
-        "------------------------------------------",
+        `Service: ${finalRecordObj.orderType}`,
+        ...(finalRecordObj.tableNumber !== "No Table" ? [`Table: ${finalRecordObj.tableNumber}`] : []),
+        `Payment: ${finalRecordObj.paymentMethod}`,
+        `Customer: ${finalRecordObj.customer}`,
+        `Mobile: ${finalRecordObj.mobile}`,
+        "----------------------------------------",
+        ...billedLines.map(i => `[${i.code}] ${i.name} | Qty: ${i.qty} | PKR ${i.lineTotal.toFixed(0)}`),
+        "----------------------------------------",
         `Subtotal: PKR ${c.subtotal.toFixed(2)}`,
-        `${c.isPizzaOnlyDiscount ? "Pizza Loyalty Discount" : "Discount"}: PKR ${c.discount.toFixed(2)}`,
-        `Tax:      PKR ${c.tax.toFixed(2)}`,
-        `TOTAL PAID (${paymentMethod}): PKR ${c.total.toFixed(2)}`,
-        "==========================================",
-        `Thank you for your order!`,
+        `${c.isPizzaOnlyDiscount ? "Pizza Loyalty Disc" : "Discount"}: PKR ${c.discount.toFixed(2)}`,
+        `Tax: PKR ${c.tax.toFixed(2)}`,
+        `TOTAL (${finalRecordObj.paymentMethod.toUpperCase()}): PKR ${c.total.toFixed(2)}`,
+        "----------------------------------------",
         `${RESTAURANT_INFO.deliveryNote} | Ph: ${RESTAURANT_INFO.phone}`,
-        `${RESTAURANT_INFO.devCredit}`,
-        `${RESTAURANT_INFO.devContact}`,
-        "",
-        "==========================================",
-        `       KITCHEN KOT • ORDER #${finalRecordObj.orderNumber}`,
-        "==========================================",
-        `Invoice: ${finalRecordObj.invoiceNumber} | ${orderType} | ${tableNumber}`,
-        ...billedLines.map(i => `[${i.code}] ${i.name}   x${i.qty}`)
-      ].join("\n");
+        RESTAURANT_INFO.devCredit,
+        RESTAURANT_INFO.devContact
+      ];
+      latestReceiptText = txtLines.join("\n");
 
       bill = [];
       activeLoyaltyMemberCode = null;
@@ -5592,6 +5629,7 @@
       document.getElementById("dPct").value = "0";
       updateLoyaltyBillBanner(null);
 
+      updateOrderBadge();
       renderBill();
       renderMetrics();
       renderOrderAnalytics();
@@ -5606,15 +5644,66 @@
       }
     }
 
+    function renderMetrics() {
+      const todayIso = getTodayIso();
+      const todayOrders = orders.filter(o => o.date === todayIso);
+
+      const totalSalesToday = todayOrders.reduce((s, o) => s + Number(o.total || 0), 0);
+      const cashToday = todayOrders
+        .filter(o => (o.paymentMethod || "Cash") === "Cash")
+        .reduce((s, o) => s + Number(o.total || 0), 0);
+      const cardToday = todayOrders
+        .filter(o => o.paymentMethod === "Card")
+        .reduce((s, o) => s + Number(o.total || 0), 0);
+      const onlineToday = todayOrders
+        .filter(o => o.paymentMethod === "Online")
+        .reduce((s, o) => s + Number(o.total || 0), 0);
+      const discountToday = todayOrders
+        .reduce((s, o) => s + Number(o.discount || 0), 0);
+
+      document.getElementById("mOrders").textContent = String(todayOrders.length);
+      document.getElementById("mCash").textContent = "PKR " + cashToday.toFixed(2);
+      document.getElementById("mCard").textContent = "PKR " + cardToday.toFixed(2);
+      document.getElementById("mOnline").textContent = "PKR " + onlineToday.toFixed(2);
+      document.getElementById("mDiscountToday").textContent = "PKR " + discountToday.toFixed(2);
+      document.getElementById("mNet").textContent = "PKR " + totalSalesToday.toFixed(2);
+
+      const logBody = document.getElementById("todayPaymentRows");
+      if (logBody) {
+        logBody.innerHTML = "";
+        const reversedToday = [...todayOrders].reverse();
+        if (reversedToday.length === 0) {
+          logBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--muted);">No orders recorded today yet.</td></tr>`;
+        } else {
+          reversedToday.forEach(o => {
+            const pay = o.paymentMethod || "Cash";
+            const pillClass = pay === "Card" ? "pill-card" : (pay === "Online" ? "pill-online" : "pill-paid");
+            const tblStr = o.tableNumber && o.tableNumber !== "No Table" ? `${o.tableNumber} (${o.orderType})` : (o.orderType || "Dine-In");
+            const discAmt = Number(o.discount || 0);
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td><b>#${o.orderNumber}</b></td>
+              <td>${o.customer || "Walk-in"}</td>
+              <td>${tblStr}</td>
+              <td><span class="status-pill ${pillClass}">${pay.toUpperCase()}</span></td>
+              <td style="color:${discAmt > 0 ? "var(--danger)" : "var(--muted)"}; font-weight:${discAmt > 0 ? "700" : "400"};">PKR ${discAmt.toFixed(2)}</td>
+              <td><b>PKR ${Number(o.total || 0).toFixed(2)}</b></td>
+            `;
+            logBody.appendChild(tr);
+          });
+        }
+      }
+    }
+
     function saveReceiptTxt() {
       if (!latestReceiptText) {
         alert("Generate a bill first.");
         return;
       }
-      const blob = new Blob([latestReceiptText], { type: "text/plain" });
+      const blob = new Blob([latestReceiptText], { type: "text/plain;charset=utf-8" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = `AHB_Order_${latestOrderNo || formatCode(orderCounter)}.txt`;
+      a.download = `Arham_Hunger_Box_Order_${latestOrderNo || "000"}.txt`;
       a.click();
     }
 
@@ -5623,165 +5712,94 @@
         alert("Generate a bill first.");
         return;
       }
-      const subject = encodeURIComponent(`Arham Hunger Box Order #${latestOrderNo || ""}`);
+      const subject = encodeURIComponent(`Arham Hunger Box — Order #${latestOrderNo || "000"}`);
       const body = encodeURIComponent(latestReceiptText);
-      window.open(`mailto:?subject=${subject}&body=${body}`);
-    }
-
-    /* METRICS & TODAY'S COMPLETED ORDERS LOG */
-    function renderMetrics() {
-      const todayIso = getTodayIso();
-      const todayOrders = orders.filter(o => String(o.date || "").startsWith(todayIso));
-
-      const todayCash = todayOrders
-        .filter(o => (o.paymentMethod || "Cash") === "Cash")
-        .reduce((s, o) => s + Number(o.total || 0), 0);
-
-      const todayCard = todayOrders
-        .filter(o => o.paymentMethod === "Card")
-        .reduce((s, o) => s + Number(o.total || 0), 0);
-
-      const todayOnline = todayOrders
-        .filter(o => o.paymentMethod === "Online")
-        .reduce((s, o) => s + Number(o.total || 0), 0);
-
-      const todayDiscount = todayOrders
-        .reduce((s, o) => s + Number(o.discount || 0), 0);
-
-      const todayTotal = todayOrders.reduce((s, o) => s + Number(o.total || 0), 0);
-
-      document.getElementById("mOrders").textContent = String(todayOrders.length);
-      document.getElementById("mCash").textContent = "PKR " + todayCash.toFixed(2);
-      document.getElementById("mCard").textContent = "PKR " + todayCard.toFixed(2);
-      document.getElementById("mOnline").textContent = "PKR " + todayOnline.toFixed(2);
-      document.getElementById("mDiscountToday").textContent = "PKR " + todayDiscount.toFixed(2);
-      document.getElementById("mNet").textContent = "PKR " + todayTotal.toFixed(2);
-
-      const payBody = document.getElementById("todayPaymentRows");
-      if (payBody) {
-        payBody.innerHTML = "";
-        const reversedToday = [...todayOrders].reverse();
-        if (reversedToday.length === 0) {
-          payBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--muted);">No orders recorded today yet.</td></tr>`;
-        } else {
-          reversedToday.forEach(o => {
-            const pm = o.paymentMethod || "Cash";
-            const pillClass = pm === "Card" ? "pill-card" : (pm === "Online" ? "pill-online" : "pill-paid");
-            const discVal = Number(o.discount || 0);
-            const discText = discVal > 0 ? `- PKR ${discVal.toFixed(2)}` : "PKR 0.00";
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-              <td><b>#${o.orderNumber}</b><br><small style="color:var(--muted);">${o.invoiceNumber || ""}</small></td>
-              <td>${o.customer || "Walk-in"}</td>
-              <td>${o.tableNumber || "No Table"} (${o.orderType || "Dine-In"})</td>
-              <td><span class="status-pill ${pillClass}">${pm.toUpperCase()}</span></td>
-              <td style="color:${discVal > 0 ? "var(--danger)" : "var(--muted)"}; font-weight:${discVal > 0 ? "700" : "400"};">${discText}</td>
-              <td><b>PKR ${Number(o.total || 0).toFixed(2)}</b></td>
-            `;
-            payBody.appendChild(tr);
-          });
-        }
-      }
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
     }
 
     function downloadSalesCsv() {
       if (!canManageAdminOrOwner()) return;
-      const lines = ["Invoice #,Order #,Date,Time,Order Option,Table,Payment Method,Customer,Mobile,Role,Subtotal,Discount,Tax,Total"];
-      orders.forEach(o => {
-        lines.push([
-          `"${o.invoiceNumber || "INV-" + o.orderNumber}"`,
-          `"${o.orderNumber || ""}"`,
-          `"${o.dateOnly || o.date || ""}"`,
-          `"${o.timeOnly || o.timestamp || ""}"`,
-          `"${o.orderType || "Dine-In"}"`,
-          `"${o.tableNumber || "No Table"}"`,
-          `"${o.paymentMethod || "Cash"}"`,
-          `"${o.customer}"`,
-          `"${o.mobile || "N/A"}"`,
-          o.role,
-          o.subtotal.toFixed(2),
-          o.discount.toFixed(2),
-          o.tax.toFixed(2),
-          o.total.toFixed(2)
-        ].join(","));
-      });
-      const blob = new Blob([lines.join("\n")], { type: "text/csv" });
+      if (orders.length === 0) {
+        alert("No sales records available.");
+        return;
+      }
+      const header = "InvoiceNumber,OrderNumber,Date,Time,OrderType,Table,PaymentMethod,Role,Customer,Mobile,Subtotal,Discount,Tax,Total\n";
+      const rows = orders.map(o =>
+        `"${o.invoiceNumber || "INV-" + o.orderNumber}","${o.orderNumber}","${o.dateOnly || o.date || ""}","${o.timeOnly || o.timestamp}","${o.orderType || "Dine-In"}","${o.tableNumber || "No Table"}","${o.paymentMethod || "Cash"}","${o.role}","${o.customer}","${o.mobile || "N/A"}",${Number(o.subtotal || o.total || 0).toFixed(2)},${Number(o.discount || 0).toFixed(2)},${Number(o.tax || 0).toFixed(2)},${Number(o.total || 0).toFixed(2)}`
+      ).join("\n");
+
+      const blob = new Blob([header + rows], { type: "text/csv;charset=utf-8" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = "Arham_Hunger_Box_Sales.csv";
+      a.download = "Arham_Hunger_Box_Sales_Report.csv";
       a.click();
     }
 
-    /* OWNER EXCLUSIVE: RESET POS & EXPENSES ONLY (STAFF & LOYALTY STAY INTACT) */
+    /* OWNER EXCLUSIVE FULL POS + EXPENSES DATA RESET */
     async function wipeSalesData() {
       if (role !== "OWNER") {
-        alert("Access Denied: Only the Owner account can reset POS & Expenses data.");
+        alert("Only the Owner account can reset POS & Expenses data.");
         return;
       }
 
       isCloudSyncLocked = true;
-      stopRealtimeCloudStream();
+      const wipeBtn = document.getElementById("wipeBtn");
+      const statusMsg = document.getElementById("resetStatusMsg");
+      if (wipeBtn) wipeBtn.disabled = true;
 
-      orders = [];
-      orderCounter = 0;
-      expensesList = [];
-      bill = [];
-      editingInvoiceUid = null;
-      activeLoyaltyMemberCode = null;
-      latestReceiptText = "";
-      latestCounterHtml = "";
-      latestKitchenKotHtml = "";
-      latestOrderNo = null;
-      lastKnownOrderCount = 0;
+      try {
+        orders = [];
+        orderCounter = 0;
+        expensesList = [];
+        tableOrderQueue = [];
+        waiterCallQueue = [];
+        dismissedOrderIds = [];
+        bill = [];
+        editingInvoiceUid = null;
+        activeLoyaltyMemberCode = null;
+        latestOrderNo = null;
+        latestReceiptText = "";
+        latestCounterHtml = "";
+        latestKitchenKotHtml = "";
 
-      localStorage.setItem(DB.SALES, JSON.stringify([]));
-      localStorage.setItem(DB.ORDER_SEQ, "0");
-      localStorage.setItem(DB.EXPENSES, JSON.stringify([]));
+        localStorage.removeItem(DB.SALES);
+        localStorage.removeItem(DB.EXPENSES);
+        localStorage.removeItem(DB.TABLE_QUEUE);
+        localStorage.removeItem(DB.WAITER_CALLS);
+        localStorage.removeItem(DB.DISMISSED_IDS);
 
-      document.getElementById("invoiceContainer").innerHTML = `
-        <div class="invoice-banner">
-          <div class="welcome-ahb-tag">WELCOME TO AHB</div>
-          <div class="receipt-logo-box">
-            <img src="ahb_logo.png" alt="AHB" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;&quot;>AHB</span>';" />
-          </div>
-          <div class="invoice-brand-title">ARHAM HUNGER BOX</div>
-          <div class="invoice-sub">
-            Al Madina Market, Basement Floor,<br />
-            Kheshgi Payan Chowk, Nowshera
-          </div>
-        </div>
-        <p style="text-align:center; color:#475569; margin:12px 0; font-size:10px;">No bill generated yet.</p>
-      `;
+        localStorage.setItem(DB.SALES, JSON.stringify([]));
+        localStorage.setItem(DB.ORDER_SEQ, "0");
+        localStorage.setItem(DB.EXPENSES, JSON.stringify([]));
+        localStorage.setItem(DB.TABLE_QUEUE, JSON.stringify([]));
+        localStorage.setItem(DB.WAITER_CALLS, JSON.stringify([]));
+        localStorage.setItem(DB.DISMISSED_IDS, JSON.stringify([]));
 
-      document.getElementById("kitchenKotContainer").innerHTML = `
-        <div class="kot-preview-header">KITCHEN KOT TICKET</div>
-        <p style="text-align:center; color:#475569; margin:10px 0; font-size:10px;">Kitchen ticket appears here when bill is generated.</p>
-      `;
+        const lookupArea = document.getElementById("invoiceLookupResultArea");
+        if (lookupArea) {
+          lookupArea.style.display = "none";
+          lookupArea.innerHTML = "";
+        }
+        const searchInp = document.getElementById("invoiceSearchInput");
+        if (searchInp) searchInp.value = "";
 
-      const invSearchInput = document.getElementById("invoiceSearchInput");
-      const invLookupArea = document.getElementById("invoiceLookupResultArea");
-      if (invSearchInput) invSearchInput.value = "";
-      if (invLookupArea) {
-        invLookupArea.style.display = "none";
-        invLookupArea.innerHTML = "";
-      }
+        updateOrderBadge();
+        renderBill();
+        renderMetrics();
+        renderOrderAnalytics();
+        renderExpenses();
+        renderLiveWaiterCalls();
+        renderLiveTableOrders();
 
-      updateOrderBadge();
-      renderBill();
-      renderMetrics();
-      renderOrderAnalytics();
-      renderExpenses();
+        await syncStore(true);
 
-      await pushToCloud(true);
-
-      if (cloudBaseUrl) {
-        startRealtimeCloudStream();
-      }
-
-      const resetMsg = document.getElementById("resetStatusMsg");
-      if (resetMsg) {
-        resetMsg.style.color = "var(--brand)";
-        resetMsg.textContent = "All POS Sales, Today's Orders, Order Analytics & Expenses have been reset to 0! Staff & Loyalty records remain safe.";
+        if (statusMsg) {
+          statusMsg.style.color = "var(--brand)";
+          statusMsg.textContent = "All POS sales, Today's Orders, Order Type Analytics, Order #000, and Expenses have been cleared to 0!";
+        }
+        alert("Reset Complete! POS Sales, Today's Orders, Order Type Analytics, and Expenses are now 0.");
+      } finally {
+        if (wipeBtn) wipeBtn.disabled = false;
       }
     }
 
